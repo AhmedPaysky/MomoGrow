@@ -1,0 +1,21 @@
+package com.paysky.momogrow.data.api
+
+import com.paysky.momogrow.data.models.*
+import retrofit2.http.Body
+import retrofit2.http.POST
+
+interface ApiService {
+
+    @POST("PayLink.svc/api/MoMoPayRegister")
+    suspend fun moMoPayRegister(@Body registerRequest: MoMoPayRegisterRequest): MoMoPayRegisterResponse
+
+    @POST("PayLink.svc/api/MoMoPayGetMerchantInfo")
+    suspend fun moMoPayGetMerchantInfo(@Body registerRequest: MoMoPayGetMerchantInfoRequest): MoMoPayGetMerchantInfoResponse
+
+    @POST("PayLink.svc/api/MoMoPayRegisterAccount")
+    suspend fun moMoPayRegisterAccount(@Body moMoPayRegisterAccount: MoMoPayRegisterAccountRequest): MoMoPayRegisterAccountResponse
+
+    @POST("PayLink.svc/api/MOMOPayLogin")
+    suspend fun mOMOPayLogin(@Body mOMOPayLogin: MOMOPayLoginRequest): MOMOPayLoginResponse
+
+}

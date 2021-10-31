@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dashboard"
+        android:enabled="true"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/dashboard" />
+    <item
+        android:id="@+id/orders"
+        android:enabled="true"
+        android:icon="@drawable/ic_orders_white"
+        android:title="@string/orders" />
+    <item
+        android:id="@+id/catalog"
+        android:enabled="true"
+        android:icon="@drawable/ic_catalog_white"
+        android:title="@string/catalog" />
+    <item
+        android:id="@+id/more"
+        android:enabled="true"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more" />
+</menu>

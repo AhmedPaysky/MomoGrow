@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "71384197358",
+    "project_id": "mtn-android-merch-app",
+    "storage_bucket": "mtn-android-merch-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71384197358:android:ccbbaca568d1f1fd85abff",
+        "android_client_info": {
+          "package_name": "com.paysky.momogrow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71384197358-grql5b2qfm4estgc1k8kuo18vke9lsqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCecD5zLPldD1-AQmqyk8iu4GHVAgjtgWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71384197358-grql5b2qfm4estgc1k8kuo18vke9lsqi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

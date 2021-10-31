@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_size">22sp</dimen>
+    <dimen name="title_padding_top">52dp</dimen>
+    <dimen name="_16ssp">16sp</dimen>
+</resources>

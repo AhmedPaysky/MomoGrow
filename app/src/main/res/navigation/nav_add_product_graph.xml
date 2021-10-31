@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_add_product_graph"
+    app:startDestination="@id/addProductFragment">
+
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.paysky.momogrow.views.catalog.AddProductFragment"
+        android:label="fragment_add_product"
+        tools:layout="@layout/fragment_add_product">
+        <action
+            android:id="@+id/action_addProductFragment_to_pendingApprovalProductFragment"
+            app:destination="@id/pendingApprovalProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pendingApprovalProductFragment"
+        android:name="com.paysky.momogrow.views.catalog.PendingApprovalProductFragment"
+        android:label="fragment_pending_approval_product"
+        tools:layout="@layout/fragment_pending_approval_product">
+        <action
+            android:id="@+id/action_pendingApprovalProductFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="com.paysky.momogrow.views.catalog.ProductDetailsFragment"
+        android:label="fragment_product_details"
+        tools:layout="@layout/fragment_product_details" >
+        <action
+            android:id="@+id/action_productDetailsFragment_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
+    </fragment>
+</navigation>
