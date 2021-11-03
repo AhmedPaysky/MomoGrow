@@ -135,9 +135,8 @@
 
                 <TextView
                     android:id="@+id/tvThisWeek"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:gravity="center"
                     android:text="@string/this_week"
@@ -149,13 +148,11 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/tvTisMonth"
-                    android:layout_width="0dp"
+                    android:id="@+id/tvThisMonth"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:gravity="center"
-
                     android:text="@string/this_month"
                     android:textColor="@color/gray_light"
                     android:textSize="@dimen/_10sdp" />
@@ -221,6 +218,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/tvTotalAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_bold"
@@ -380,7 +378,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/mtn_brighter_sans_medium"
-                            android:text="@string/transactions"
+                            android:text="Marketplace order"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textSize="@dimen/_12sdp" />
 
@@ -456,7 +454,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/mtn_brighter_sans_medium"
 
-                            android:text="@string/transactions"
+                            android:text="Payment transaction"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textSize="@dimen/_12sdp" />
 
@@ -531,7 +529,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/mtn_brighter_sans_medium"
-                            android:text="@string/transactions"
+                            android:text="Marketplace order"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textSize="@dimen/_12sdp" />
 

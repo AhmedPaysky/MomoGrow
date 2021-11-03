@@ -152,18 +152,17 @@
                         app:boxBackgroundColor="@android:color/transparent"
                         app:hintTextColor="@color/gray">
 
-                        <com.paysky.momogrow.views.customviews.EditMobileNumber
+                        <EditText
                             android:id="@+id/etLastProductPrice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
-                            android:enabled="false"
                             android:fontFamily="@font/mtn_brighter_sans_medium"
                             android:hint="@string/product_price"
                             android:imeOptions="actionNext"
-                            android:inputType="textPersonName"
+                            android:inputType="number"
                             android:paddingTop="6dp"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textColorHint="@color/hint_et_black_50_opacity"
@@ -406,42 +405,52 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:id="@+id/image1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_rectangle_grey"
-                        android:padding="@dimen/_16sdp"
-                        android:src="@drawable/ic_image_holder" />
+                        android:src="@drawable/ic_add_product" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:id="@+id/image2"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_rectangle_grey"
-                        android:padding="@dimen/_16sdp"
-                        android:src="@drawable/ic_image_holder" />
+                        android:src="@drawable/ic_add_product" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:id="@+id/image3"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_rectangle_grey"
-                        android:padding="@dimen/_16sdp"
-                        android:src="@drawable/ic_image_holder" />
+                        android:src="@drawable/ic_add_product" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:id="@+id/image4"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:layout_marginEnd="@dimen/_16sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_rectangle_grey"
-                        android:padding="@dimen/_16sdp"
-                        android:src="@drawable/ic_image_holder" />
+                        android:src="@drawable/ic_add_product" />
 
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
                 </LinearLayout>
 
                 <TextView
@@ -464,23 +473,26 @@
                     android:orientation="horizontal">
 
                     <ImageButton
+                        android:id="@+id/btnDecrease"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:src="@drawable/ic_min_blue" />
 
                     <TextView
+                        android:id="@+id/tvQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:fontFamily="@font/mtn_brighter_sans_medium"
-                        android:text="12"
+                        android:text="0"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
 
                     <ImageButton
+                        android:id="@+id/btnIncrease"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -544,7 +556,7 @@
                             android:layout_height="wrap_content"
 
                             android:fontFamily="@font/mtn_brighter_sans_medium"
-                            android:text="@string/featuresproduct"
+                            android:text="@string/newproduct"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
@@ -571,7 +583,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/mtn_brighter_sans_medium"
-                            android:text="@string/featuresproduct"
+                            android:text="@string/publishtomarketplace"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 

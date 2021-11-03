@@ -11,5 +11,7 @@ class AccountDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_account_details)
     }
 
-    fun finish(view: View) {finish()}
+    fun finish(view: View) {
+        finish()
+    }
 }

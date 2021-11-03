@@ -211,7 +211,6 @@ class LocationFragment : Fragment(), OnMapReadyCallback {
             }
 
             override fun onError(status: Status) {
-                // TODO: Handle the error.
                 Log.i(
                     TAG,
                     "An error occurred: $status"

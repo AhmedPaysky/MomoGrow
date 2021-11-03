@@ -1,6 +1,7 @@
 package com.paysky.momogrow.views
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,22 +11,35 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.paysky.momogrow.data.api.ApiClient
 import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.models.MOMOPayCheckMerchantIsRegisterRequest
 import com.paysky.momogrow.data.models.MoMoPayRegisterRequest
 import com.paysky.momogrow.databinding.ActivityMobileNumberBinding
 import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.Constants
+import com.paysky.momogrow.utilis.MyUtils
+import com.paysky.momogrow.utilis.PreferenceProcessor
+import com.paysky.momogrow.utilis.TextUtils
 import com.paysky.momogrow.viewmodels.MobileNumberViewModel
 import com.paysky.momogrow.viewmodels.ViewModelFactory
 import com.paysky.momogrow.views.login.LoginActivity
+import com.paysky.momogrow.views.register.RegisterViewModel
 
 
 class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
     private lateinit var binding: ActivityMobileNumberBinding
-
-    private lateinit var viewModel: MobileNumberViewModel
+    lateinit var dialog: Dialog
+    private val viewModel: MobileNumberViewModel by viewModels {
+        ViewModelFactory(
+            ApiClient.apiClient().create(
+                ApiService::class.java
+            )
+        )
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +48,7 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
         val view = binding.root
         setContentView(view)
         binding.etMobileNum.setOnTouchListener(this)
+        dialog = MyUtils.getDlgProgress(this)
     }
 
     fun nextPage(view: View) {
@@ -42,11 +57,59 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
             binding.tvIncorrectMsg.visibility = View.VISIBLE
             return
         }
-        startActivity(
-            Intent(this, AuthenticateActivity::class.java)
-                .putExtra("mobile_number", binding.etMobileNum.text.toString())
-        )
+        mOMOPayCheckMerchantIsRegisterApi()
 
+    }
+
+    private fun mOMOPayCheckMerchantIsRegisterApi() {
+        val request = MOMOPayCheckMerchantIsRegisterRequest()
+        //todo replace with mobile number property
+//        request.mobileNumber = "256785826095"
+        request.mobileNumber = TextUtils.replaceAll("\\D", binding.etMobileNum.text.toString())
+
+        viewModel.mOMOPayCheckMerchantIsRegister(request).observe(this, Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    if (it.data?.isSuccess!!) {
+                        if (!it.data.isRegister) {
+                            startActivity(
+                                Intent(this, AuthenticateActivity::class.java)
+                                    .putExtra(
+                                        "mobile_number",
+                                        TextUtils.replaceAll(
+                                            "\\D",
+                                            binding.etMobileNum.text.toString()
+                                        )
+                                    )
+                            )
+                        } else {
+                            startActivity(
+                                Intent(this, LoginActivity::class.java)
+                                    .putExtra(
+                                        "mobile_number",
+                                        TextUtils.replaceAll(
+                                            "\\D",
+                                            binding.etMobileNum.text.toString()
+                                        )
+                                    )
+                            )
+                        }
+                    }
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                    Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show()
+                    Log.d("MobileActivity", it.message!!)
+
+                }
+                Status.LOADING -> {
+                    dialog.show()
+                    Log.d("Mobilectivity", "Loading")
+
+                }
+            }
+        })
     }
 
 
@@ -62,3 +125,5 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
     }
 
 }
+
+

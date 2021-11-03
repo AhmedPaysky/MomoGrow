@@ -7,9 +7,12 @@ public class MOMOPayLoginRequest {
     @SerializedName("Password")
     @Expose
     private String Password;
-    @SerializedName("Username")
+    @SerializedName("UserName")
     @Expose
     private String Username;
+    @SerializedName("FBToken")
+    @Expose
+    private String fBToken;
 
     public String getPassword() {
         return Password;
@@ -25,5 +28,13 @@ public class MOMOPayLoginRequest {
 
     public void setUsername(String username) {
         Username = username;
+    }
+
+    public String getfBToken() {
+        return fBToken;
+    }
+
+    public void setfBToken(String fBToken) {
+        this.fBToken = fBToken;
     }
 }

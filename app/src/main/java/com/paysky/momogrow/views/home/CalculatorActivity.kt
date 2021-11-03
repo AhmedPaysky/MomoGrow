@@ -90,6 +90,5 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
     override fun setPriceInEditText(s: String?) {
         tvAmount.text = s
         if (s?.length == 0) tvAmount.text = "0"
-        Toast.makeText(this, "djlnd", Toast.LENGTH_LONG).show()
     }
 }

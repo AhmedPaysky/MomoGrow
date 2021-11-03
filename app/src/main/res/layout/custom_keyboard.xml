@@ -283,7 +283,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="center"
-                        android:src="@drawable/ic_clear_calculator" />
+                        android:src="@drawable/ic_clear" />
 
 
                 </LinearLayout>
@@ -297,8 +297,6 @@
         <View
             android:layout_width="@dimen/_3sdp"
             android:layout_height="match_parent"
-
-
             android:background="@color/seprator_color" />
     </LinearLayout>
 
@@ -306,8 +304,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_3sdp"
-
-
         android:background="@color/seprator_color" />
 
 </LinearLayout>

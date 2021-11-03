@@ -10,8 +10,10 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_18sdp"
+        android:layout_marginStart="@dimen/_13sdp"
         android:layout_marginTop="@dimen/_8sdp"
+        android:onClick="finish"
+        android:padding="@dimen/_4sdp"
         android:src="@drawable/ic_arrow_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -81,6 +83,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:paddingTop="6dp"
+                            android:text="Ahmed"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textSize="@dimen/_12sdp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -122,6 +125,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:paddingTop="6dp"
+                            android:text="Osama"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textSize="@dimen/_12sdp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -163,6 +167,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPersonName"
                             android:paddingTop="6dp"
+                            android:text="011451485658"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textSize="@dimen/_12sdp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -203,6 +208,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
                             android:paddingTop="6dp"
+                            android:text="test@mtn.io"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textSize="@dimen/_12sdp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -294,7 +300,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginEnd="16dp"
-                            android:src="@drawable/ic_drop_down" />
+                            android:src="@drawable/ic_drop_down"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                 </LinearLayout>

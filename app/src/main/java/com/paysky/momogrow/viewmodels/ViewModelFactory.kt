@@ -8,7 +8,7 @@ import com.paysky.momogrow.views.register.RegisterViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val apiService: ApiService) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
 
         if (modelClass.isAssignableFrom(MobileNumberViewModel::class.java)) {
             return MobileNumberViewModel(apiService) as T
@@ -20,4 +20,6 @@ class ViewModelFactory(private val apiService: ApiService) : ViewModelProvider.F
 
         throw IllegalArgumentException("Unknown class name")
     }
+
+
 }

@@ -7,6 +7,12 @@ public class MOMOPayLoginResponse {
     @SerializedName("AuthToken")
     @Expose
     private String AuthToken;
+    @SerializedName("MerchantId")
+    @Expose
+    private String MerchantId;
+    @SerializedName("TerminalId")
+    @Expose
+    private String TerminalId;
     @SerializedName("Message")
     @Expose
     private String Message;
@@ -36,5 +42,25 @@ public class MOMOPayLoginResponse {
 
     public void setSuccess(boolean success) {
         Success = success;
+    }
+
+    public String getMerchantId() {
+        return MerchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        MerchantId = merchantId;
+    }
+
+    public String getTerminalId() {
+        return TerminalId;
+    }
+
+    public void setTerminalId(String terminalId) {
+        TerminalId = terminalId;
+    }
+
+    public boolean isSuccess() {
+        return Success;
     }
 }

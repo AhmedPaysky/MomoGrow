@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 
 class RegisterViewModel(private val apiService: ApiService) : ViewModel() {
     val mobileNumber = MutableLiveData<String>()
+    val refNumber = MutableLiveData<String>()
     val moMoPayGetMerchantInfo = MutableLiveData<MoMoPayGetMerchantInfoRequest>()
     fun moMoPayGetMerchantInfo(data: MoMoPayGetMerchantInfoRequest) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))

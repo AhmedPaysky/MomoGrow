@@ -4,6 +4,9 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,6 +17,8 @@ import com.paysky.momogrow.views.more.MoreFragment
 import com.paysky.momogrow.views.notifications.NotificationsActivity
 import com.paysky.momogrow.views.orders.OrdersFragment
 import kotlinx.android.synthetic.main.activity_home.*
+import androidx.core.widget.NestedScrollView
+
 
 class HomeActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener =

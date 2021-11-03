@@ -26,12 +26,14 @@ import com.paysky.momogrow.databinding.FragmentIntroScreensBinding
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.util.*
 import android.content.Context
+import android.graphics.Color
 import android.widget.ImageView
+import com.paysky.momogrow.R
 
 import com.paysky.momogrow.views.catalog.AddProductActivity
 
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), View.OnClickListener {
     private var _binding: FragmentHomeBinding? = null
     private val MAX_X_VALUE = 7
     private val MAX_Y_VALUE = 50
@@ -64,7 +66,6 @@ class HomeFragment : BaseFragment() {
         chart = view.findViewById(com.paysky.momogrow.R.id.chart1)
         lviewPager = view.pager
         livDashesIntro = view.ivDashesIntro
-
         introPagerAdapter =
             IntroPagerAdapter(childFragmentManager, requireActivity())
         binding.pager.adapter = introPagerAdapter
@@ -120,6 +121,11 @@ class HomeFragment : BaseFragment() {
         configureChartAppearance()
         prepareChartData(data!!)
 
+        binding.tvToday.setOnClickListener(this)
+        binding.tvThisWeek.setOnClickListener(this)
+        binding.tvThisMonth.setOnClickListener(this)
+        binding.tvCustom.setOnClickListener(this)
+
         return view
     }
 
@@ -164,6 +170,69 @@ class HomeFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.tvToday -> {
+                binding.tvToday.setBackgroundResource(R.drawable.bc_blue_shape)
+                binding.tvThisMonth.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvThisWeek.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvCustom.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvToday.setTextColor(resources.getColor(R.color.white, null))
+                binding.tvThisWeek.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvThisMonth.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvCustom.setTextColor(resources.getColor(R.color.gray_light, null))
+                randomData()
+            }
+            R.id.tvThisWeek -> {
+                binding.tvThisWeek.setBackgroundResource(R.drawable.bc_blue_shape)
+                binding.tvToday.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvThisMonth.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvCustom.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvThisWeek.setTextColor(resources.getColor(R.color.white, null))
+                binding.tvToday.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvThisMonth.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvCustom.setTextColor(resources.getColor(R.color.gray_light, null))
+                randomData()
+            }
+            R.id.tvThisMonth -> {
+                binding.tvThisMonth.setBackgroundResource(R.drawable.bc_blue_shape)
+                binding.tvToday.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvThisWeek.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvCustom.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvThisMonth.setTextColor(resources.getColor(R.color.white, null))
+                binding.tvToday.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvThisWeek.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvCustom.setTextColor(resources.getColor(R.color.gray_light, null))
+                randomData()
+            }
+            R.id.tvCustom -> {
+                binding.tvCustom.setBackgroundResource(R.drawable.bc_blue_shape)
+                binding.tvToday.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvThisWeek.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvThisMonth.setBackgroundColor(Color.TRANSPARENT)
+                binding.tvCustom.setTextColor(resources.getColor(R.color.white, null))
+                binding.tvToday.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvThisWeek.setTextColor(resources.getColor(R.color.gray_light, null))
+                binding.tvThisMonth.setTextColor(resources.getColor(R.color.gray_light, null))
+                randomData()
+            }
+        }
+    }
+
+    fun randomData() {
+        val data = createChartData()
+        configureChartAppearance()
+        prepareChartData(data!!)
+        val d1 = (300..1000).random() // generated random from 0 to 10 included
+        val d2 = (0..100).random() // generated random from 0 to 10 included
+        val d3 = (0..100).random() // generated random from 0 to 10 included
+
+
+        binding.tvTotalAmount.text = d1.toString()
+        binding.tvPaymentTransactions.text = d2.toString()
+        binding.tvMarketplaceOrders.text = d3.toString()
     }
 }
 
@@ -245,6 +314,7 @@ class IntroScreensFragment : Fragment() {
         }
         return view
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

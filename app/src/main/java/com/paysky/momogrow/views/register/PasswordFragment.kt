@@ -55,7 +55,7 @@ class PasswordFragment : Fragment(), View.OnTouchListener {
         binding.etPassword.setOnTouchListener(this)
         binding.etConfirmPassword.setOnTouchListener(this)
         view.btnNext.setOnClickListener(View.OnClickListener {
-            if (validate()) // todo uncomment
+            if (validate())
                 momoRegisterApi()
         })
 
@@ -150,21 +150,27 @@ class PasswordFragment : Fragment(), View.OnTouchListener {
 
     private fun momoRegisterApi() {
         val request = MoMoPayRegisterAccountRequest()
-//        request.password = AesGcm256.encrypt(
-//            binding.etPassword.text.toString(),
-//            AesGcm256.HexToByte(hexKey),
-//            AesGcm256.HexToByte(hexIV)
-//        )
+        request.password = AesGcm256.encrypt(
+            binding.etPassword.text.toString(),
+            AesGcm256.HexToByte(hexKey),
+            AesGcm256.HexToByte(hexIV)
+        )
 
-        request.password =
-            binding.etPassword.text.toString()
+//        request.password =
+//            binding.etPassword.text.toString()
 
         request.userName = viewModel.mobileNumber.value
+//        request.userName = "256785826095"
 
         viewModel.moMoPayRegisterAccount(request).observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
                     dialog.dismiss()
+                    //todo remove after finish test
+                    PreferenceProcessor.setBool(
+                        Constants.Companion.Preference.IS_REGISTERED,
+                        true
+                    )
                     if (it.data?.success!!) {
                         findNavController().navigate(R.id.action_passwordFragment_to_pendigApprovalFragment)
                         PreferenceProcessor.setStr(

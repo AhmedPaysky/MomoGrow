@@ -1,6 +1,5 @@
 package com.paysky.momogrow.views
 
-import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -20,11 +19,11 @@ import com.paysky.momogrow.data.models.MoMoPayRegisterRequest
 import com.paysky.momogrow.databinding.ActivityAuthenticateBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.Constants
+import com.paysky.momogrow.utilis.Constants.Companion.Preference.Companion.RECEIVED_AUTH
 import com.paysky.momogrow.utilis.CountUpTimer
 import com.paysky.momogrow.utilis.PreferenceProcessor
 import com.paysky.momogrow.viewmodels.MobileNumberViewModel
 import com.paysky.momogrow.viewmodels.ViewModelFactory
-import com.paysky.momogrow.views.home.HomeActivity
 import com.paysky.momogrow.views.register.RegisterActivity
 
 class AuthenticateActivity : AppCompatActivity() {
@@ -39,6 +38,7 @@ class AuthenticateActivity : AppCompatActivity() {
         binding = ActivityAuthenticateBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        PreferenceProcessor.setBool(RECEIVED_AUTH, false)
         mobileNumber = intent.getStringExtra("mobile_number")
         binding.tvMobileNum.text = mobileNumber
         setupViewModel()
@@ -54,7 +54,8 @@ class AuthenticateActivity : AppCompatActivity() {
             }
         }
 
-        momoRegisterApi()
+        if (!PreferenceProcessor.getBool(RECEIVED_AUTH, false))
+            momoRegisterApi()
     }
 
     private fun setupViewModel() {
@@ -68,8 +69,9 @@ class AuthenticateActivity : AppCompatActivity() {
         val request = MoMoPayRegisterRequest()
         request.setfBToken("")
         //todo replace with mobile number property
-        request.mobileNumber = "256785826095"
-        request.environment = "testtarget3"
+//        request.mobileNumber = "256785826095"
+        request.mobileNumber = mobileNumber
+        request.environment = Constants.ENVIRONMENT
         request.setfBToken(
             PreferenceProcessor.getStr(
                 Constants.Companion.Preference.FIREBASE_TOKEN,
@@ -81,7 +83,7 @@ class AuthenticateActivity : AppCompatActivity() {
             when (it.status) {
                 Status.SUCCESS -> {
                     if (it.data?.isSuccess!!) {
-                        refNumer = it.data?.referenceNumber
+                        refNumer = it.data.referenceNumber
                         Log.d("LoginActivity", it.data?.message!!)
                     }
                 }
@@ -103,6 +105,16 @@ class AuthenticateActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Register for the particular broadcast based on ACTION string
+        if (PreferenceProcessor.getBool(RECEIVED_AUTH, false)) {
+            PreferenceProcessor.setBool(RECEIVED_AUTH, false)
+//            binding.notification.visibility = View.VISIBLE
+            timer.cancel()
+            startActivity(
+                Intent(this@AuthenticateActivity, RegisterActivity::class.java)
+                    .putExtra("mobile_number", mobileNumber)
+                    .putExtra("ref_number", refNumer)
+            )
+        }
         val filter = IntentFilter(MyFirebaseMessagingService.ACTION)
         registerReceiver(testReceiver, filter)
     }
@@ -118,12 +130,17 @@ class AuthenticateActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent) {
             if (resultCode == RESULT_OK) {
                 Log.d("TestMessage", "Notification Received")
-                binding.notification.visibility = View.VISIBLE
+//                binding.notification.visibility = View.VISIBLE
                 timer.cancel()
-
+                startActivity(
+                    Intent(this@AuthenticateActivity, RegisterActivity::class.java)
+                        .putExtra("mobile_number", mobileNumber)
+                        .putExtra("ref_number", refNumer)
+                )
             }
         }
     }
+
 
     fun nextPage(view: View) {
         startActivity(

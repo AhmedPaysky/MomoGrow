@@ -18,4 +18,7 @@ interface ApiService {
     @POST("PayLink.svc/api/MOMOPayLogin")
     suspend fun mOMOPayLogin(@Body mOMOPayLogin: MOMOPayLoginRequest): MOMOPayLoginResponse
 
+@POST("PayLink.svc/api/MOMOPayCheckMerchantIsRegister")
+    suspend fun mOMOPayCheckMerchantIsRegister(@Body mOMOPayCheckMerchantIsRegister: MOMOPayCheckMerchantIsRegisterRequest): MOMOPayCheckMerchantIsRegisterResponse
+
 }

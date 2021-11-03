@@ -24,52 +24,12 @@ class RegisterActivity : AppCompatActivity() {
             )
         )
     }
-    lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         viewModel.mobileNumber.value = intent.getStringExtra("mobile_number")
-        dialog = MyUtils.getDlgProgress(this)
-        momoRegisterApi()
-    }
-
-    private fun momoRegisterApi() {
-        val request = MoMoPayGetMerchantInfoRequest()
-//        request.referenceNumber = intent.getStringExtra("ref_number")
-        request.referenceNumber = "d4510f55-1b78-447a-9fc9-8464c4be1109"
-        request.mobileNumber = intent.getStringExtra("mobile_number")
-
-        viewModel.moMoPayGetMerchantInfo(request).observe(this, Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
-//                    startActivity(
-//                        Intent(this, AuthenticateActivity::class.java)
-//                            .putExtra("mobile_number", binding.etMobileNum.text.toString())
-//                    )
-                    dialog.dismiss()
-                    if (it.data?.success!!) {
-                        bindView(it.data)
-
-                    }
-                    Log.d("LoginActivity", it.data?.message!!)
-                }
-                Status.ERROR -> {
-                    Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show()
-                    Log.d("LoginActivity", it.message!!)
-                    dialog.dismiss()
-                }
-                Status.LOADING -> {
-                    dialog.show()
-                    Log.d("LoginActivity", "Loading")
-
-                }
-            }
-        })
-    }
-
-    private fun bindView(merchantData: MoMoPayGetMerchantInfoResponse) {
-
+        viewModel.refNumber.value = intent.getStringExtra("ref_number")
     }
 
 }

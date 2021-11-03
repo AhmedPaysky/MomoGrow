@@ -202,5 +202,7 @@
     <string name="addressinstructionsoptional">Address instructions (optional)</string>
     <string name="customer_details">Customer details</string>
     <string name="tap_here">Tap here to continue</string>
+    <string name="invalid_email_msg">invlaid email</string>
+    <string name="share_via_sms">Share via SMS</string>
 
 </resources>

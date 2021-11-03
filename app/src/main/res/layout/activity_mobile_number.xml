@@ -60,7 +60,7 @@
             android:hint="@string/mobile_hint"
             android:imeOptions="actionDone"
             android:inputType="phone"
-            android:maxLength="12"
+            android:maxLength="50"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:textColor="@color/black"

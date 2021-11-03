@@ -1,6 +1,7 @@
 package com.paysky.momogrow.bacgroundservices;
 
 import static com.paysky.momogrow.utilis.Constants.Companion.Preference.FIREBASE_TOKEN;
+import static com.paysky.momogrow.utilis.Constants.Companion.Preference.RECEIVED_AUTH;
 
 import android.app.Application;
 import android.content.Intent;
@@ -33,6 +34,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, "Notification Received");
+        PreferenceProcessor.Companion.setBool(RECEIVED_AUTH, true);
 
         Intent intent = new Intent(ACTION);
         sendBroadcast(intent);

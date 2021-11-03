@@ -42,10 +42,11 @@ class PendigApprovalFragment : Fragment() {
 //        }.start()
 
         binding.btnBack.setOnClickListener {
-
+            requireActivity().finish()
         }
         return view
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
