@@ -12,7 +12,8 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@drawable/ic_mtn_logo_icon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_mtn_logo_icon"
@@ -77,7 +78,14 @@
 
         <activity
             android:name=".views.home.HomeActivity"
-            android:exported="true"></activity>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".views.register.RegisterActivity"
             android:exported="true" />
@@ -93,11 +101,7 @@
         <activity
             android:name=".views.SplashActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service

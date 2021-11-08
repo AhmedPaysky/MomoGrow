@@ -18,6 +18,10 @@ import com.paysky.momogrow.views.notifications.NotificationsActivity
 import com.paysky.momogrow.views.orders.OrdersFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import androidx.core.widget.NestedScrollView
+import com.paysky.momogrow.R2.id.scrollView
+
+import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnScrollChangedListener
 
 
 class HomeActivity : AppCompatActivity() {
@@ -104,6 +108,26 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        var previousScrollY = 0
+//        container.viewTreeObserver.addOnScrollChangedListener { // previousScrollY this variable is define in your Activity or Fragment
+//
+//            if (container.scrollY - previousScrollY > 20 && ivCalculate.visibility == View.VISIBLE) {
+//                ivCalculate.visibility = View.GONE
+//
+//            } else if (previousScrollY - container.scrollY > 20 && ivCalculate.visibility != View.VISIBLE) {
+//                if (bottom_navigation.selectedItemId == R.id.dashboard)
+//                    ivCalculate.visibility = View.VISIBLE
+//            }
+//            if (container.scrollY - previousScrollY > 20 && (fabAdd.visibility == View.VISIBLE)) {
+//                fabAdd.visibility = View.GONE
+//            } else if (previousScrollY - container.scrollY > 20 && fabAdd.visibility != View.VISIBLE) {
+//                if (bottom_navigation.selectedItemId == R.id.catalog)
+//                    fabAdd.show()
+//            }
+//
+//            previousScrollY = container.scrollY
+//        }
 
         bottom_navigation.selectedItemId = R.id.dashboard
 

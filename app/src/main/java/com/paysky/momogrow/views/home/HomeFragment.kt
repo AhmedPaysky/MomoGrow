@@ -28,6 +28,9 @@ import java.util.*
 import android.content.Context
 import android.graphics.Color
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.paysky.momogrow.R
 
 import com.paysky.momogrow.views.catalog.AddProductActivity
@@ -40,6 +43,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     private val MIN_Y_VALUE = 2
     private val SET_LABEL = ""
     private val DAYS = arrayOf("08h", "12h", "14h", "16h", "18h", "20h", "22h")
+    private val AMOUNTS = arrayOf("0 ", "150", "300", "450", "300", "100", "200")
 
     companion object {
         public lateinit var lviewPager: ViewPager
@@ -50,7 +54,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var chart: BarChart
+    private lateinit var mChart: BarChart
 
     // When requested, this adapter returns a IntroScreensFragment,
     // representing an object in the collection.
@@ -63,7 +67,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
-        chart = view.findViewById(com.paysky.momogrow.R.id.chart1)
+        mChart = view.findViewById(com.paysky.momogrow.R.id.chart1)
         lviewPager = view.pager
         livDashesIntro = view.ivDashesIntro
         introPagerAdapter =
@@ -138,33 +142,90 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             values.add(BarEntry(x, y))
         }
         val set1 = BarDataSet(values, SET_LABEL)
+        set1.color = ContextCompat.getColor(requireActivity(), R.color.purple_500)
+
         val dataSets = ArrayList<IBarDataSet>()
         dataSets.add(set1)
         return BarData(dataSets)
     }
 
     private fun configureChartAppearance() {
-        chart.getDescription().setEnabled(false)
-        chart.setDrawValueAboveBar(false)
-        val xAxis: XAxis = chart?.getXAxis()!!
+
+        //config chart
+        mChart.setDrawBarShadow(false)
+        mChart.setDrawValueAboveBar(false)
+        mChart.description.isEnabled = false
+        mChart.setMaxVisibleValueCount(DAYS.size)
+        mChart.setPinchZoom(false)
+        mChart.isDoubleTapToZoomEnabled = false
+        mChart.setScaleEnabled(false)
+        mChart.setTouchEnabled(false);
+        mChart.isClickable = false;
+        mChart.setDrawBorders(false);
+        mChart.setDrawGridBackground(true);
+        mChart.legend.isEnabled = false;
+
+        val xAxisFormatter: ValueFormatter = IndexAxisValueFormatter(DAYS)
+        val xAxis = mChart.xAxis
+
+        xAxis.setLabelCount(DAYS.size, true)
+        xAxis.valueFormatter = xAxisFormatter
+        xAxis.labelCount = DAYS.size
+
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.valueFormatter = object : ValueFormatter() {
+        xAxis.setDrawGridLines(false)
+        xAxis.textSize = 12f
+        xAxis.granularity = 1f // only intervals of 1 day
+        xAxis.textColor = ContextCompat.getColor(requireActivity(), R.color.gray_light)
+        xAxis.axisLineColor = ContextCompat.getColor(requireActivity(), R.color.white)
+        xAxis.setDrawAxisLine(false)
+        xAxis.spaceMin = 0.3f
+//        xAxis.yOffset = 15f
+//        xAxis.xOffset = 10f
+        val custom: ValueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return DAYS[value.toInt()]
+                return AMOUNTS[value.toInt()]
             }
         }
-        val axisLeft: YAxis = chart?.getAxisLeft()!!
-        axisLeft.granularity = 10f
-        axisLeft.axisMinimum = 0f
-        val axisRight: YAxis = chart?.getAxisRight()!!
-        axisRight.granularity = 10f
-        axisRight.axisMinimum = 0f
+
+        val leftAxis = mChart.axisLeft
+        leftAxis.setLabelCount(4, true)
+        leftAxis.valueFormatter = custom
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        leftAxis.setDrawGridLines(true)
+        leftAxis.spaceTop = 0f
+        leftAxis.spaceMin = 0.03f
+        leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
+        leftAxis.textColor = ContextCompat.getColor(requireActivity(), R.color.gray_light)
+        leftAxis.axisLineColor = ContextCompat.getColor(requireActivity(), R.color.white)
+        leftAxis.zeroLineColor = ContextCompat.getColor(requireActivity(), R.color.white)
+
+        mChart.axisRight.isEnabled = false
+        /*val rightAxis = barChart.axisRight
+        rightAxis.setDrawGridLines(false)
+        rightAxis.setLabelCount(8, false)
+        rightAxis.valueFormatter = custom
+        rightAxis.spaceTop = 15f
+        rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)*/
+
+
+        val l = mChart.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+        l.form = Legend.LegendForm.NONE
+        l.formSize = 9f
+        l.textSize = 12f
+        l.xEntrySpace = 1f
+
     }
 
     private fun prepareChartData(data: BarData) {
         data.setValueTextSize(12f)
-        chart.setData(data)
-        chart.invalidate()
+        data.barWidth = 0.3F
+        mChart.setData(data)
+        mChart.invalidate()
     }
 
     override fun onDestroyView() {

@@ -17,4 +17,5 @@
     <color name="hint_et_black_50_opacity">#80323232</color>
     <color name="et_color_black_100_opacity">#323232</color>
     <color name="gray_bold">#4A4A4A</color>
+    <color name="chart_dash">#8A979797</color>
 </resources>
