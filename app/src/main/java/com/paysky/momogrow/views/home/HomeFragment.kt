@@ -33,7 +33,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.paysky.momogrow.R
 
-import com.paysky.momogrow.views.catalog.AddProductActivity
+import com.paysky.momogrow.views.products.AddProductActivity
 
 
 class HomeFragment : BaseFragment(), View.OnClickListener {

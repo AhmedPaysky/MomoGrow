@@ -4,24 +4,16 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.paysky.momogrow.R
-import com.paysky.momogrow.views.catalog.AddProductActivity
-import com.paysky.momogrow.views.catalog.CatalogFragment
+import com.paysky.momogrow.views.products.AddProductActivity
+import com.paysky.momogrow.views.products.ProductsFragment
 import com.paysky.momogrow.views.more.MoreFragment
 import com.paysky.momogrow.views.notifications.NotificationsActivity
 import com.paysky.momogrow.views.orders.OrdersFragment
 import kotlinx.android.synthetic.main.activity_home.*
-import androidx.core.widget.NestedScrollView
-import com.paysky.momogrow.R2.id.scrollView
-
-import android.view.ViewTreeObserver
-import android.view.ViewTreeObserver.OnScrollChangedListener
 
 
 class HomeActivity : AppCompatActivity() {
@@ -52,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.catalog -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragments_container, CatalogFragment()).commit()
+                        .replace(R.id.fragments_container, ProductsFragment()).commit()
                     fabAdd.visibility = View.VISIBLE
                     ivCalculate.visibility = View.GONE
                     container.visibility = View.VISIBLE

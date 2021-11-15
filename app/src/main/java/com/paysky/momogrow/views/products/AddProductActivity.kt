@@ -1,19 +1,18 @@
-package com.paysky.momogrow.views.catalog
+package com.paysky.momogrow.views.products
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.paysky.momogrow.R
+import androidx.activity.viewModels
 import com.paysky.momogrow.databinding.ActivityAddProductBinding
-import com.paysky.momogrow.databinding.ActivityAuthenticateBinding
 
 class AddProductActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddProductBinding
+    private val viewModel: ProductViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddProductBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
 
     }
 }

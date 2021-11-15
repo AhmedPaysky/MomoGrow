@@ -1,18 +1,13 @@
-package com.paysky.momogrow.views.catalog
+package com.paysky.momogrow.views.products
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
-import com.paysky.momogrow.databinding.FragmentPendigApprovalBinding
 import com.paysky.momogrow.databinding.FragmentPendingApprovalProductBinding
-import com.paysky.momogrow.views.home.HomeActivity
 
 class PendingApprovalProductFragment : Fragment() {
     private var _binding: FragmentPendingApprovalProductBinding? = null
@@ -27,8 +22,14 @@ class PendingApprovalProductFragment : Fragment() {
     ): View {
         _binding = FragmentPendingApprovalProductBinding.inflate(inflater, container, false)
         val view = binding.root
+        val productId = arguments?.getLong("productId", 0)
+        val bundle = Bundle()
+        bundle.putLong("productId", productId!!)
+
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.action_pendingApprovalProductFragment_to_productDetailsFragment)
+            findNavController().navigate(
+                R.id.action_pendingApprovalProductFragment_to_productDetailsFragment, bundle
+            )
         }
         return view
     }

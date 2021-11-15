@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.catalog.AddProductFragment">
+    tools:context=".views.products.AddProductFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/title_padding_top"
-        tools:context=".views.catalog.AddProductActivity">
+        tools:context=".views.products.AddProductActivity">
 
         <ImageView
             android:id="@+id/ivBack"
@@ -537,6 +537,7 @@
                             android:layout_weight="1" />
 
                         <Switch
+                            android:id="@+id/switchFeature"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
@@ -566,6 +567,7 @@
                             android:layout_weight="1" />
 
                         <Switch
+                            android:id="@+id/switchNew"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:theme="@style/SCBSwitch"
@@ -593,6 +595,7 @@
                             android:layout_weight="1" />
 
                         <Switch
+                            android:id="@+id/switchPublish"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"

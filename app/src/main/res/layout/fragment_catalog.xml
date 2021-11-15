@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.catalog.CatalogFragment">
+    tools:context=".views.products.ProductsFragment">
 
     <LinearLayout
         android:id="@+id/linearMSearch"
@@ -117,7 +117,6 @@
     </HorizontalScrollView>
 
 
-
     <TextView
         android:id="@+id/tvOrdersCount"
         android:layout_width="match_parent"
@@ -129,11 +128,10 @@
         android:paddingStart="@dimen/_18sdp"
         android:paddingTop="@dimen/_3sdp"
         android:paddingBottom="@dimen/_4sdp"
-        android:text="212 products "
+        android:text="0 products "
         android:textColor="@color/gray_light"
         android:textSize="@dimen/_11sdp"
         app:layout_constraintTop_toBottomOf="@id/horizontal_scroll" />
-
 
 
     <View
@@ -143,12 +141,53 @@
         android:background="@color/divider_color"
         app:layout_constraintTop_toBottomOf="@id/tvOrdersCount" />
 
+    <LinearLayout
+        android:id="@+id/linearNoProducts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_add_product_tag" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:fontFamily="@font/mtn_brighter_sans_bold"
+            android:text="@string/addyourfirst_roduct"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:fontFamily="@font/mtn_brighter_sans_regular"
+            android:gravity="center"
+            android:text="@string/addyourfirst_roduct_desc"
+            android:textColor="@color/gray_light"
+            android:textSize="@dimen/_12sdp" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:paddingBottom="@dimen/_55sdp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/v1" />
 
 

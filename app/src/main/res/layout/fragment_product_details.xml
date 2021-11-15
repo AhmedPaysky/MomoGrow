@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.catalog.ProductDetailsFragment">
+    tools:context=".views.products.ProductDetailsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".views.catalog.AddProductActivity">
+            tools:context=".views.products.AddProductActivity">
 
             <ImageView
                 android:id="@+id/ivBack"
@@ -113,10 +113,10 @@
                     android:id="@+id/tvNameFruit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="Ahmed"
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular"/>
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -140,12 +140,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="Fruits"
-                    android:textSize="@dimen/_12sdp"
                     android:textColor="@color/gray_light"
-                    android:fontFamily="@font/mtn_brighter_sans_regular"/>
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -169,12 +170,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvDescripyion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -198,12 +200,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvSku"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="1234566"
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -227,12 +230,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="UGX 15.00"
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular"/>
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -256,12 +260,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvWidth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="10 cm"
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -285,12 +290,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvHeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="10 cm"
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -314,12 +320,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvWeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="0.10 kg"
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -343,12 +350,13 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="12"
                     android:textColor="@color/gray_light"
-                    android:textSize="@dimen/_12sdp"
-                    android:fontFamily="@font/mtn_brighter_sans_regular"/>
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -420,6 +428,7 @@
                     android:layout_weight="1" />
 
                 <Switch
+                    android:id="@+id/switchFeature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -448,6 +457,7 @@
                     android:layout_weight="1" />
 
                 <Switch
+                    android:id="@+id/switchNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/SCBSwitch"
@@ -475,6 +485,7 @@
                     android:layout_weight="1" />
 
                 <Switch
+                    android:id="@+id/switchPublish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"

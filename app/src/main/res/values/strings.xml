@@ -204,5 +204,7 @@
     <string name="tap_here">Tap here to continue</string>
     <string name="invalid_email_msg">invlaid email</string>
     <string name="share_via_sms">Share via SMS</string>
+    <string name="addyourfirst_roduct">Add your first product</string>
+    <string name="addyourfirst_roduct_desc">It\'s time to start selling online, to do so \n add your fist product now</string>
 
 </resources>

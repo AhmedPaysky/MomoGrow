@@ -53,6 +53,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:paddingTop="6dp"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="12sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,10 +69,10 @@
         android:layout_marginTop="@dimen/_16sdp"
         android:layout_marginEnd="@dimen/_16sdp"
         android:gravity="end"
+        android:onClick="forgotPassword"
         android:text="@string/forgot_password"
         android:textAllCaps="false"
         android:textColor="@color/blue"
-        android:onClick="forgotPassword"
         app:layout_constraintTop_toBottomOf="@id/linearPassword" />
 
     <Button

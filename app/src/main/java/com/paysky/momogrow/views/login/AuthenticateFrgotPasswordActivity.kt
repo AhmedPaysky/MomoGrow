@@ -1,4 +1,4 @@
-package com.paysky.momogrow.views
+package com.paysky.momogrow.views.login
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,21 +15,19 @@ import androidx.lifecycle.ViewModelProviders
 import com.paysky.momogrow.bacgroundservices.MyFirebaseMessagingService
 import com.paysky.momogrow.data.api.ApiClient
 import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.models.requests.MoMoPayAuthorizeForResetPasswordRequest
 import com.paysky.momogrow.data.models.requests.MoMoPayRegisterRequest
 import com.paysky.momogrow.databinding.ActivityAuthenticateBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.Constants
-import com.paysky.momogrow.utilis.Constants.Companion.Preference.Companion.RECEIVED_AUTH
 import com.paysky.momogrow.utilis.CountUpTimer
 import com.paysky.momogrow.utilis.PreferenceProcessor
 import com.paysky.momogrow.viewmodels.MobileNumberViewModel
 import com.paysky.momogrow.viewmodels.ViewModelFactory
 import com.paysky.momogrow.views.register.RegisterActivity
-import org.bouncycastle.crypto.params.Blake3Parameters.context
+import com.paysky.momogrow.views.reset_password.ResetPasswordActivity
 
-
-
-class AuthenticateActivity : AppCompatActivity() {
+class AuthenticateFrgotPasswordActivity : AppCompatActivity() {
     private var mobileNumber: String? = ""
     private var refNumer: String? = ""
     private lateinit var timer: CountDownTimer
@@ -42,7 +40,7 @@ class AuthenticateActivity : AppCompatActivity() {
 
         val view = binding.root
         setContentView(view)
-        PreferenceProcessor.setBool(RECEIVED_AUTH, false)
+        PreferenceProcessor.setBool(Constants.Companion.Preference.RECEIVED_AUTH, false)
         mobileNumber = intent.getStringExtra("mobile_number")
         binding.tvMobileNum.text = mobileNumber
         setupViewModel()
@@ -58,8 +56,8 @@ class AuthenticateActivity : AppCompatActivity() {
             }
         }
 
-        if (!PreferenceProcessor.getBool(RECEIVED_AUTH, false))
-            momoRegisterApi()
+        if (!PreferenceProcessor.getBool(Constants.Companion.Preference.RECEIVED_AUTH, false))
+            momopasswordauthApi()
     }
 
     private fun setupViewModel() {
@@ -69,25 +67,23 @@ class AuthenticateActivity : AppCompatActivity() {
         ).get(MobileNumberViewModel::class.java)
     }
 
-    private fun momoRegisterApi() {
+    private fun momopasswordauthApi() {
         val request =
-            MoMoPayRegisterRequest()
-        request.setfBToken("")
+            MoMoPayAuthorizeForResetPasswordRequest()
         //todo replace with mobile number property
 //        request.mobileNumber = "256785826095"
         request.mobileNumber = mobileNumber
         request.environment = Constants.ENVIRONMENT
-        request.setfBToken(
+        request.fbToken =
             PreferenceProcessor.getStr(
                 Constants.Companion.Preference.FIREBASE_TOKEN,
                 ""
             )
-        )
 
-        viewModel.moMoPayRegister(request).observe(this, Observer {
+        viewModel.moMoPayAuthorizeForResetPassword(request).observe(this, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
-                    if (it.data?.isSuccess!!) {
+                    if (it.data?.success!!) {
                         refNumer = it.data.referenceNumber
                         Log.d("LoginActivity", it.data?.message!!)
                     }
@@ -102,8 +98,7 @@ class AuthenticateActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Loading")
 
                 }
-                Status.ERRORHttp -> {
-                }
+                Status.ERRORHttp -> { }
             }
         })
     }
@@ -112,12 +107,12 @@ class AuthenticateActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Register for the particular broadcast based on ACTION string
-        if (PreferenceProcessor.getBool(RECEIVED_AUTH, false)) {
-            PreferenceProcessor.setBool(RECEIVED_AUTH, false)
+        if (PreferenceProcessor.getBool(Constants.Companion.Preference.RECEIVED_AUTH, false)) {
+            PreferenceProcessor.setBool(Constants.Companion.Preference.RECEIVED_AUTH, false)
 //            binding.notification.visibility = View.VISIBLE
             timer.cancel()
             startActivity(
-                Intent(this@AuthenticateActivity, RegisterActivity::class.java)
+                Intent(this@AuthenticateFrgotPasswordActivity, RegisterActivity::class.java)
                     .putExtra("mobile_number", mobileNumber)
                     .putExtra("ref_number", refNumer)
             )
@@ -140,7 +135,10 @@ class AuthenticateActivity : AppCompatActivity() {
 //                binding.notification.visibility = View.VISIBLE
                 timer.cancel()
                 startActivity(
-                    Intent(this@AuthenticateActivity, RegisterActivity::class.java)
+                    Intent(
+                        this@AuthenticateFrgotPasswordActivity,
+                        ResetPasswordActivity::class.java
+                    )
                         .putExtra("mobile_number", mobileNumber)
                         .putExtra("ref_number", refNumer)
                 )
@@ -151,13 +149,13 @@ class AuthenticateActivity : AppCompatActivity() {
 
     fun nextPage(view: View) {
         startActivity(
-            Intent(this@AuthenticateActivity, RegisterActivity::class.java)
+            Intent(this@AuthenticateFrgotPasswordActivity, ResetPasswordActivity::class.java)
                 .putExtra("mobile_number", mobileNumber)
                 .putExtra("ref_number", refNumer)
         )
     }
 
     fun sendAgain(view: View) {
-        momoRegisterApi()
+        momopasswordauthApi()
     }
 }

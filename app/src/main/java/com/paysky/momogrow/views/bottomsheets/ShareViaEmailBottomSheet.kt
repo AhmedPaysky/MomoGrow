@@ -1,5 +1,6 @@
 package com.paysky.momogrow.views.bottomsheets
 
+import android.net.wifi.p2p.WifiP2pManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,11 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paysky.momogrow.R
 import com.paysky.momogrow.utilis.MyUtils
+import com.paysky.momogrow.utilis.OnBottomSheetButtonClicked
 import kotlinx.android.synthetic.main.fragment_modal_bottom_sheet_share_via_email.view.*
 
-class ShareViaEmailBottomSheet(var fragmentView: View) : BottomSheetDialogFragment() {
+class ShareViaEmailBottomSheet(var fragmentView: View, var listener: OnBottomSheetButtonClicked) :
+    BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,16 +30,10 @@ class ShareViaEmailBottomSheet(var fragmentView: View) : BottomSheetDialogFragme
                 return@setOnClickListener
             }
             dismiss()
-            showConfirmationBottomSheet(fragmentView)
+            listener.onClicked(v.etEmail.text.toString(),"email")
         }
         return v
     }
 
-    private fun showConfirmationBottomSheet(fragmentView: View) {
-        val modalbottomSheetFragment = ConfirmationBottomSheet(fragmentView = fragmentView)
-        modalbottomSheetFragment.show(
-            requireActivity().supportFragmentManager,
-            modalbottomSheetFragment.tag
-        )
-    }
+
 }

@@ -1,9 +1,9 @@
-package com.paysky.momogrow.data.models;
+package com.paysky.momogrow.data.models.requests;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MoMoPayRegisterRequest {
+public class MoMoPayAuthorizeForResetPasswordRequest {
     @SerializedName("CallBackURL")
     @Expose
     private String callBackURL;
@@ -33,11 +33,11 @@ public class MoMoPayRegisterRequest {
         this.environment = environment;
     }
 
-    public String getfBToken() {
+    public String getFBToken() {
         return fBToken;
     }
 
-    public void setfBToken(String fBToken) {
+    public void setFBToken(String fBToken) {
         this.fBToken = fBToken;
     }
 

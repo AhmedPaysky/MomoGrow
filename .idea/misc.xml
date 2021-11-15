@@ -78,6 +78,7 @@
         <entry key="app/src/main/res/layout/activity_order_details.xml" value="0.36822916666666666" />
         <entry key="app/src/main/res/layout/activity_password_reset_done.xml" value="0.46944444444444444" />
         <entry key="app/src/main/res/layout/activity_paylink_details.xml" value="0.4652777777777778" />
+        <entry key="app/src/main/res/layout/activity_pendig_approval.xml" value="0.36822916666666666" />
         <entry key="app/src/main/res/layout/activity_pendig_approval_fragment.xml" value="0.36822916666666666" />
         <entry key="app/src/main/res/layout/activity_pending_approval.xml" value="0.55234375" />
         <entry key="app/src/main/res/layout/activity_product_details.xml" value="0.55234375" />

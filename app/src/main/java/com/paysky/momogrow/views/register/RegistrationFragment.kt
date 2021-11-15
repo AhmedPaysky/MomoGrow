@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
-import com.paysky.momogrow.data.models.MoMoPayGetMerchantInfoRequest
+import com.paysky.momogrow.data.models.requests.MoMoPayGetMerchantInfoRequest
 import com.paysky.momogrow.data.models.MoMoPayGetMerchantInfoResponse
 import com.paysky.momogrow.databinding.FragmentRegisterationBinding
 import com.paysky.momogrow.helper.Status
@@ -57,7 +57,8 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun momoRegisterApi() {
-        val request = MoMoPayGetMerchantInfoRequest()
+        val request =
+            MoMoPayGetMerchantInfoRequest()
         request.referenceNumber = viewModel.refNumber.value
 //        request.referenceNumber = "d4510f55-1b78-447a-9fc9-8464c4be1109"
         request.mobileNumber = viewModel.mobileNumber.value

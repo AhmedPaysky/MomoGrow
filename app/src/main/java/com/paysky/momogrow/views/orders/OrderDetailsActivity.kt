@@ -1,10 +1,8 @@
 package com.paysky.momogrow.views.orders
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,18 +11,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.paysky.momogrow.R
-import com.paysky.momogrow.databinding.ActivityCalculatorBinding
 import com.paysky.momogrow.databinding.ActivityOrderDetailsBinding
-import com.paysky.momogrow.databinding.FragmentIntroScreensBinding
 import com.paysky.momogrow.databinding.FragmentOrderDetailsBinding
 import com.paysky.momogrow.views.bottomsheets.*
-import com.paysky.momogrow.views.catalog.AddProductActivity
-import com.paysky.momogrow.views.home.HomeFragment
-import com.paysky.momogrow.views.home.IntroPagerAdapter
-import com.paysky.momogrow.views.home.IntroScreensFragment
 import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.activity_order_details.view.*
-import kotlinx.android.synthetic.main.activity_order_details.view.pager
 import kotlinx.android.synthetic.main.custom_item_order.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_order_details.view.*

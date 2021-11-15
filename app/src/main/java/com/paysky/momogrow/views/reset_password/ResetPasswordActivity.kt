@@ -1,27 +1,44 @@
 package com.paysky.momogrow.views.reset_password
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.api.ApiClient
+import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.models.requests.MoMoPayAuthorizeForResetPasswordRequest
+import com.paysky.momogrow.data.models.requests.MoMoPayResetPasswordRequest
 import com.paysky.momogrow.databinding.ActivityAuthenticateBinding
 import com.paysky.momogrow.databinding.ActivityResetPasswordBinding
 import com.paysky.momogrow.databinding.FragmentPasswordBinding
-import com.paysky.momogrow.utilis.Validation
+import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.*
+import com.paysky.momogrow.viewmodels.MobileNumberViewModel
+import com.paysky.momogrow.viewmodels.ViewModelFactory
 import com.paysky.momogrow.views.register.PasswordFragment
 import kotlinx.android.synthetic.main.fragment_password.*
 import kotlinx.android.synthetic.main.fragment_password.view.*
 
 class ResetPasswordActivity : AppCompatActivity(), View.OnTouchListener {
+    private var refNumer: String = ""
+    private var mobileNumber: String = ""
     private lateinit var binding: ActivityResetPasswordBinding
+
+    private lateinit var viewModel: MobileNumberViewModel
+    lateinit var dialog: Dialog
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +48,13 @@ class ResetPasswordActivity : AppCompatActivity(), View.OnTouchListener {
         setContentView(view)
         binding.etPassword.setOnTouchListener(this)
         binding.etConfirmPassword.setOnTouchListener(this)
+        mobileNumber = intent.getStringExtra("mobile_number")!!
+        refNumer = intent.getStringExtra("ref_number")!!
+        dialog = MyUtils.getDlgProgress(this)
+        setupViewModel()
         view.btnNext.setOnClickListener(View.OnClickListener {
             if (validate()) // todo uncomment
-                startActivity(Intent(this,PasswordResetDoneActivity::class.java))
-
+                momopasswordApi()
         })
 
         binding.etPassword.addTextChangedListener(object : TextWatcher {
@@ -106,6 +126,53 @@ class ResetPasswordActivity : AppCompatActivity(), View.OnTouchListener {
                         0,
                         0
                     )
+                }
+            }
+        })
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProviders.of(
+            this,
+            ViewModelFactory(ApiClient.apiClient().create(ApiService::class.java))
+        ).get(MobileNumberViewModel::class.java)
+    }
+
+    private fun momopasswordApi() {
+        val request =
+            MoMoPayResetPasswordRequest()
+        //todo replace with mobile number property
+//        request.mobileNumber = "256785826095"
+        request.mobileNumber = mobileNumber
+        request.referenceNumber = refNumer
+        request.password = AesGcm256.encrypt(
+            binding.etPassword.text.toString(),
+            AesGcm256.HexToByte(AesGcm256.hexKey),
+            AesGcm256.HexToByte(AesGcm256.hexIV)
+        )
+
+        viewModel.moMoPayResetPassword(request).observe(this, Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    if (it.data?.success!!) {
+                        startActivity(Intent(this, PasswordResetDoneActivity::class.java))
+                        Log.d("LoginActivity", it.data?.message!!)
+                    }
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                    Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show()
+                    Log.d("LoginActivity", it.message!!)
+
+                }
+                Status.LOADING -> {
+                    dialog.show()
+                    Log.d("LoginActivity", "Loading")
+
+                }
+                Status.ERRORHttp -> {
+                    dialog.dismiss()
                 }
             }
         })

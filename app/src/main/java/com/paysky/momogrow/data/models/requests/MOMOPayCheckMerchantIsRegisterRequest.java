@@ -1,4 +1,4 @@
-package com.paysky.momogrow.data.models;
+package com.paysky.momogrow.data.models.requests;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

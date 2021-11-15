@@ -1,4 +1,4 @@
-package com.paysky.momogrow.views.catalog
+package com.paysky.momogrow.views.products
 
 import android.app.Activity
 import android.net.Uri
@@ -13,10 +13,17 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.paysky.momogrow.MyApplication
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.local.ProductEntity
 import com.paysky.momogrow.databinding.FragmentAddProductBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class AddProductFragment : Fragment() {
@@ -25,6 +32,7 @@ class AddProductFragment : Fragment() {
     private lateinit var mImage3: Uri
     private lateinit var mImage4: Uri
     private var _binding: FragmentAddProductBinding? = null
+    private val viewModel: ProductViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -50,12 +58,35 @@ class AddProductFragment : Fragment() {
         }
 
         binding.btnNext.setOnClickListener {
-            val prodObj = CatalogAdapter.ProductObj()
-            prodObj.name = binding.etProductName.text.toString()
-            prodObj.status = "In stock"
-            prodObj.qStatus = "under review"
-            CatalogAdapter.products.add(0, prodObj)
-            findNavController().navigate(R.id.action_addProductFragment_to_pendingApprovalProductFragment)
+            val productEntity = ProductEntity()
+            productEntity.name = binding.etProductName.text.toString()
+            productEntity.description = binding.etProductDescription.text.toString()
+            productEntity.price = binding.etLastProductPrice.text.toString()
+            productEntity.category = binding.spinner.selectedItem.toString()
+            productEntity.sku = binding.etSKU.text.toString()
+            productEntity.width = binding.etWidth.text.toString()
+            productEntity.weight = binding.etWeight.text.toString()
+            productEntity.height = binding.etHeight.text.toString()
+            productEntity.quantity = binding.tvQuantity.text.toString()
+            productEntity.status = "In stock"
+            productEntity.qStatus = "under review"
+            productEntity.featureUser = binding.switchFeature.isChecked
+            productEntity.new = binding.switchNew.isChecked
+            productEntity.publish = binding.switchPublish.isChecked
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val productId = MyApplication.db.productDao().insert(productEntity)
+                withContext(Dispatchers.Main) {
+                    val bundle = Bundle()
+                    bundle.putLong("productId", productId)
+
+                    findNavController().navigate(
+                        R.id.action_addProductFragment_to_pendingApprovalProductFragment,
+                        bundle
+                    )
+                }
+            }
+//            ProductsAdapter.products.add(0, prodObj)
         }
 
         binding.ivBack.setOnClickListener {

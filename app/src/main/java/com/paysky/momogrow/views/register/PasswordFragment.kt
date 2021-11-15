@@ -12,15 +12,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
 import com.paysky.momogrow.data.api.ApiClient
 import com.paysky.momogrow.data.api.ApiService
-import com.paysky.momogrow.data.models.MoMoPayGetMerchantInfoRequest
-import com.paysky.momogrow.data.models.MoMoPayRegisterAccountRequest
+import com.paysky.momogrow.data.models.requests.MoMoPayRegisterAccountRequest
 import com.paysky.momogrow.databinding.FragmentPasswordBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.*
@@ -149,7 +147,8 @@ class PasswordFragment : Fragment(), View.OnTouchListener {
     }
 
     private fun momoRegisterApi() {
-        val request = MoMoPayRegisterAccountRequest()
+        val request =
+            MoMoPayRegisterAccountRequest()
         request.password = AesGcm256.encrypt(
             binding.etPassword.text.toString(),
             AesGcm256.HexToByte(hexKey),

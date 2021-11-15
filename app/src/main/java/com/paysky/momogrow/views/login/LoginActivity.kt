@@ -8,26 +8,15 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.paysky.momogrow.R
 import com.paysky.momogrow.data.api.ApiClient
 import com.paysky.momogrow.data.api.ApiService
-import com.paysky.momogrow.data.models.MOMOPayLoginRequest
-import com.paysky.momogrow.data.models.MoMoPayRegisterAccountRequest
-import com.paysky.momogrow.databinding.ActivityAuthenticateBinding
+import com.paysky.momogrow.data.models.requests.MOMOPayLoginRequest
 import com.paysky.momogrow.databinding.ActivityLoginBinding
 import com.paysky.momogrow.helper.Status
-import com.paysky.momogrow.utilis.AesGcm256
-import com.paysky.momogrow.utilis.Constants
-import com.paysky.momogrow.utilis.MyUtils
-import com.paysky.momogrow.utilis.PreferenceProcessor
+import com.paysky.momogrow.utilis.*
 import com.paysky.momogrow.viewmodels.ViewModelFactory
 import com.paysky.momogrow.views.AuthenticateActivity
 import com.paysky.momogrow.views.home.HomeActivity
-import com.paysky.momogrow.views.register.RegisterActivity
-import com.paysky.momogrow.views.register.RegisterViewModel
-import com.paysky.momogrow.views.reset_password.ResetPasswordActivity
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
@@ -57,7 +46,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun momoLoginApi() {
-        val request = MOMOPayLoginRequest()
+        val request =
+            MOMOPayLoginRequest()
         request.password = AesGcm256.encrypt(
             binding.etPassword.text.toString(),
             AesGcm256.HexToByte(AesGcm256.hexKey),
@@ -82,11 +72,13 @@ class LoginActivity : AppCompatActivity() {
                             Timber.tag("LoginActivity").d(message)
                         }
 
+                        PreferenceProcessor.setStr(
+                            Constants.Companion.Preference.AUTH_TOKEN,
+                            it.data.authToken
+                        )
+
                         if (it.data.merchantId != null) {
-                            PreferenceProcessor.setStr(
-                                Constants.Companion.Preference.AUTH_TOKEN,
-                                it.data.authToken
-                            )
+
                             PreferenceProcessor.setStr(
                                 Constants.Companion.Preference.MERCHANT_ID,
                                 it.data.merchantId
@@ -125,11 +117,19 @@ class LoginActivity : AppCompatActivity() {
                     Log.d("LoginActivity", "Loading")
 
                 }
+                Status.ERRORHttp -> {
+                    dialog.dismiss()
+                }
             }
         })
     }
 
     fun forgotPassword(view: View) {
-        startActivity(Intent(this, ResetPasswordActivity::class.java))
+        startActivity(
+            Intent(this, AuthenticateFrgotPasswordActivity::class.java).putExtra(
+                "mobile_number",
+                mobileNumber
+            )
+        )
     }
 }

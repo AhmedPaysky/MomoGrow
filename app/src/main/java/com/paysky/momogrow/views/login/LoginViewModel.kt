@@ -1,11 +1,9 @@
 package com.paysky.momogrow.views.login
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.paysky.momogrow.data.api.ApiService
-import com.paysky.momogrow.data.models.MOMOPayLoginRequest
-import com.paysky.momogrow.data.models.MoMoPayGetMerchantInfoRequest
+import com.paysky.momogrow.data.models.requests.MOMOPayLoginRequest
 import com.paysky.momogrow.helper.Resource
 import kotlinx.coroutines.Dispatchers
 

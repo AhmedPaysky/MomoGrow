@@ -1,4 +1,4 @@
-package com.paysky.momogrow.views.catalog
+package com.paysky.momogrow.views.products
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,21 +8,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.paysky.momogrow.R
+import com.paysky.momogrow.data.local.ProductEntity
 import com.paysky.momogrow.databinding.FragmentCatalogBinding
 import kotlinx.android.synthetic.main.fragment_orders.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
-class CatalogFragment : Fragment() {
+class ProductsFragment : Fragment() {
 
     private var _binding: FragmentCatalogBinding? = null
+    private val viewModel: ProductViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private var adapter: CatalogAdapter? = null
+    private var adapter: ProductsAdapter? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,15 +35,16 @@ class CatalogFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentCatalogBinding.inflate(inflater, container, false)
         val view = binding.root
-        adapter = CatalogAdapter(requireActivity())
+        adapter = ProductsAdapter(requireActivity())
         view.recyclerView.layoutManager = LinearLayoutManager(context)
         view.recyclerView.adapter = adapter
-        adapter!!.setListener(object : CatalogAdapter.onItemClick {
-            override fun onClicked(productObj: CatalogAdapter.ProductObj) {
+        adapter!!.setListener(object : ProductsAdapter.onItemClick {
+            override fun onClicked(productObj: ProductEntity) {
                 startActivity(
                     Intent(requireActivity(), ProductDetailsActivity::class.java)
                         .putExtra("name", productObj.name)
                         .putExtra("status", productObj.qStatus)
+                        .putExtra("productId", productObj.id)
                 )
             }
         })
@@ -56,20 +62,42 @@ class CatalogFragment : Fragment() {
             }
 
         })
+
+        viewModel.allProducts().observe(viewLifecycleOwner, Observer {
+            if (it.isEmpty()) {
+                binding.linearNoProducts.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.linearNoProducts.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+                adapter?.setProducts(it)
+            }
+        })
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        adapter = CatalogAdapter(requireActivity())
+        adapter = ProductsAdapter(requireActivity())
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
-        adapter!!.setListener(object : CatalogAdapter.onItemClick {
-            override fun onClicked(productObj: CatalogAdapter.ProductObj) {
+        viewModel.allProducts().observe(viewLifecycleOwner, Observer {
+            if (it.isEmpty()) {
+                binding.linearNoProducts.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.linearNoProducts.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+                adapter?.setProducts(it)
+            }
+        })
+        adapter!!.setListener(object : ProductsAdapter.onItemClick {
+            override fun onClicked(productObj: ProductEntity) {
                 startActivity(
                     Intent(requireActivity(), ProductDetailsActivity::class.java)
                         .putExtra("name", productObj.name)
                         .putExtra("status", productObj.qStatus)
+                        .putExtra("productId", productObj.id)
                 )
             }
         })

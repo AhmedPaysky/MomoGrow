@@ -1,4 +1,4 @@
-package com.paysky.momogrow.views.catalog
+package com.paysky.momogrow.views.products
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,41 +7,49 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.local.ProductEntity
 import kotlinx.android.synthetic.main.custom_item_catalog.view.*
 import kotlinx.android.synthetic.main.custom_item_order.view.tvAmount
 import kotlinx.android.synthetic.main.custom_item_order.view.tvStatus
 import java.util.*
 import kotlin.random.Random
 
-class CatalogAdapter(var mContext: Context) : RecyclerView.Adapter<CatalogAdapter.MyViewHolder>() {
+class ProductsAdapter(var mContext: Context) :
+    RecyclerView.Adapter<ProductsAdapter.MyViewHolder>() {
 
     companion object {
-        var products = mutableListOf<ProductObj>()
+        var products = mutableListOf<ProductEntity>()
         var fillListFirstTime = true
     }
 
-    private var productsFilterList: MutableList<ProductObj>? = null
+    fun setProducts(products: List<ProductEntity>) {
+        this.products = products as MutableList<ProductEntity>
+        notifyDataSetChanged()
+    }
+
+    private var products = mutableListOf<ProductEntity>()
+    private var productsFilterList: MutableList<ProductEntity>? = null
     private var listener: onItemClick? = null
 
     interface onItemClick {
-        fun onClicked(productObj: ProductObj)
+        fun onClicked(productObj: ProductEntity)
     }
 
     public fun setListener(onItemClick: onItemClick) {
         this.listener = onItemClick
     }
 
-    init {
-        if (fillListFirstTime) {
-            for (i in 0..10) {
-                products.add(ProductObj())
-            }
-            fillListFirstTime = false
-        }
-        this.productsFilterList = mutableListOf()
-        products.let { this.productsFilterList?.addAll(it) }
-
-    }
+//    init {
+//        if (fillListFirstTime) {
+//            for (i in 0..10) {
+//                products.add(ProductEntity())
+//            }
+//            fillListFirstTime = false
+//        }
+//        this.productsFilterList = mutableListOf()
+//        products.let { this.productsFilterList?.addAll(it) }
+//
+//    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

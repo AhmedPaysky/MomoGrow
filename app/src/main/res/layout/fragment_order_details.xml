@@ -17,7 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".views.catalog.AddProductActivity">
+            tools:context=".views.products.AddProductActivity">
 
             <ImageView
                 android:layout_width="wrap_content"

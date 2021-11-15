@@ -1,12 +1,11 @@
 package com.paysky.momogrow.views.register
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.paysky.momogrow.data.api.ApiService
-import com.paysky.momogrow.data.models.MoMoPayGetMerchantInfoRequest
-import com.paysky.momogrow.data.models.MoMoPayRegisterAccountRequest
+import com.paysky.momogrow.data.models.requests.MoMoPayGetMerchantInfoRequest
+import com.paysky.momogrow.data.models.requests.MoMoPayRegisterAccountRequest
 import com.paysky.momogrow.helper.Resource
 import kotlinx.coroutines.Dispatchers
 
