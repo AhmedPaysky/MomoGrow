@@ -16,15 +16,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
-import com.paysky.momogrow.data.api.ApiClient
-import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.requests.MoMoPayRegisterAccountRequest
 import com.paysky.momogrow.databinding.FragmentPasswordBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.*
 import com.paysky.momogrow.utilis.AesGcm256.hexIV
 import com.paysky.momogrow.utilis.AesGcm256.hexKey
-import com.paysky.momogrow.viewmodels.ViewModelFactory
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import kotlinx.android.synthetic.main.fragment_password.*
 import kotlinx.android.synthetic.main.fragment_password.view.*
 
@@ -35,9 +35,9 @@ class PasswordFragment : Fragment(), View.OnTouchListener {
     // onDestroyView.
     private val binding get() = _binding!!
     private val viewModel: RegisterViewModel by activityViewModels {
-        ViewModelFactory(
-            ApiClient.apiClient().create(
-                ApiService::class.java
+        ViewModelFactoryCube(
+            ApiClientCube.apiClient().create(
+                ApiServiceCube::class.java
             )
         )
     }

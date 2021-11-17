@@ -42,7 +42,7 @@
         android:paddingEnd="12dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputFirstName"
+            android:id="@+id/inputMobileNum"
             style="@style/Widget.Design.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,8 +50,8 @@
             app:boxBackgroundColor="@android:color/transparent"
             app:hintTextColor="@color/gray">
 
-            <EditText
-                android:id="@+id/etPickupAddress"
+            <com.paysky.momogrow.views.customviews.EditMobileNumber
+                android:id="@+id/etMobileNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

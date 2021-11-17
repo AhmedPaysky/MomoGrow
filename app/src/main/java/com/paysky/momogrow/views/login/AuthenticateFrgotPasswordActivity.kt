@@ -13,17 +13,16 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.paysky.momogrow.bacgroundservices.MyFirebaseMessagingService
-import com.paysky.momogrow.data.api.ApiClient
-import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.requests.MoMoPayAuthorizeForResetPasswordRequest
-import com.paysky.momogrow.data.models.requests.MoMoPayRegisterRequest
 import com.paysky.momogrow.databinding.ActivityAuthenticateBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.Constants
 import com.paysky.momogrow.utilis.CountUpTimer
 import com.paysky.momogrow.utilis.PreferenceProcessor
 import com.paysky.momogrow.viewmodels.MobileNumberViewModel
-import com.paysky.momogrow.viewmodels.ViewModelFactory
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import com.paysky.momogrow.views.register.RegisterActivity
 import com.paysky.momogrow.views.reset_password.ResetPasswordActivity
 
@@ -63,7 +62,7 @@ class AuthenticateFrgotPasswordActivity : AppCompatActivity() {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiClient.apiClient().create(ApiService::class.java))
+            ViewModelFactoryCube(ApiClientCube.apiClient().create(ApiServiceCube::class.java))
         ).get(MobileNumberViewModel::class.java)
     }
 

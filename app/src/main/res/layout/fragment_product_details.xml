@@ -432,6 +432,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
+                    android:enabled="false"
                     android:theme="@style/SCBSwitch"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -460,6 +461,7 @@
                     android:id="@+id/switchNew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:theme="@style/SCBSwitch"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -489,6 +491,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
+                    android:enabled="false"
                     android:theme="@style/SCBSwitch"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
 

@@ -5,7 +5,7 @@ import com.paysky.momogrow.data.models.requests.*
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface ApiService {
+interface ApiServiceCube {
 
     @POST("PayLink.svc/api/MoMoPayRegister")
     suspend fun moMoPayRegister(@Body registerRequest: MoMoPayRegisterRequest): MoMoPayRegisterResponse

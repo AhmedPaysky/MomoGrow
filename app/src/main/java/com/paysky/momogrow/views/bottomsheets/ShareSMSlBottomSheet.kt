@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paysky.momogrow.R
-import kotlinx.android.synthetic.main.fragment_modal_bottom_sheet_share_via_email.view.*
+import com.paysky.momogrow.utilis.MyUtils
+import com.paysky.momogrow.utilis.OnBottomSheetButtonClicked
+import kotlinx.android.synthetic.main.fragment_modal_bottom_sheet_share_sms.view.*
 
-class ShareSMSlBottomSheet(var fragmentView: View) : BottomSheetDialogFragment() {
+class ShareSMSlBottomSheet(var fragmentView: View, var listener: OnBottomSheetButtonClicked) :
+    BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,8 +23,15 @@ class ShareSMSlBottomSheet(var fragmentView: View) : BottomSheetDialogFragment()
             false
         )
         v.btnNext.setOnClickListener {
+            if (v.etMobileNum.text.toString().isEmpty()) {
+                v.inputMobileNum.error = getString(R.string.invalid_email_msg)
+                return@setOnClickListener
+            }
+
             dismiss()
-            showConfirmationBottomSheet(fragmentView)
+            listener.onClicked(v.etMobileNum.text.toString(), "sms")
+
+//            showConfirmationBottomSheet(fragmentView)
         }
         return v
     }

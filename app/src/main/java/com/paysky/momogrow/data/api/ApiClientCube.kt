@@ -18,7 +18,7 @@ import com.paysky.momogrow.R2.id.chain
 import okhttp3.Request
 
 
-object ApiClient {
+object ApiClientCube {
     // base url
     var BASE_URL: String = "https://mtn.paysky.io/cube/"
     fun apiClient(url: String = BASE_URL): Retrofit {
@@ -42,9 +42,9 @@ object ApiClient {
 
 //        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
         val httpClient = OkHttpClient.Builder()
-        httpClient.readTimeout(100, TimeUnit.SECONDS)
+        httpClient.readTimeout(40, TimeUnit.SECONDS)
         httpClient.connectTimeout(40, TimeUnit.SECONDS)
-        httpClient.writeTimeout(100, TimeUnit.SECONDS)
+        httpClient.writeTimeout(400, TimeUnit.SECONDS)
 
 
         if (PreferenceProcessor.getBool(Constants.Companion.Preference.IS_LOGIN, false)) {
@@ -55,7 +55,7 @@ object ApiClient {
                 .loggable(BuildConfig.DEBUG)
                 .setLevel(Level.BASIC)
                 .request("Request")
-                .response("Response")
+                .response("SimpleResponse")
                 .build()
 //                .addHeader("version", PackageInfoUtil.getAppVersionNumber(context))
         )

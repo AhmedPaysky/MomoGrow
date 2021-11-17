@@ -4,15 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.paysky.momogrow.R
-import com.paysky.momogrow.data.api.ApiClient
-import com.paysky.momogrow.data.api.ApiService
-import com.paysky.momogrow.viewmodels.ViewModelFactory
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiServiceCube
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 
 class RegisterActivity : AppCompatActivity() {
     private val viewModel: RegisterViewModel by viewModels {
-        ViewModelFactory(
-            ApiClient.apiClient().create(
-                ApiService::class.java
+        ViewModelFactoryCube(
+            ApiClientCube.apiClient().create(
+                ApiServiceCube::class.java
             )
         )
     }

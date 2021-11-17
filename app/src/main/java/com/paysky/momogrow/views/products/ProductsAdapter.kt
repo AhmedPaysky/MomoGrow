@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.paysky.momogrow.R
 import com.paysky.momogrow.data.local.ProductEntity
+import com.paysky.momogrow.data.models.momo.DataItem
 import kotlinx.android.synthetic.main.custom_item_catalog.view.*
 import kotlinx.android.synthetic.main.custom_item_order.view.tvAmount
 import kotlinx.android.synthetic.main.custom_item_order.view.tvStatus
@@ -18,38 +20,40 @@ class ProductsAdapter(var mContext: Context) :
     RecyclerView.Adapter<ProductsAdapter.MyViewHolder>() {
 
     companion object {
-        var products = mutableListOf<ProductEntity>()
+        var products = mutableListOf<DataItem>()
         var fillListFirstTime = true
     }
 
-    fun setProducts(products: List<ProductEntity>) {
-        this.products = products as MutableList<ProductEntity>
+    fun setProducts(products: List<DataItem?>?) {
+        this.products = products as MutableList<DataItem>
+        this.productsFilterList = mutableListOf()
+        products.let { this.productsFilterList?.addAll(it) }
         notifyDataSetChanged()
     }
 
-    private var products = mutableListOf<ProductEntity>()
-    private var productsFilterList: MutableList<ProductEntity>? = null
+    private var products = mutableListOf<DataItem>()
+    private var productsFilterList: MutableList<DataItem>? = null
     private var listener: onItemClick? = null
 
     interface onItemClick {
-        fun onClicked(productObj: ProductEntity)
+        fun onClicked(productObj: DataItem)
     }
 
     public fun setListener(onItemClick: onItemClick) {
         this.listener = onItemClick
     }
 
-//    init {
+    init {
 //        if (fillListFirstTime) {
 //            for (i in 0..10) {
 //                products.add(ProductEntity())
 //            }
 //            fillListFirstTime = false
 //        }
-//        this.productsFilterList = mutableListOf()
-//        products.let { this.productsFilterList?.addAll(it) }
-//
-//    }
+        this.productsFilterList = mutableListOf()
+        products.let { this.productsFilterList?.addAll(it) }
+
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -64,47 +68,50 @@ class ProductsAdapter(var mContext: Context) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val product = products[position]
+        if (product.inStock!!) holder.itemView.tvStatus.text = mContext.getString(R.string.instock)
+        else holder.itemView.tvStatus.text = mContext.getString(R.string.outstock)
         holder.itemView.tvStatus.text = product.status
-        holder.itemView.tvAmount.text = product.qStatus
         holder.itemView.tvName.text = product.name
         arrayOf("Out of stock", "In stock")
 
-        when (product.status) {
-            "In stock" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+        when (product.inStock) {
+            true -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_green, 0, 0, 0,
             )
-            "Out of stock" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+            false -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_red, 0, 0, 0,
             )
         }
 
-        when (product.name) {
-            "Green Apple" -> holder.itemView.icon.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    mContext,
-                    R.drawable.applepng
-                )
-            )
-            "Carrot" -> holder.itemView.icon.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    mContext,
-                    R.drawable.carrot
-                )
-            )
-            "Tomato" -> holder.itemView.icon.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    mContext,
-                    R.drawable.tomato
-                )
-            )
-            "Banana" -> holder.itemView.icon.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    mContext,
-                    R.drawable.bannana
-                )
-            )
+        Glide.with(mContext).load(product.images?.get(0)).into(holder.itemView.icon)
 
-        }
+//        when (product.name) {
+//            "Green Apple" -> holder.itemView.icon.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    mContext,
+//                    R.drawable.applepng
+//                )
+//            )
+//            "Carrot" -> holder.itemView.icon.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    mContext,
+//                    R.drawable.carrot
+//                )
+//            )
+//            "Tomato" -> holder.itemView.icon.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    mContext,
+//                    R.drawable.tomato
+//                )
+//            )
+//            "Banana" -> holder.itemView.icon.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    mContext,
+//                    R.drawable.bannana
+//                )
+//            )
+//
+//        }
 
         holder.itemView.setOnClickListener {
             if (listener != null) {
@@ -123,14 +130,18 @@ class ProductsAdapter(var mContext: Context) :
         if (charText.isEmpty() && products != null) {
             productsFilterList?.let { products?.addAll(it) }
         } else {
-            for (orderModel in productsFilterList!!) {
-                val status = orderModel.status.toUpperCase(Locale.getDefault())
-                val qStatus = orderModel.qStatus.toUpperCase(Locale.getDefault())
+            for (productModel in productsFilterList!!) {
+                var status = ""
+                if (productModel.inStock!!) status =
+                    mContext.getString(R.string.instock) else status = mContext.getString(
+                    R.string.outstock
+                )
+                val qStatus = productModel.status?.toUpperCase(Locale.getDefault())
 
                 if (status[0] == charText[0] && status.contains(charText)) {
-                    products?.add(orderModel)
-                } else if (qStatus[0] == charText[0] && qStatus.contains(charText)) {
-                    products?.add(orderModel)
+                    products?.add(productModel)
+                } else if (qStatus!![0] == charText[0] && qStatus.contains(charText)) {
+                    products?.add(productModel)
                 }
             }
         }

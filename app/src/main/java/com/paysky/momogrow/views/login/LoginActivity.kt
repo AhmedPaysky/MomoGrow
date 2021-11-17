@@ -8,14 +8,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.paysky.momogrow.data.api.ApiClient
-import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.requests.MOMOPayLoginRequest
 import com.paysky.momogrow.databinding.ActivityLoginBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.*
-import com.paysky.momogrow.viewmodels.ViewModelFactory
-import com.paysky.momogrow.views.AuthenticateActivity
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import com.paysky.momogrow.views.home.HomeActivity
 import timber.log.Timber
 
@@ -24,9 +23,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     private val viewModel: LoginViewModel by viewModels {
-        ViewModelFactory(
-            ApiClient.apiClient().create(
-                ApiService::class.java
+        ViewModelFactoryCube(
+            ApiClientCube.apiClient().create(
+                ApiServiceCube::class.java
             )
         )
     }

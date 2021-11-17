@@ -8,27 +8,20 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
-import com.paysky.momogrow.data.api.ApiClient
-import com.paysky.momogrow.data.api.ApiService
-import com.paysky.momogrow.data.models.requests.MoMoPayAuthorizeForResetPasswordRequest
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.requests.MoMoPayResetPasswordRequest
-import com.paysky.momogrow.databinding.ActivityAuthenticateBinding
 import com.paysky.momogrow.databinding.ActivityResetPasswordBinding
-import com.paysky.momogrow.databinding.FragmentPasswordBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.*
 import com.paysky.momogrow.viewmodels.MobileNumberViewModel
-import com.paysky.momogrow.viewmodels.ViewModelFactory
-import com.paysky.momogrow.views.register.PasswordFragment
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import kotlinx.android.synthetic.main.fragment_password.*
 import kotlinx.android.synthetic.main.fragment_password.view.*
 
@@ -134,7 +127,7 @@ class ResetPasswordActivity : AppCompatActivity(), View.OnTouchListener {
     private fun setupViewModel() {
         viewModel = ViewModelProviders.of(
             this,
-            ViewModelFactory(ApiClient.apiClient().create(ApiService::class.java))
+            ViewModelFactoryCube(ApiClientCube.apiClient().create(ApiServiceCube::class.java))
         ).get(MobileNumberViewModel::class.java)
     }
 

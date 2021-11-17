@@ -11,15 +11,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import com.paysky.momogrow.data.api.ApiClient
-import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.requests.MOMOPayCheckMerchantIsRegisterRequest
 import com.paysky.momogrow.databinding.ActivityMobileNumberBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.MyUtils
 import com.paysky.momogrow.utilis.TextUtils
 import com.paysky.momogrow.viewmodels.MobileNumberViewModel
-import com.paysky.momogrow.viewmodels.ViewModelFactory
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import com.paysky.momogrow.views.login.LoginActivity
 
 
@@ -27,9 +27,9 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
     private lateinit var binding: ActivityMobileNumberBinding
     lateinit var dialog: Dialog
     private val viewModel: MobileNumberViewModel by viewModels {
-        ViewModelFactory(
-            ApiClient.apiClient().create(
-                ApiService::class.java
+        ViewModelFactoryCube(
+            ApiClientCube.apiClient().create(
+                ApiServiceCube::class.java
             )
         )
     }

@@ -206,5 +206,9 @@
     <string name="share_via_sms">Share via SMS</string>
     <string name="addyourfirst_roduct">Add your first product</string>
     <string name="addyourfirst_roduct_desc">It\'s time to start selling online, to do so \n add your fist product now</string>
+    <string name="instock">In stock</string>
+    <string name="outstock">Out of stock</string>
+    <string name="no_orders_yet">No orders yet</string>
+    <string name="noorders_desc">You\'ll be notified once you receive a \n new order</string>
 
 </resources>

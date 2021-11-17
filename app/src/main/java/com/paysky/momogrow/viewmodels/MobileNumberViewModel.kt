@@ -1,7 +1,7 @@
 package com.paysky.momogrow.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.api.ApiServiceCube
 import kotlinx.coroutines.Dispatchers
 
 
@@ -13,12 +13,12 @@ import com.paysky.momogrow.data.models.requests.MoMoPayResetPasswordRequest
 import com.paysky.momogrow.helper.Resource
 
 
-class MobileNumberViewModel(private val apiService: ApiService) : ViewModel() {
+class MobileNumberViewModel(private val apiServiceCube: ApiServiceCube) : ViewModel() {
 
     fun moMoPayRegister(data: MoMoPayRegisterRequest) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = apiService.moMoPayRegister(data)))
+            emit(Resource.success(data = apiServiceCube.moMoPayRegister(data)))
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error occured"))
         }
@@ -28,7 +28,7 @@ class MobileNumberViewModel(private val apiService: ApiService) : ViewModel() {
         liveData(Dispatchers.IO) {
             emit(Resource.loading(data = null))
             try {
-                emit(Resource.success(data = apiService.mOMOPayCheckMerchantIsRegister(data)))
+                emit(Resource.success(data = apiServiceCube.mOMOPayCheckMerchantIsRegister(data)))
             } catch (exception: Exception) {
                 emit(Resource.error(data = null, message = exception.message ?: "Error occured"))
             }
@@ -38,7 +38,7 @@ class MobileNumberViewModel(private val apiService: ApiService) : ViewModel() {
         liveData(Dispatchers.IO) {
             emit(Resource.loading(data = null))
             try {
-                emit(Resource.success(data = apiService.moMoPayAuthorizeForResetPassword(data)))
+                emit(Resource.success(data = apiServiceCube.moMoPayAuthorizeForResetPassword(data)))
             } catch (exception: Exception) {
                 emit(Resource.error(data = null, message = exception.message ?: "Error occured"))
             }
@@ -48,7 +48,7 @@ class MobileNumberViewModel(private val apiService: ApiService) : ViewModel() {
         liveData(Dispatchers.IO) {
             emit(Resource.loading(data = null))
             try {
-                emit(Resource.success(data = apiService.moMoPayResetPassword(data)))
+                emit(Resource.success(data = apiServiceCube.moMoPayResetPassword(data)))
             } catch (exception: Exception) {
                 emit(Resource.error(data = null, message = exception.message ?: "Error occured"))
             }

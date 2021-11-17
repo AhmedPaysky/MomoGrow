@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.models.momo.orders.OrdersItem
 import com.paysky.momogrow.databinding.ActivityOrderDetailsBinding
 import com.paysky.momogrow.databinding.FragmentOrderDetailsBinding
 import com.paysky.momogrow.views.bottomsheets.*
@@ -38,7 +39,7 @@ class OrderDetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         lviewPager = binding.pager
-        val orders = intent.getParcelableArrayListExtra<OrdersAdapter.OrderObj>("orders")
+        val orders = intent.getParcelableArrayListExtra<OrdersItem>("orders")
         introPagerAdapter =
             OrdersDetailsPagerAdapter(supportFragmentManager, this, orders)
         binding.pager.adapter = introPagerAdapter
@@ -78,7 +79,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 class OrdersDetailsPagerAdapter(
     fm: FragmentManager,
     var mContext: Context,
-    var orders: List<OrdersAdapter.OrderObj>?
+    var orders: List<OrdersItem>?
 ) :
     FragmentStatePagerAdapter(fm) {
 
@@ -126,7 +127,7 @@ class OrderDetailsFragment : Fragment() {
         _binding = FragmentOrderDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val orderOBJ = arguments?.getSerializable(ARG_OBJECT) as OrdersAdapter.OrderObj
+        val orderOBJ = arguments?.getSerializable(ARG_OBJECT) as OrdersItem
         val ordersSize = arguments?.getInt("size", 0)
 
         binding.ivNext.setOnClickListener {
@@ -141,7 +142,7 @@ class OrderDetailsFragment : Fragment() {
             } else requireActivity().finish()
         }
 
-        binding.tvOrderNo.text = "Order no. ${orderOBJ.number}"
+        binding.tvOrderNo.text = "Order no. ${orderOBJ.id}"
         binding.btnCancel.setOnClickListener {
             showCancelOrderBottomSheet(view)
         }

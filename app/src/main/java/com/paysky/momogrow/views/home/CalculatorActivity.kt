@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.ScrollView
 import android.widget.Toast
 import com.paysky.momogrow.R
 import com.paysky.momogrow.databinding.ActivityCalculatorBinding
@@ -16,19 +15,19 @@ import com.paysky.momogrow.views.customviews.CustomAmountKeyBoard
 import kotlinx.android.synthetic.main.activity_calculator.*
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import com.paysky.momogrow.data.api.ApiClient
-import com.paysky.momogrow.data.api.ApiService
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.InitiateOrderResponse
 import com.paysky.momogrow.data.models.requests.InitiateOrderRequest
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.Constants.Companion.Preference.Companion.MERCHANT_ID
 import com.paysky.momogrow.utilis.Constants.Companion.Preference.Companion.TERMINAL_ID
+import com.paysky.momogrow.utilis.DateTimeUtil
 import com.paysky.momogrow.utilis.MyUtils
 import com.paysky.momogrow.utilis.OnBottomSheetButtonClicked
 import com.paysky.momogrow.utilis.PreferenceProcessor
-import com.paysky.momogrow.viewmodels.ViewModelFactory
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import com.paysky.momogrow.views.bottomsheets.ConfirmationBottomSheet
-import java.lang.invoke.MethodType
 
 
 class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickListener,
@@ -38,9 +37,9 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
     val strings = arrayOf("Never", "6 Days", "12 Days", "18 Days")
     lateinit var dialog: Dialog
     private val viewModel: HomeViewModel by viewModels {
-        ViewModelFactory(
-            ApiClient.apiClient().create(
-                ApiService::class.java
+        ViewModelFactoryCube(
+            ApiClientCube.apiClient().create(
+                ApiServiceCube::class.java
             )
         )
     }
@@ -78,7 +77,7 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
 
     private fun initOrder(notificationMethod: Int = 0, notificationValue: String = "") {
         val request = InitiateOrderRequest()
-        request.dateTimeLocalTrxn = "1561665566"
+        request.dateTimeLocalTrxn = DateTimeUtil.getDateTimeLocalTrxn()
         request.merchantId = PreferenceProcessor.getStr(MERCHANT_ID, "")
         request.terminalId = PreferenceProcessor.getStr(TERMINAL_ID, "")
         request.notificationMethod = notificationMethod
@@ -127,7 +126,7 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
     }
 
     private fun showSMSBottomSheet(fragmentView: View) {
-        val modalbottomSheetFragment = ShareSMSlBottomSheet(fragmentView = fragmentView)
+        val modalbottomSheetFragment = ShareSMSlBottomSheet(fragmentView = fragmentView, this)
         modalbottomSheetFragment.show(
             supportFragmentManager,
             modalbottomSheetFragment.tag
@@ -163,7 +162,12 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
     override fun onClicked(value: String, type: String) {
         when (type) {
             "email" -> {
-                initOrder(1)
+//                initOrder(0)
+                showConfirmationBottomSheet(view)
+            }
+            "sms" -> {
+//                initOrder(1)
+                showConfirmationBottomSheet(view)
             }
         }
     }

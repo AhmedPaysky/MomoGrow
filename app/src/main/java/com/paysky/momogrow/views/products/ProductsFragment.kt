@@ -1,5 +1,6 @@
 package com.paysky.momogrow.views.products
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,23 +12,34 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.paysky.momogrow.data.local.ProductEntity
+import com.paysky.momogrow.data.api.ApiClientMomo
+import com.paysky.momogrow.data.api.ApiServiceMomo
+import com.paysky.momogrow.data.models.momo.DataItem
+import com.paysky.momogrow.data.models.momo.ProductsResponse
 import com.paysky.momogrow.databinding.FragmentCatalogBinding
+import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.MyUtils
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
+import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
 import kotlinx.android.synthetic.main.fragment_orders.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class ProductsFragment : Fragment() {
 
     private var _binding: FragmentCatalogBinding? = null
-    private val viewModel: ProductViewModel by activityViewModels()
+    private val viewModel: ProductViewModel by activityViewModels {
+        ViewModelFactoryMomo(
+            ApiClientMomo.apiClient().create(
+                ApiServiceMomo::class.java
+            )
+        )
+    }
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
     private var adapter: ProductsAdapter? = null
+    private lateinit var dialog: Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,13 +50,15 @@ class ProductsFragment : Fragment() {
         adapter = ProductsAdapter(requireActivity())
         view.recyclerView.layoutManager = LinearLayoutManager(context)
         view.recyclerView.adapter = adapter
+        dialog = MyUtils.getDlgProgress(requireActivity())
         adapter!!.setListener(object : ProductsAdapter.onItemClick {
-            override fun onClicked(productObj: ProductEntity) {
+            override fun onClicked(productObj: DataItem) {
                 startActivity(
                     Intent(requireActivity(), ProductDetailsActivity::class.java)
                         .putExtra("name", productObj.name)
-                        .putExtra("status", productObj.qStatus)
+                        .putExtra("status", productObj.status)
                         .putExtra("productId", productObj.id)
+                        .putExtra("objet", productObj)
                 )
             }
         })
@@ -64,13 +78,27 @@ class ProductsFragment : Fragment() {
         })
 
         viewModel.allProducts().observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty()) {
-                binding.linearNoProducts.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-            } else {
-                binding.linearNoProducts.visibility = View.GONE
-                binding.recyclerView.visibility = View.VISIBLE
-                adapter?.setProducts(it)
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    if ((it.data as ProductsResponse).data?.isEmpty()!!) {
+                        binding.linearNoProducts.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.GONE
+                    } else {
+                        binding.linearNoProducts.visibility = View.GONE
+                        binding.recyclerView.visibility = View.VISIBLE
+                        adapter?.setProducts(it.data.data)
+                    }
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                }
+                Status.LOADING -> {
+                    dialog.show()
+
+                }
+                else -> dialog.dismiss()
+
             }
         })
         return view
@@ -82,21 +110,35 @@ class ProductsFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         viewModel.allProducts().observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty()) {
-                binding.linearNoProducts.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-            } else {
-                binding.linearNoProducts.visibility = View.GONE
-                binding.recyclerView.visibility = View.VISIBLE
-                adapter?.setProducts(it)
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    if ((it.data as ProductsResponse).data?.isEmpty()!!) {
+                        binding.linearNoProducts.visibility = View.VISIBLE
+                        binding.recyclerView.visibility = View.GONE
+                    } else {
+                        binding.linearNoProducts.visibility = View.GONE
+                        binding.recyclerView.visibility = View.VISIBLE
+                        adapter?.setProducts(it.data.data)
+                    }
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                }
+                Status.LOADING -> {
+                    dialog.show()
+
+                }
+                else -> dialog.dismiss()
+
             }
         })
         adapter!!.setListener(object : ProductsAdapter.onItemClick {
-            override fun onClicked(productObj: ProductEntity) {
+            override fun onClicked(productObj: DataItem) {
                 startActivity(
                     Intent(requireActivity(), ProductDetailsActivity::class.java)
                         .putExtra("name", productObj.name)
-                        .putExtra("status", productObj.qStatus)
+                        .putExtra("status", productObj.status)
                         .putExtra("productId", productObj.id)
                 )
             }

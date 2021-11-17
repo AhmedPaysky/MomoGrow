@@ -1,5 +1,6 @@
 package com.paysky.momogrow.views.orders
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Parcel
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.internal.ParcelableSparseArray
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.models.momo.orders.OrdersItem
+import com.paysky.momogrow.data.models.momo.orders.OrdersResponse
 import com.paysky.momogrow.views.orders.OrdersAdapter.MyViewHolder
 import kotlinx.android.synthetic.main.custom_item_order.view.*
 import java.io.Serializable
@@ -18,13 +21,13 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 class OrdersAdapter(var context: Context) : RecyclerView.Adapter<MyViewHolder>() {
-    var orders = ArrayList<OrderObj>()
-    private var ordersFilterList: MutableList<OrderObj>? = null
+    var orders = ArrayList<OrdersItem>()
+    private var ordersFilterList: MutableList<OrdersItem>? = null
 
     init {
-        for (i in 0..10) {
-            orders.add(OrderObj())
-        }
+//        for (i in 0..10) {
+//            orders.add(OrderObj())
+//        }
         this.ordersFilterList = mutableListOf()
         orders.let { this.ordersFilterList?.addAll(it) }
 
@@ -41,12 +44,13 @@ class OrdersAdapter(var context: Context) : RecyclerView.Adapter<MyViewHolder>()
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val order = orders[position]
         holder.itemView.tvStatus.text = order.status
-        holder.itemView.tvAmount.text = order.amount
-        holder.itemView.tvOrderNo.text = "Order no. " + order.number
-        holder.itemView.tvDate.text = order.date
+        holder.itemView.tvAmount.text = order.orderCurrencyCode + " " + order.grandTotal
+        holder.itemView.tvOrderNo.text = "Order no. " + order.id
+        holder.itemView.tvDate.text = order.createdAt
         arrayOf("Not processed", "In transit", "Delivered", "Cancelled", "Refund request")
 
         when (order.status) {
@@ -78,9 +82,9 @@ class OrdersAdapter(var context: Context) : RecyclerView.Adapter<MyViewHolder>()
         }
     }
 
-    fun setOrdersList(ordersList: MutableList<OrderObj>?) {
+    fun setOrdersList(ordersList: ArrayList<OrdersItem>?) {
         if (ordersList != null) {
-            this.orders = ordersList as ArrayList<OrderObj>
+            this.orders = ordersList
         }
         ordersList?.let { this.ordersFilterList?.addAll(it) }
         notifyDataSetChanged()
@@ -93,10 +97,10 @@ class OrdersAdapter(var context: Context) : RecyclerView.Adapter<MyViewHolder>()
             ordersFilterList?.let { orders?.addAll(it) }
         } else {
             for (orderModel in ordersFilterList!!) {
-                val status = orderModel.status.toUpperCase(Locale.getDefault())
-                val number = orderModel.number.toUpperCase(Locale.getDefault())
+                val status = orderModel.status?.toUpperCase(Locale.getDefault())
+                val number = orderModel.id.toString().toUpperCase(Locale.getDefault())
 
-                if (status[0] == charText[0] && status.contains(charText)) {
+                if (status?.get(0) == charText[0] && status.contains(charText)) {
                     orders?.add(orderModel)
                 } else if (number[0] == charText[0] && number.contains(charText)) {
                     orders?.add(orderModel)

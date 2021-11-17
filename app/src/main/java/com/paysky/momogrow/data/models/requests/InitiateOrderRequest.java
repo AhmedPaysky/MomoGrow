@@ -2,6 +2,7 @@ package com.paysky.momogrow.data.models.requests;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.paysky.momogrow.utilis.DateTimeUtil;
 
 public class InitiateOrderRequest {
 
@@ -47,7 +48,7 @@ public class InitiateOrderRequest {
     }
 
     public void setDateTimeLocalTrxn(String dateTimeLocalTrxn) {
-        this.dateTimeLocalTrxn = dateTimeLocalTrxn;
+        DateTimeUtil.getDateTimeLocalTrxn();
     }
 
     public String getLatitude() {
