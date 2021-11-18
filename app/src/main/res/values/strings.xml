@@ -210,5 +210,13 @@
     <string name="outstock">Out of stock</string>
     <string name="no_orders_yet">No orders yet</string>
     <string name="noorders_desc">You\'ll be notified once you receive a \n new order</string>
-
+    <string name="sharePayLinkWithoutRef">
+       %1$s is requesting payment of %2$s %3$s,
+To make payment,  click this link:
+\n
+         %4$s
+\n
+Link expires on  %5$s
+\nPowered by PaySky Payment Solutions.
+    </string>
 </resources>

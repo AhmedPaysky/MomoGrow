@@ -25,7 +25,7 @@ class QRActivity : AppCompatActivity() {
         binding.btnDone.setOnClickListener {
             finish()
         }
-        generateQr("https://www.google.com/")
+        generateQr(intent.getStringExtra("url")!!)
     }
 
     private fun showConfirmationBottomSheet(fragmentView: View) {

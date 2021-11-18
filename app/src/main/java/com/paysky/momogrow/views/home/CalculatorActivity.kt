@@ -18,20 +18,21 @@ import androidx.lifecycle.Observer
 import com.paysky.momogrow.data.api.ApiClientCube
 import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.InitiateOrderResponse
+import com.paysky.momogrow.data.models.PayLinkDetailsModel
 import com.paysky.momogrow.data.models.requests.InitiateOrderRequest
 import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.*
 import com.paysky.momogrow.utilis.Constants.Companion.Preference.Companion.MERCHANT_ID
 import com.paysky.momogrow.utilis.Constants.Companion.Preference.Companion.TERMINAL_ID
-import com.paysky.momogrow.utilis.DateTimeUtil
-import com.paysky.momogrow.utilis.MyUtils
-import com.paysky.momogrow.utilis.OnBottomSheetButtonClicked
-import com.paysky.momogrow.utilis.PreferenceProcessor
 import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import com.paysky.momogrow.views.bottomsheets.ConfirmationBottomSheet
 
 
 class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickListener,
-    OnBottomSheetButtonClicked {
+    OnBottomSheetButtonClicked, OnPayLinkDetailsClicked {
+    private lateinit var request: InitiateOrderRequest
+    private lateinit var response: InitiateOrderResponse
+    private var isQr: Boolean = false
     private lateinit var view: View
     private lateinit var binding: ActivityCalculatorBinding
     val strings = arrayOf("Never", "6 Days", "12 Days", "18 Days")
@@ -62,10 +63,11 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
             showSMSBottomSheet(view)
         }
         binding.ivShare.setOnClickListener {
-            shareViaSocial()
+            initOrder(-1)
         }
         binding.ivQr.setOnClickListener {
-            startActivity(Intent(this, QRActivity::class.java))
+            isQr = true
+            initOrder(-1)
         }
 
         val adapter: ArrayAdapter<String> =
@@ -76,11 +78,11 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
     }
 
     private fun initOrder(notificationMethod: Int = 0, notificationValue: String = "") {
-        val request = InitiateOrderRequest()
+        request = InitiateOrderRequest()
         request.dateTimeLocalTrxn = DateTimeUtil.getDateTimeLocalTrxn()
         request.merchantId = PreferenceProcessor.getStr(MERCHANT_ID, "")
         request.terminalId = PreferenceProcessor.getStr(TERMINAL_ID, "")
-        request.notificationMethod = notificationMethod
+        if (notificationMethod != -1) request.notificationMethod = notificationMethod
         request.notificationValue = notificationValue
         request.amount = binding.tvAmount.text.toString().toFloat()
         request.currency = 800
@@ -91,9 +93,25 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
                     dialog.dismiss()
                     val data = it.data as InitiateOrderResponse
                     if (data.success) {
+                        response = it.data
                         when (notificationMethod) {
                             1 -> {
                                 showConfirmationBottomSheet(view)
+                            }
+                            0 -> {
+                                showConfirmationBottomSheet(view)
+                            }
+                            else -> {
+                                if (isQr) {
+                                    startActivity(
+                                        Intent(this, QRActivity::class.java)
+                                            .putExtra("url", it.data.orderURL)
+                                    )
+                                    isQr = false
+                                } else {
+                                    shareViaSocial(it.data)
+                                }
+
                             }
                         }
                     } else {
@@ -133,14 +151,24 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
         )
     }
 
-    private fun shareViaSocial() {
+    private fun shareViaSocial(initiateOrderResponse: InitiateOrderResponse) {
         val sharingIntent = Intent(Intent.ACTION_SEND)
         sharingIntent.type = "text/plain"
         sharingIntent.putExtra(
             Intent.EXTRA_SUBJECT,
             resources.getString(R.string.app_name)
         )
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, "message content ")
+
+        val message = java.lang.String.format(
+            "" + resources.getString(R.string.sharePayLinkWithoutRef),
+            PreferenceProcessor.getStr(MERCHANT_ID, ""),
+            "UGX ",
+            binding.tvAmount.text.toString(),
+            initiateOrderResponse.orderURL,
+            DateTimeUtil.getDateWithHoursFromString(DateTimeUtil.getDateTimeExpirePayLinkPlusOneDay())
+        )
+
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
 
         val intent = Intent.createChooser(
             sharingIntent, resources
@@ -158,25 +186,44 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
         if (s?.length == 0) tvAmount.text = "0"
     }
 
-    //on bottomSheet button clicked
+    private fun showConfirmationBottomSheet(fragmentView: View) {
+        val modalbottomSheetFragment =
+            ConfirmationBottomSheet(fragmentView = fragmentView, this)
+        modalbottomSheetFragment.show(
+            supportFragmentManager,
+            modalbottomSheetFragment.tag
+        )
+    }
+
+    //on send bottomSheet button clicked
     override fun onClicked(value: String, type: String) {
         when (type) {
             "email" -> {
-//                initOrder(0)
-                showConfirmationBottomSheet(view)
+                initOrder(0, value)
+//                showConfirmationBottomSheet(view)
             }
             "sms" -> {
-//                initOrder(1)
-                showConfirmationBottomSheet(view)
+                initOrder(1, value)
+//                showConfirmationBottomSheet(view)
             }
         }
     }
 
-    private fun showConfirmationBottomSheet(fragmentView: View) {
-        val modalbottomSheetFragment = ConfirmationBottomSheet(fragmentView = fragmentView)
-        modalbottomSheetFragment.show(
-            supportFragmentManager,
-            modalbottomSheetFragment.tag
+    //on view paylinkdetails button clicked
+    override fun onPayLinkDetailsClicked() {
+        val payLinkDetails = PayLinkDetailsModel(
+            "",
+            response.orderId,
+            request.terminalId,
+            request.merchantId,
+            "",
+            request.expiryDateTime,
+            request.dateTimeLocalTrxn,
+            request.amount.toString()
+        )
+        startActivity(
+            Intent(this, PaylinkDetailsActivity::class.java)
+                .putExtra("response", payLinkDetails)
         )
     }
 }

@@ -48,7 +48,7 @@ public class InitiateOrderRequest {
     }
 
     public void setDateTimeLocalTrxn(String dateTimeLocalTrxn) {
-        DateTimeUtil.getDateTimeLocalTrxn();
+        this.dateTimeLocalTrxn = DateTimeUtil.getDateTimeLocalTrxn();
     }
 
     public String getLatitude() {

@@ -33,6 +33,8 @@ public class DateTimeUtil extends NoProguard {
                 .append((arg6 < 10 ? "0" + arg6 : arg6)).append("").append(arg7) + random;
     }
 
+
+
     public static String getDateTimeExpirePayLinkPlusOneDay() {
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
@@ -50,5 +52,18 @@ public class DateTimeUtil extends NoProguard {
     }
 
 
+    public static String getDateWithHoursFromString(String inputDate) {
+        String oneWayTripDate = "";
+        SimpleDateFormat input = new SimpleDateFormat("yyyyMMddHHmm", Locale.ENGLISH);
+        SimpleDateFormat output;
+        output = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
+        try {
+            oneWayTripDate = output.format(input.parse(inputDate));
+
+        } catch (ParseException ee) {
+
+        }
+        return oneWayTripDate;
+    }
 }
