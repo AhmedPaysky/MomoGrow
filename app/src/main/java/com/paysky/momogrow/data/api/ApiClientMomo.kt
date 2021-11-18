@@ -15,8 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiClientMomo {
-    // todo add base url
-    var BASE_URL: String = "https://mtn.paysky.io/cube/"
+    var BASE_URL: String = "https://emanfateen.mtngrow.com/"
     fun apiClient(url: String = BASE_URL): Retrofit {
         val gson = GsonBuilder()
             .setLenient()
@@ -24,13 +23,21 @@ object ApiClientMomo {
         val interceptor = object : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val request: Request =
-                    chain.request().newBuilder().addHeader(
-                        "Authorization",
-                        "" + PreferenceProcessor.getStr(
-                            Constants.Companion.Preference.AUTH_TOKEN,
-                            ""
+//                    chain.request().newBuilder().addHeader(
+//                        "Authorization",
+//                        "" + PreferenceProcessor.getStr(
+//                            Constants.Companion.Preference.AUTH_TOKEN,
+//                            ""
+//                        )
+//                    ).build()
+                    chain.request().newBuilder()
+                        .addHeader(
+                            "Authorization",
+                            "Bearer 1637134988Z1Gw0oZPomBUzs4rCzM1AFQZH88hgQsMoHABNc3fz0gGNK6g"
                         )
-                    ).build()
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Content-Type", "application/json")
+                        .build()
                 return chain.proceed(request)
             }
 

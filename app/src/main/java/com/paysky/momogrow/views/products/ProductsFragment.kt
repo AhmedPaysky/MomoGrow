@@ -81,13 +81,13 @@ class ProductsFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     dialog.dismiss()
-                    if ((it.data as ProductsResponse).data?.isEmpty()!!) {
+                    if ((it.data as ProductsResponse).data?.products?.isEmpty()!!) {
                         binding.linearNoProducts.visibility = View.VISIBLE
                         binding.recyclerView.visibility = View.GONE
                     } else {
                         binding.linearNoProducts.visibility = View.GONE
                         binding.recyclerView.visibility = View.VISIBLE
-                        adapter?.setProducts(it.data.data)
+                        adapter?.setProducts(it.data.data?.products)
                     }
                 }
                 Status.ERROR -> {
@@ -113,13 +113,13 @@ class ProductsFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     dialog.dismiss()
-                    if ((it.data as ProductsResponse).data?.isEmpty()!!) {
+                    if ((it.data as ProductsResponse).data?.products?.isEmpty()!!) {
                         binding.linearNoProducts.visibility = View.VISIBLE
                         binding.recyclerView.visibility = View.GONE
                     } else {
                         binding.linearNoProducts.visibility = View.GONE
                         binding.recyclerView.visibility = View.VISIBLE
-                        adapter?.setProducts(it.data.data)
+                        adapter?.setProducts(it.data.data?.products)
                     }
                 }
                 Status.ERROR -> {
@@ -140,6 +140,7 @@ class ProductsFragment : Fragment() {
                         .putExtra("name", productObj.name)
                         .putExtra("status", productObj.status)
                         .putExtra("productId", productObj.id)
+                        .putExtra("obj", productObj)
                 )
             }
         })

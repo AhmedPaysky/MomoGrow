@@ -219,4 +219,5 @@ To make payment,  click this link:
 Link expires on  %5$s
 \nPowered by PaySky Payment Solutions.
     </string>
+    <string name="invalid_amount_msg">Please enter valid amount</string>
 </resources>

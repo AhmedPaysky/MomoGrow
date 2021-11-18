@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.paysky.momogrow.R
 import com.paysky.momogrow.data.local.ProductEntity
 import com.paysky.momogrow.data.models.momo.DataItem
@@ -68,23 +70,43 @@ class ProductsAdapter(var mContext: Context) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val product = products[position]
-        if (product.inStock!!) holder.itemView.tvStatus.text = mContext.getString(R.string.instock)
-        else holder.itemView.tvStatus.text = mContext.getString(R.string.outstock)
-        holder.itemView.tvStatus.text = product.status
         holder.itemView.tvName.text = product.name
+        holder.itemView.tvPublishStatus.text = product.status
         arrayOf("Out of stock", "In stock")
 
         when (product.inStock) {
-            true -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_oval_status_green, 0, 0, 0,
-            )
-            false -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
-                R.drawable.ic_oval_status_red, 0, 0, 0,
-            )
+            true -> {
+                holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_oval_status_green, 0, 0, 0,
+                )
+                holder.itemView.tvStatus.text = mContext.getString(R.string.instock)
+
+            }
+            false -> {
+                holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_oval_status_red, 0, 0, 0,
+                )
+                holder.itemView.tvStatus.text = mContext.getString(R.string.outstock)
+            }
         }
+        if (product.images?.isNotEmpty()!!) {
+            val url: String = product.images[0]?.originalImageUrl.toString()
 
-        Glide.with(mContext).load(product.images?.get(0)).into(holder.itemView.icon)
+            val glideUrl = GlideUrl(
+                url,
+                LazyHeaders.Builder()
+                    .addHeader(
+                        "Authorization",
+                        "Bearer 1637134988Z1Gw0oZPomBUzs4rCzM1AFQZH88hgQsMoHABNc3fz0gGNK6g"
+                    ).addHeader("Accept", "application/json")
+                    .addHeader("Content-Type", "application/json")
+                    .build()
+            )
 
+            Glide.with(mContext)
+                .load(glideUrl)
+                .into(holder.itemView.icon);
+        }
 //        when (product.name) {
 //            "Green Apple" -> holder.itemView.icon.setImageDrawable(
 //                AppCompatResources.getDrawable(

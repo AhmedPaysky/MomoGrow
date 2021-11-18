@@ -61,10 +61,12 @@ class ProductDetailsActivity : AppCompatActivity() {
         binding.tvName.text = it.type
         binding.tvDescripyion.text = it.description
         binding.tvSku.text = it.sku
-        binding.tvPrice.text = it.price
-//        binding.tvWidth.text = it.width
-//        binding.tvHeight.text = it.height
-//        binding.tvWeight.text = it.weight
+        it.price.let {
+            binding.tvPrice.text = it.toString()
+        }
+        binding.tvWidth.text = it.width
+        binding.tvHeight.text = it.height
+        binding.tvWeight.text = it.weight
 //        binding.tvQuantity.text = it.quantity
 //        binding.switchFeature.isChecked = it.featureUser
 //        binding.switchNew.isChecked = it.new
@@ -130,32 +132,32 @@ class ProductDetailsActivity : AppCompatActivity() {
             )
         }
 
-        when (name) {
-            "Green Apple" -> binding.image.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    this,
-                    R.drawable.applepng
-                )
-            )
-            "Carrot" -> binding.image.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    this,
-                    R.drawable.carrot
-                )
-            )
-            "Tomato" -> binding.image.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    this,
-                    R.drawable.tomato
-                )
-            )
-            "Banana" -> binding.image.setImageDrawable(
-                AppCompatResources.getDrawable(
-                    this,
-                    R.drawable.bannana
-                )
-            )
-        }
+//        when (name) {
+//            "Green Apple" -> binding.image.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    this,
+//                    R.drawable.applepng
+//                )
+//            )
+//            "Carrot" -> binding.image.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    this,
+//                    R.drawable.carrot
+//                )
+//            )
+//            "Tomato" -> binding.image.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    this,
+//                    R.drawable.tomato
+//                )
+//            )
+//            "Banana" -> binding.image.setImageDrawable(
+//                AppCompatResources.getDrawable(
+//                    this,
+//                    R.drawable.bannana
+//                )
+//            )
+//        }
 
     }
 }

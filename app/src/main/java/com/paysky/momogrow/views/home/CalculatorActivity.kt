@@ -57,17 +57,22 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
         binding.cusetomkey.performClick()
 
         binding.ivEmail.setOnClickListener {
-            showViaEmailBottomSheet(view)
+            if (validateAmount())
+                showViaEmailBottomSheet(view)
         }
         binding.ivSms.setOnClickListener {
-            showSMSBottomSheet(view)
+            if (validateAmount())
+                showSMSBottomSheet(view)
         }
         binding.ivShare.setOnClickListener {
-            initOrder(-1)
+            if (validateAmount())
+                initOrder(-1)
         }
         binding.ivQr.setOnClickListener {
-            isQr = true
-            initOrder(-1)
+            if (validateAmount()) {
+                isQr = true
+                initOrder(-1)
+            }
         }
 
         val adapter: ArrayAdapter<String> =
@@ -75,6 +80,13 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         binding.spinner.adapter = adapter
+    }
+
+    private fun validateAmount(): Boolean {
+        if (tvAmount.text.toString() != "0") return true else {
+            Toast.makeText(this, getString(R.string.invalid_amount_msg), Toast.LENGTH_LONG).show()
+            return false
+        }
     }
 
     private fun initOrder(notificationMethod: Int = 0, notificationValue: String = "") {
