@@ -20,8 +20,13 @@ class PaylinkDetailsActivity : AppCompatActivity() {
     }
 
     private fun bindViews(response: PayLinkDetailsModel?) {
-
-
+        binding.tvOrderId.text = response?.orderId
+        binding.tvTerminalId.text = response?.terminalId
+        binding.tvMerchantId.text = response?.merchantId
+        binding.tvDateExpire.text = response?.dateExpire
+        binding.tvDateSent.text = response?.dateCreated
+        binding.tvMobileNum.text = response?.mobileNumer
+        binding.tvAmount.text = response?.amount
     }
 
     fun finish(view: View) {

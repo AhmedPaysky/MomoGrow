@@ -28,14 +28,6 @@ class QRActivity : AppCompatActivity() {
         generateQr(intent.getStringExtra("url")!!)
     }
 
-    private fun showConfirmationBottomSheet(fragmentView: View) {
-        val modalbottomSheetFragment =
-            ConfirmationBottomSheet(fragmentView = fragmentView, fromWhere = "qr")
-        modalbottomSheetFragment.show(
-            supportFragmentManager,
-            modalbottomSheetFragment.tag
-        )
-    }
 
     private fun generateQr(orderUrl: String) {
         val writer = QRCodeWriter()

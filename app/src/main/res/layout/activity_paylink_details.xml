@@ -51,6 +51,7 @@
             android:textSize="@dimen/_15sdp" />
 
         <TextView
+            android:id="@+id/tvAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,14 +69,14 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/_8sdp"
         android:background="@drawable/bc_blue_shape_without_padding"
-        android:drawableStart="@drawable/ic_oval_status_green"
+        android:drawableStart="@drawable/ic_oval_red"
         android:drawablePadding="6dp"
         android:gravity="top"
         android:paddingStart="8dp"
         android:paddingTop="2dp"
         android:paddingEnd="12dp"
         android:paddingBottom="2dp"
-        android:text="Paid"
+        android:text="unpaid"
         android:textColor="@color/white"
         android:textSize="11sp" />
 
@@ -107,6 +108,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvOrderId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1234578"
@@ -135,37 +137,10 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvTerminalId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="234-4746522"
-                android:textColor="@color/gray_light"
-                android:textSize="@dimen/_11sdp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/mtn_brighter_sans_bold"
-                android:text="@string/order_id"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp" />
-
-            <androidx.legacy.widget.Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1234578"
                 android:textColor="@color/gray_light"
                 android:textSize="@dimen/_11sdp" />
 
@@ -191,6 +166,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvMerchantId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="	Smay Mahmoud"
@@ -219,6 +195,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvMobileNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+256 123-456-789"
@@ -247,6 +224,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvDateExpire"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15/09/21, 10:45 AM"
@@ -283,6 +261,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvDateSent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15/08/21, 10:45 AM"
@@ -295,7 +274,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -323,7 +303,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"

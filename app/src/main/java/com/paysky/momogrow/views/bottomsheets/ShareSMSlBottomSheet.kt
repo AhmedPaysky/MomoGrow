@@ -35,12 +35,5 @@ class ShareSMSlBottomSheet(var fragmentView: View, var listener: OnBottomSheetBu
         }
         return v
     }
-
-    private fun showConfirmationBottomSheet(fragmentView: View) {
-        val modalbottomSheetFragment = ConfirmationBottomSheet(fragmentView = fragmentView)
-        modalbottomSheetFragment.show(
-            requireActivity().supportFragmentManager,
-            modalbottomSheetFragment.tag
-        )
-    }
+    
 }

@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.paysky.momogrow.R
-import com.paysky.momogrow.databinding.ActivityCalculatorBinding
 import com.paysky.momogrow.views.bottomsheets.ShareSMSlBottomSheet
 import com.paysky.momogrow.views.bottomsheets.ShareViaEmailBottomSheet
 import com.paysky.momogrow.views.customviews.CustomAmountKeyBoard
@@ -20,6 +19,7 @@ import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.InitiateOrderResponse
 import com.paysky.momogrow.data.models.PayLinkDetailsModel
 import com.paysky.momogrow.data.models.requests.InitiateOrderRequest
+import com.paysky.momogrow.databinding.ActivityCalculatorBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.*
 import com.paysky.momogrow.utilis.Constants.Companion.Preference.Companion.MERCHANT_ID
@@ -79,6 +79,7 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
 
     private fun initOrder(notificationMethod: Int = 0, notificationValue: String = "") {
         request = InitiateOrderRequest()
+        request.expiryDateTime = DateTimeUtil.getDateTimeExpirePayLinkPlusOneDay()
         request.dateTimeLocalTrxn = DateTimeUtil.getDateTimeLocalTrxn()
         request.merchantId = PreferenceProcessor.getStr(MERCHANT_ID, "")
         request.terminalId = PreferenceProcessor.getStr(TERMINAL_ID, "")
@@ -165,7 +166,7 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
             "UGX ",
             binding.tvAmount.text.toString(),
             initiateOrderResponse.orderURL,
-            DateTimeUtil.getDateWithHoursFromString(DateTimeUtil.getDateTimeExpirePayLinkPlusOneDay())
+            DateTimeUtil.getDateWithHoursFromString(request.expiryDateTime)
         )
 
         sharingIntent.putExtra(Intent.EXTRA_TEXT, message)
@@ -216,10 +217,10 @@ class CalculatorActivity : AppCompatActivity(), CustomAmountKeyBoard.ItemClickLi
             response.orderId,
             request.terminalId,
             request.merchantId,
-            "",
-            request.expiryDateTime,
-            request.dateTimeLocalTrxn,
-            request.amount.toString()
+            PreferenceProcessor.getStr(Constants.Companion.Preference.MOBILE_NUM, "")!!,
+            DateTimeUtil.getDateWithHoursFromString(request.expiryDateTime),
+            DateTimeUtil.getDateWithHoursFromString(request.dateTimeLocalTrxn),
+            request.amount.toInt().toString()
         )
         startActivity(
             Intent(this, PaylinkDetailsActivity::class.java)

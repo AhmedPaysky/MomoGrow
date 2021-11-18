@@ -16,7 +16,9 @@ import com.paysky.momogrow.data.api.ApiServiceCube
 import com.paysky.momogrow.data.models.requests.MOMOPayCheckMerchantIsRegisterRequest
 import com.paysky.momogrow.databinding.ActivityMobileNumberBinding
 import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.Constants
 import com.paysky.momogrow.utilis.MyUtils
+import com.paysky.momogrow.utilis.PreferenceProcessor
 import com.paysky.momogrow.utilis.TextUtils
 import com.paysky.momogrow.viewmodels.MobileNumberViewModel
 import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
@@ -60,7 +62,10 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
         //todo replace with mobile number property
 //        request.mobileNumber = "256785826095"
         request.mobileNumber = TextUtils.replaceAll("\\D", binding.etMobileNum.text.toString())
-
+        PreferenceProcessor.setStr(
+            Constants.Companion.Preference.MOBILE_NUM,
+            binding.etMobileNum.text.toString()
+        )
         viewModel.mOMOPayCheckMerchantIsRegister(request).observe(this, Observer {
             when (it.status) {
                 Status.SUCCESS -> {

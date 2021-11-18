@@ -14,6 +14,7 @@ class Constants {
                 const val FIREBASE_TOKEN = "fb_token"
                 const val RECEIVED_AUTH: String = "received_auth"
                 const val IS_LOGIN = "is_login"
+                const val MOBILE_NUM = "mobile_num"
             }
         }
     }
