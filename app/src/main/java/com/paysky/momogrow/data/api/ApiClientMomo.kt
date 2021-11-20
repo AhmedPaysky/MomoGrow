@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiClientMomo {
-    var BASE_URL: String = "https://emanfateen.mtngrow.com/"
+    var BASE_URL: String = "https://emanfateen.mtngrow.com"
     fun apiClient(url: String = BASE_URL): Retrofit {
         val gson = GsonBuilder()
             .setLenient()

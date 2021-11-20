@@ -1,4 +1,11 @@
 <resources>
+    <string name="product_name_error">Product name is mandatory</string>
+    <string name="Product_price_error">Product price is mandatory</string>
+    <string name="SKU_error">Product SKU is mandatory</string>
+    <string name="width_error">Product width is mandatory</string>
+    <string name="height_error">Product height is mandatory</string>
+    <string name="weight_error">Product weight is mandatory</string>
+
     <string name="app_name">MomoGrow</string>
     <string name="enter_monile_title">Enter your mobile number</string>
     <string name="country_mobile_code">+256</string>

@@ -162,7 +162,7 @@
                             android:fontFamily="@font/mtn_brighter_sans_medium"
                             android:hint="@string/product_price"
                             android:imeOptions="actionNext"
-                            android:inputType="number"
+                            android:inputType="numberDecimal"
                             android:paddingTop="6dp"
                             android:textColor="@color/et_color_black_100_opacity"
                             android:textColorHint="@color/hint_et_black_50_opacity"
@@ -400,16 +400,19 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_55sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:src="@drawable/ic_add_product" />
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/ic_add_product"
+                        />
 
                     <Space
                         android:layout_width="0dp"
@@ -417,11 +420,13 @@
                         android:layout_weight="1" />
 
                     <ImageView
+                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:src="@drawable/ic_add_product" />
+                        android:background="@drawable/ic_add_product"
+                        />
 
                     <Space
                         android:layout_width="0dp"
@@ -429,11 +434,13 @@
                         android:layout_weight="1" />
 
                     <ImageView
+                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:src="@drawable/ic_add_product" />
+                        android:background="@drawable/ic_add_product"
+                        />
 
                     <Space
                         android:layout_width="0dp"
@@ -441,11 +448,13 @@
                         android:layout_weight="1" />
 
                     <ImageView
+                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:src="@drawable/ic_add_product" />
+                        android:background="@drawable/ic_add_product"
+                        />
 
                     <Space
                         android:layout_width="0dp"
@@ -487,7 +496,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:fontFamily="@font/mtn_brighter_sans_medium"
-                        android:text="0"
+                        android:text="1"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_11sdp" />
 

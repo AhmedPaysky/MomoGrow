@@ -1,6 +1,7 @@
 package com.paysky.momogrow.data.models.momo
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class AddProductResponse(
 
@@ -15,9 +16,29 @@ data class AddProductResponse(
 
     @field:SerializedName("message")
     val message: String? = null
-)
+): Serializable
 
 data class Data(
+    @field:SerializedName("status")
+    val status: String,
+
+    @field:SerializedName("new")
+    val new: Int,
+
+    @field:SerializedName("active")
+    val active: Int,
+
+    @field:SerializedName("featured")
+    val featured: Int,
+
+    @field:SerializedName("width")
+    val width: Double,
+
+    @field:SerializedName("height")
+    val height: Double,
+
+    @field:SerializedName("weight")
+    val weight: Double,
 
     @field:SerializedName("formated_price")
     val formatedPrice: String? = null,
@@ -72,4 +93,4 @@ data class Data(
 
     @field:SerializedName("sku")
     val sku: String? = null
-)
+) : Serializable

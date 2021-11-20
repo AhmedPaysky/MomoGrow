@@ -1,5 +1,6 @@
 package com.paysky.momogrow.views.products
 
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,13 +11,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.models.momo.AddProductResponse
+import com.paysky.momogrow.data.models.momo.SimpleResponse
 import com.paysky.momogrow.databinding.FragmentProductDetailsBinding
+import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.MyUtils
 
 
 class ProductDetailsFragment : Fragment() {
 
     private var _binding: FragmentProductDetailsBinding? = null
     private val viewModel: ProductViewModel by activityViewModels()
+    private lateinit var dialog: Dialog
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -27,38 +33,53 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
+        dialog = MyUtils.getDlgProgress(requireActivity())
         val view = binding.root
         binding.btnEdit.setOnClickListener {
             findNavController().navigate(R.id.action_productDetailsFragment_to_addProductFragment)
         }
+        val productdata = (arguments?.getSerializable("productdata") as AddProductResponse).data!!
 
         binding.btnDelete.setOnClickListener {
-            requireActivity().finish()
-            Toast.makeText(requireActivity(), "Product deleted ", Toast.LENGTH_LONG).show()
+            viewModel.deleteProduct(productdata.id.toString()).observe(viewLifecycleOwner, {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        dialog.dismiss()
+                        Toast.makeText(requireActivity(), "Product deleted ", Toast.LENGTH_LONG).show()
+                        requireActivity().finish()
+                    }
+                    Status.ERROR -> {
+                        dialog.dismiss()
+                    }
+                    Status.LOADING -> {
+                        dialog.show()
+                    }
+                }
+            })
         }
         binding.ivBack.setOnClickListener {
             requireActivity().finish()
         }
-        val productId = arguments?.getLong("productId", 0)
 
-        viewModel.getProductById(productId?.toInt()!!)
-            .observe(viewLifecycleOwner, Observer {
-                binding.tvStatus.text = it.status
-                binding.tvNameFruit.text = it.name
-                binding.tvCategory.text = it.category
-                binding.tvName.text = it.category
-                binding.tvDescripyion.text = it.description
-                binding.tvSku.text = it.sku
-                binding.tvPrice.text = it.price
-                binding.tvWidth.text = it.width
-                binding.tvHeight.text = it.height
-                binding.tvWeight.text = it.weight
-                binding.tvQuantity.text = it.quantity
-                binding.switchFeature.isChecked = it.featureUser
-                binding.switchNew.isChecked = it.new
-                binding.switchPublish.isChecked = it.publish
-            })
+        binding.tvStatus.text = if (productdata.inStock!!) "In Stock" else "Out of stock"
+        binding.tvNameFruit.text = productdata.name
 
+        productdata.categories?.forEach {
+            binding.tvCategory.text = it?.name
+        }
+
+        binding.tvName.text = productdata.name
+        binding.tvDescripyion.text = productdata.description
+        binding.tvSku.text = productdata.sku
+        binding.tvPrice.text = productdata.price
+        binding.tvStatus.text = productdata.status
+        binding.tvWidth.text = productdata.width.toString()
+        binding.tvHeight.text = productdata.height.toString()
+        binding.tvWeight.text = productdata.weight.toString()
+        binding.tvQuantity.text = ""
+        binding.switchFeature.isChecked = productdata.featured == 1
+        binding.switchNew.isChecked = productdata.new  == 1
+        binding.switchPublish.isChecked = productdata.active == 1
         return view
     }
 

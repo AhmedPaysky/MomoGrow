@@ -108,7 +108,7 @@ data class DataItem(
     val width: String? = null,
 
     @field:SerializedName("status")
-    val status: String? = null
+ val status: String? = null
 ) : Serializable
 
 data class Reviews(

@@ -22,13 +22,10 @@ class PendingApprovalProductFragment : Fragment() {
     ): View {
         _binding = FragmentPendingApprovalProductBinding.inflate(inflater, container, false)
         val view = binding.root
-        val productId = arguments?.getLong("productId", 0)
-        val bundle = Bundle()
-        bundle.putLong("productId", productId!!)
 
         binding.btnNext.setOnClickListener {
             findNavController().navigate(
-                R.id.action_pendingApprovalProductFragment_to_productDetailsFragment, bundle
+                R.id.action_pendingApprovalProductFragment_to_productDetailsFragment, arguments
             )
         }
         return view
