@@ -61,7 +61,7 @@ data class CategoriesItem(
 
     @field:SerializedName("status")
     val status: Int? = null
-)
+): Serializable
 
 data class Reviews(
 
@@ -76,7 +76,7 @@ data class Reviews(
 
     @field:SerializedName("average_rating")
     val averageRating: Int? = null
-)
+): Serializable
 
 data class BaseImage(
 
@@ -91,7 +91,7 @@ data class BaseImage(
 
     @field:SerializedName("medium_image_url")
     val mediumImageUrl: String? = null
-)
+): Serializable
 
 data class DataItem(
 

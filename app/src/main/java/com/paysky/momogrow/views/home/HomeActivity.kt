@@ -8,6 +8,8 @@ import android.view.MenuItem
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.paysky.momogrow.R
+import com.paysky.momogrow.utilis.Constants
+import com.paysky.momogrow.utilis.PreferenceProcessor
 import com.paysky.momogrow.views.products.AddProductActivity
 import com.paysky.momogrow.views.products.ProductsFragment
 import com.paysky.momogrow.views.more.MoreFragment
@@ -98,6 +100,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        PreferenceProcessor.setStr(Constants.Companion.Preference.AUTH_TOKEN, "1637134988Z1Gw0oZPomBUzs4rCzM1AFQZH88hgQsMoHABNc3fz0gGNK6g")
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 

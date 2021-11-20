@@ -94,7 +94,7 @@
         <entry key="app/src/main/res/layout/custom_marker_view.xml" value="0.55234375" />
         <entry key="app/src/main/res/layout/custom_spinner_item_bold.xml" value="0.2526041666666667" />
         <entry key="app/src/main/res/layout/dlg_progress.xml" value="0.36822916666666666" />
-        <entry key="app/src/main/res/layout/fragment_add_product.xml" value="0.36822916666666666" />
+        <entry key="app/src/main/res/layout/fragment_add_product.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_calculator.xml" value="0.5396946564885496" />
         <entry key="app/src/main/res/layout/fragment_catalog.xml" value="0.36822916666666666" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.36822916666666666" />

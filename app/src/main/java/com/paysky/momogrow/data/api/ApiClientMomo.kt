@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiClientMomo {
     // todo add base url
-    var BASE_URL: String = "https://mtn.paysky.io/cube/"
+    var BASE_URL: String = "https://emanfateen.mtngrow.com"
     fun apiClient(url: String = BASE_URL): Retrofit {
         val gson = GsonBuilder()
             .setLenient()
