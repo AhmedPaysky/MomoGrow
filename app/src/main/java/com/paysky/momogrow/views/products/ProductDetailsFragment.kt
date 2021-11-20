@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.paysky.momogrow.R
 import com.paysky.momogrow.data.models.momo.AddProductResponse
+import com.paysky.momogrow.data.models.momo.Data
 import com.paysky.momogrow.data.models.momo.SimpleResponse
 import com.paysky.momogrow.databinding.FragmentProductDetailsBinding
 import com.paysky.momogrow.helper.Status
@@ -19,6 +20,7 @@ import com.paysky.momogrow.utilis.MyUtils
 
 
 class ProductDetailsFragment : Fragment() {
+    lateinit var productdata : Data
 
     private var _binding: FragmentProductDetailsBinding? = null
     private val viewModel: ProductViewModel by activityViewModels()
@@ -36,9 +38,11 @@ class ProductDetailsFragment : Fragment() {
         dialog = MyUtils.getDlgProgress(requireActivity())
         val view = binding.root
         binding.btnEdit.setOnClickListener {
-            findNavController().navigate(R.id.action_productDetailsFragment_to_addProductFragment)
+            val bundle = Bundle()
+            bundle.putSerializable("productdata", productdata)
+            findNavController().navigate(R.id.action_productDetailsFragment_to_addProductFragment,bundle)
         }
-        val productdata = (arguments?.getSerializable("productdata") as AddProductResponse).data!!
+        productdata = (arguments?.getSerializable("productdata") as AddProductResponse).data!!
 
         binding.btnDelete.setOnClickListener {
             viewModel.deleteProduct(productdata.id.toString()).observe(viewLifecycleOwner, {

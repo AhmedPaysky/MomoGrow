@@ -78,6 +78,21 @@ class ProductViewModel(private val apiServiceMomo: ApiServiceMomo) : ViewModel()
             emit(Resource.error(data = null, message = exception.message ?: "Error occured"))
         }
     }
+    fun updateproduct(productid: Int,productEntity: AddProductRequestModel) = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = apiServiceMomo.UpdateProduct(productid,productEntity)))
+        } catch (exception: HttpException) {
+            emit(
+                Resource.errorHttp(
+                    data = exception,
+                    message = exception.message ?: "Error occured"
+                )
+            )
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error occured"))
+        }
+    }
     fun addImagesToProduct(id : Int,productEntity: ArrayList<MultipartBody.Part>) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
