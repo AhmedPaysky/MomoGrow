@@ -89,7 +89,7 @@ data class Data(
     val id: Int? = null,
 
     @field:SerializedName("categories")
-    val categories: List<CategoriesItem?>? = null,
+    val categories: List<CatgoriesItem?>? = null,
 
     @field:SerializedName("sku")
     val sku: String? = null
