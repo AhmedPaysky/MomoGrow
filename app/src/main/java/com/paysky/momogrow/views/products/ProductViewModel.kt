@@ -1,5 +1,6 @@
 package com.paysky.momogrow.views.products
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.paysky.momogrow.MyApplication
@@ -18,10 +19,15 @@ class ProductViewModel(private val apiServiceMomo: ApiServiceMomo) : ViewModel()
     fun getProductById(id: Int) = dao.getProductById(id)
     suspend fun deleteProduct(it: ProductEntity) = dao.delete(it)
 
-    fun allProducts() = liveData(Dispatchers.IO) {
+    fun allProducts(id : Int) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = apiServiceMomo.getAllProducts()))
+            if (id == 0) {
+                emit(Resource.success(data = apiServiceMomo.getAllProducts()))
+            }
+            else {
+                emit(Resource.success(data = apiServiceMomo.getAllProductsWithID(id)))
+            }
         } catch (exception: HttpException) {
             emit(
                 Resource.errorHttp(

@@ -28,11 +28,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.google.gson.Gson
+import com.paysky.momogrow.MyApplication
 import com.paysky.momogrow.data.models.AddProductRequestModel
-import com.paysky.momogrow.data.models.momo.AddProductResponse
-import com.paysky.momogrow.data.models.momo.AttributesFamiliesMainModel
-import com.paysky.momogrow.data.models.momo.CatgoriesItem
-import com.paysky.momogrow.data.models.momo.Data
+import com.paysky.momogrow.data.models.momo.*
 import com.paysky.momogrow.utilis.MyUtils
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -57,7 +55,7 @@ class AddProductFragment : Fragment() {
     private lateinit var mImage4: Uri
     private var _binding: FragmentAddProductBinding? = null
     private val binding get() = _binding!!
-    val allCategories = ArrayList<CatgoriesItem>()
+    var allCategories : ArrayList<CatgoriesItem?>? = null
     var quantity = 1
     var handler: Handler = Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
@@ -96,14 +94,19 @@ class AddProductFragment : Fragment() {
         if (this::mImage1.isInitialized) {
             mImage1.path?.apply {
                 try {
+                    Log.e("addImagesToProduct","first")
                     val file = File(this)
+                    Log.e("addImagesToProduct","second")
                     if (file.exists()) {
                         val requestFile = RequestBody.create(
                             activity?.getContentResolver()?.getType(mImage1)!!.toMediaTypeOrNull(), file)
+                        Log.e("addImagesToProduct","third")
                         parts.add(MultipartBody.Part.createFormData("images[0]", substring(lastIndexOf('/') + 1), requestFile))
+                        Log.e("addImagesToProduct","fourth")
                     }
                 } catch (e: Exception) {
-
+                    Log.e("addImagesToProduct","exception:"+e.toString())
+                    Log.e("addImagesToProduct","exception2:"+e.message)
                 }
             }
         }
@@ -146,6 +149,7 @@ class AddProductFragment : Fragment() {
                 }
             }
         }
+
         return parts
     }
     override fun onCreateView(
@@ -166,7 +170,7 @@ class AddProductFragment : Fragment() {
         binding.btnNext.setOnClickListener {
             if (!CheckEmptyFields()) {
                 val categories = ArrayList<Int>()
-                categories.add(allCategories.get(binding.spinner.selectedItemPosition).id!!)
+                categories.add(allCategories?.get(binding.spinner.selectedItemPosition)?.id!!)
                 val productEntity = AddProductRequestModel()
                 productEntity.name = binding.etProductName.text.toString()
                 productEntity.meta_title = binding.etProductName.text.toString()
@@ -185,26 +189,15 @@ class AddProductFragment : Fragment() {
                 productEntity.new = if (binding.switchNew.isChecked) 1 else 0
                 productEntity.show_on_marketplace = if (binding.switchPublish.isChecked) 1 else 0
                 productEntity.categories = categories
-                if (arguments != null && arguments?.containsKey("productdata") == true) {
-                    viewModel.updateproduct((arguments?.getSerializable("productdata") as Data).id!! , productEntity).observe(viewLifecycleOwner, {
+                if (MyApplication.productObj != null) {
+                    viewModel.updateproduct(MyApplication.productObj.id!! , productEntity).observe(viewLifecycleOwner, {
                         when (it.status) {
                             Status.SUCCESS -> {
                                 dialog.dismiss()
-                                val bundle = Bundle()
-                                bundle.putSerializable(
-                                    "productdata",
-                                    ((it.data) as AddProductResponse).data!!
-                                )
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    findNavController().navigate(
-                                        R.id.action_addProductFragment_to_pendingApprovalProductFragment,
-                                        bundle
-                                    )
-
-                                }
+                                Toast.makeText(context,"Product Edited successfully",Toast.LENGTH_LONG).show()
+                                requireActivity().finish()
                             }
                             Status.ERROR -> {
-                                Log.e("productEntity", Gson().toJson(it.message))
                                 dialog.dismiss()
                             }
                             Status.LOADING -> {
@@ -220,48 +213,28 @@ class AddProductFragment : Fragment() {
                     viewModel.addproduct(productEntity).observe(viewLifecycleOwner, {
                         when (it.status) {
                             Status.SUCCESS -> {
-                                viewModel.addImagesToProduct(
-                                    ((it.data) as AddProductResponse).data!!.id!!,
-                                    GenerateImagesArray()
-                                ).observe(viewLifecycleOwner, {
-                                    when (it.status) {
-                                        Status.SUCCESS -> {
-                                            dialog.dismiss()
-                                            val bundle = Bundle()
-                                            bundle.putSerializable(
-                                                "productdata",
-                                                ((it.data) as AddProductResponse).data!!
-                                            )
-                                            CoroutineScope(Dispatchers.IO).launch {
-                                                findNavController().navigate(
-                                                    R.id.action_addProductFragment_to_pendingApprovalProductFragment,
-                                                    bundle
-                                                )
-
-                                            }
-                                        }
-                                        Status.ERROR -> {
-                                            Log.e("productEntity", Gson().toJson(it.message))
-                                            dialog.dismiss()
-                                        }
-                                        Status.LOADING -> {
-                                            dialog.show()
-                                        }
-                                        else ->
-                                            dialog.dismiss()
-
-                                    }
-                                })
+//                                dialog.dismiss()
+                                GoImagesApi(48)
+//                                if (productEntity.show_on_marketplace != 1) {
+//                                    Toast.makeText(context,"Product addedd successfully",Toast.LENGTH_LONG).show()
+//                                    requireActivity().finish()
+//                                }
+//                                else {
+//                                    requireActivity().finish()
+//                                    CoroutineScope(Dispatchers.IO).launch {
+//                                        findNavController().navigate(
+//                                            R.id.action_addProductFragment_to_pendingApprovalProductFragment
+//                                        )
+//
+//                                    }
+//                                }
                             }
                             Status.ERROR -> {
-                                Log.e("productEntity", Gson().toJson(it.message))
                                 dialog.dismiss()
                             }
                             Status.LOADING -> {
                                 dialog.show()
                             }
-                            else ->
-                                dialog.dismiss()
 
                         }
                     })
@@ -273,12 +246,38 @@ class AddProductFragment : Fragment() {
             requireActivity().finish()
         }
 
-        if (arguments != null && arguments?.containsKey("productdata") == true) {
-            SetDataOfProductToFieldsToUpdate(arguments?.getSerializable("productdata") as Data)
+        if (MyApplication.productObj != null) {
+            SetDataOfProductToFieldsToUpdate(MyApplication.productObj)
         }
         return view
     }
 
+
+    fun GoImagesApi(id: Int) {
+        viewModel.addImagesToProduct(id, GenerateImagesArray()).observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    val bundle = Bundle()
+                    bundle.putSerializable(
+                        "productdata",
+                        ((it.data) as AddProductResponse).data!!
+                    )
+                    CoroutineScope(Dispatchers.IO).launch {
+                        findNavController().navigate(
+                            R.id.action_addProductFragment_to_pendingApprovalProductFragment,
+                            bundle
+                        )
+
+                    }
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                }
+            }
+        })
+
+    }
     private val startForImage_1Result =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val resultCode = result.resultCode
@@ -430,9 +429,10 @@ class AddProductFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     dialog.dismiss()
+                    allCategories = ((it.data) as MainOfMainCategories).data?.catgories
                     val arrOfStrings = ArrayList<String>()
-                    ((it.data) as ArrayList<CatgoriesItem>).forEach {
-                        arrOfStrings.add(it.name!!)
+                    allCategories?.forEach {
+                        arrOfStrings.add(it?.name!!)
                     }
                     val adapter: ArrayAdapter<String> =
                         ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, arrOfStrings)
@@ -440,7 +440,6 @@ class AddProductFragment : Fragment() {
                     binding.spinner.adapter = adapter
                 }
                 Status.ERROR -> {
-                    Log.e("productEntity",Gson().toJson(it.message))
                     dialog.dismiss()
                 }
                 Status.LOADING -> {
@@ -510,20 +509,20 @@ class AddProductFragment : Fragment() {
 
 
 
-    fun SetDataOfProductToFieldsToUpdate(productdata : Data) {
+    fun SetDataOfProductToFieldsToUpdate(productdata : DataItem) {
         productdata.categories?.forEach {
             binding.spinner.setSelection(0)
         }
         binding.etProductName.setText(productdata.name)
         binding.etProductDescription.setText(productdata.description)
         binding.etSKU.setText(productdata.sku)
-        binding.etLastProductPrice.setText(productdata.price)
+        binding.etLastProductPrice.setText(productdata.price.toString())
         binding.etWidth.setText(productdata.width.toString())
         binding.etHeight.setText(productdata.height.toString())
         binding.etWeight.setText(productdata.weight.toString())
         binding.tvQuantity.setText("1")
         binding.switchFeature.isChecked = productdata.featured == 1
-        binding.switchNew.isChecked = productdata.new  == 1
+        binding.switchNew.isChecked = productdata.jsonMemberNew  == 1
         binding.switchPublish.isChecked = productdata.active == 1
     }
 }

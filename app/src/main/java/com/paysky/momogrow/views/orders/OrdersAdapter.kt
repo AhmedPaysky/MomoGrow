@@ -47,26 +47,27 @@ class OrdersAdapter(var context: Context) : RecyclerView.Adapter<MyViewHolder>()
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val order = orders[position]
-        holder.itemView.tvStatus.text = order.status
-        holder.itemView.tvAmount.text = order.orderCurrencyCode + " " + order.grandTotal
+        holder.itemView.tvStatus.text = order.statusLabel
+        holder.itemView.tvCurrency.text = order.orderCurrencyCode
+        holder.itemView.tvAmount.text = order.grandTotal.toString()
         holder.itemView.tvOrderNo.text = "Order no. " + order.id
         holder.itemView.tvDate.text = order.createdAt
         arrayOf("Not processed", "In transit", "Delivered", "Cancelled", "Refund request")
 
-        when (order.status) {
-            "Not processed" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+        when (order.status?.lowercase()) {
+            "pending" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_grey, 0, 0, 0,
             )
-            "In transit" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+            "processing" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_yellow, 0, 0, 0,
             )
-            "Delivered" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+            "delivered" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_green, 0, 0, 0,
             )
-            "Cancelled" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+            "canceled" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_red, 0, 0, 0,
             )
-            "Refund request" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+            "refund request" -> holder.itemView.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_orange, 0, 0, 0,
             )
 
@@ -112,54 +113,5 @@ class OrdersAdapter(var context: Context) : RecyclerView.Adapter<MyViewHolder>()
 
     override fun getItemCount(): Int {
         return orders.size
-    }
-
-    class OrderObj() : Serializable, Parcelable {
-        val statusArr =
-            arrayOf("Not processed", "In transit", "Delivered", "Cancelled", "Refund request")
-        val numberArr =
-            arrayOf(
-                "1234522",
-                "6544212",
-                "1234511",
-                "4334567",
-                "9034567"
-            )
-        val amountArr =
-            arrayOf("150", "200", "120", "111", "252")
-
-        var number: String = numberArr[Random.nextInt(0, 5)]
-        var amount: String = amountArr[Random.nextInt(0, 5)]
-        var date: String = "25/08/21 • 11:00 AM"
-        var status: String = statusArr[Random.nextInt(0, 5)]
-
-        constructor(parcel: Parcel) : this() {
-            number = parcel.readString().toString()
-            amount = parcel.readString().toString()
-            date = parcel.readString().toString()
-            status = parcel.readString().toString()
-        }
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeString(number)
-            parcel.writeString(amount)
-            parcel.writeString(date)
-            parcel.writeString(status)
-        }
-
-        override fun describeContents(): Int {
-            return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<OrderObj> {
-            override fun createFromParcel(parcel: Parcel): OrderObj {
-                return OrderObj(parcel)
-            }
-
-            override fun newArray(size: Int): Array<OrderObj?> {
-                return arrayOfNulls(size)
-            }
-        }
-
     }
 }

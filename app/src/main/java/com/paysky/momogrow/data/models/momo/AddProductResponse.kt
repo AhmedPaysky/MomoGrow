@@ -20,25 +20,25 @@ data class AddProductResponse(
 
 data class Data(
     @field:SerializedName("status")
-    val status: String,
+    val status: String? = null,
 
     @field:SerializedName("new")
-    val new: Int,
+    val new: Int? = null,
 
     @field:SerializedName("active")
-    val active: Int,
+    val active: Int? = null,
 
     @field:SerializedName("featured")
-    val featured: Int,
+    val featured: Int? = null,
 
     @field:SerializedName("width")
-    val width: Double,
+    val width: Double? = null,
 
     @field:SerializedName("height")
-    val height: Double,
+    val height: Double? = null,
 
     @field:SerializedName("weight")
-    val weight: Double,
+    val weight: Double? = null,
 
     @field:SerializedName("formated_price")
     val formatedPrice: String? = null,

@@ -31,6 +31,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.paysky.momogrow.MyApplication
 import com.paysky.momogrow.R
 
 import com.paysky.momogrow.views.products.AddProductActivity
@@ -347,6 +348,7 @@ class IntroScreensFragment : Fragment() {
 
         binding.btnNext.setOnClickListener {
             if (binding.btnNext.text == getString(com.paysky.momogrow.R.string.add_product)) {
+                MyApplication.productObj  = null
                 startActivity(Intent(requireActivity(), AddProductActivity::class.java))
             } else
                 HomeFragment.lviewPager.currentItem = 1

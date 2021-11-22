@@ -1,6 +1,7 @@
 package com.paysky.momogrow.views.products
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -64,6 +65,9 @@ class ProductDetailsFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             requireActivity().finish()
         }
+//        binding.btnEdit.setOnClickListener {
+//           requireActivity().startActivity(Intent(context, AddProductActivity::class.java))
+//        }
 
         binding.tvStatus.text = if (productdata.inStock!!) "In Stock" else "Out of stock"
         binding.tvNameFruit.text = productdata.name

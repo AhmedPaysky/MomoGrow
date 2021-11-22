@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.paysky.momogrow.MyApplication
 import com.paysky.momogrow.R
 import com.paysky.momogrow.utilis.Constants
 import com.paysky.momogrow.utilis.PreferenceProcessor
@@ -135,6 +136,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
         fabAdd.setOnClickListener {
+            MyApplication.productObj  = null
             startActivity(Intent(this, AddProductActivity::class.java))
         }
         ivCalculate.setOnClickListener {

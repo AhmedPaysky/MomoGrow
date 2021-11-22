@@ -13,7 +13,8 @@
         android:layout_marginBottom="16dp"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -24,19 +25,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="2"
-            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:fontFamily="@font/mtn_brighter_sans_medium"
                 android:gravity="start"
-                android:text="Green Appllnlbdnkenklewnklnwelfnlewkfnlkwefnmwe;e "
+                android:text="Name"
                 android:textColor="@color/et_color_black_100_opacity"
                 android:textStyle="normal" />
 

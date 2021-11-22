@@ -12,20 +12,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.paysky.momogrow.R
 import com.paysky.momogrow.data.api.ApiClientMomo
 import com.paysky.momogrow.data.api.ApiServiceMomo
+import com.paysky.momogrow.data.models.momo.CatgoriesItem
 import com.paysky.momogrow.data.models.momo.DataItem
+import com.paysky.momogrow.data.models.momo.MainOfMainCategories
 import com.paysky.momogrow.data.models.momo.ProductsResponse
 import com.paysky.momogrow.databinding.FragmentCatalogBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.MyUtils
-import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
 import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
 import kotlinx.android.synthetic.main.fragment_orders.view.*
 
 
 class ProductsFragment : Fragment() {
-
     private var _binding: FragmentCatalogBinding? = null
     private val viewModel: ProductViewModel by activityViewModels {
         ViewModelFactoryMomo(
@@ -34,35 +35,21 @@ class ProductsFragment : Fragment() {
             )
         )
     }
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private var adapter: ProductsAdapter? = null
+    private var adaptercategories: CategoriesAdapter? = null
     private lateinit var dialog: Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         _binding = FragmentCatalogBinding.inflate(inflater, container, false)
         val view = binding.root
         adapter = ProductsAdapter(requireActivity())
+        adaptercategories = CategoriesAdapter(requireActivity())
         view.recyclerView.layoutManager = LinearLayoutManager(context)
         view.recyclerView.adapter = adapter
         dialog = MyUtils.getDlgProgress(requireActivity())
-        adapter!!.setListener(object : ProductsAdapter.onItemClick {
-            override fun onClicked(productObj: DataItem) {
-                startActivity(
-                    Intent(requireActivity(), ProductDetailsActivity::class.java)
-                        .putExtra("name", productObj.name)
-                        .putExtra("status", productObj.status)
-                        .putExtra("productId", productObj.id)
-                        .putExtra("objet", productObj)
-                )
-            }
-        })
-
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -77,39 +64,13 @@ class ProductsFragment : Fragment() {
 
         })
 
-        viewModel.allProducts().observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    dialog.dismiss()
-                    if ((it.data as ProductsResponse).data?.products?.isEmpty()!!) {
-                        binding.linearNoProducts.visibility = View.VISIBLE
-                        binding.recyclerView.visibility = View.GONE
-                    } else {
-                        binding.linearNoProducts.visibility = View.GONE
-                        binding.recyclerView.visibility = View.VISIBLE
-                        adapter?.setProducts(it.data.data?.products)
-                    }
-                }
-                Status.ERROR -> {
-                    dialog.dismiss()
-                }
-                Status.LOADING -> {
-                    dialog.show()
 
-                }
-                else -> dialog.dismiss()
-
-            }
-        })
+        GetAllCatgories()
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-        adapter = ProductsAdapter(requireActivity())
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = adapter
-        viewModel.allProducts().observe(viewLifecycleOwner, Observer {
+    fun setProductData(id: Int = 0) {
+        viewModel.allProducts(id).observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
                     dialog.dismiss()
@@ -121,6 +82,7 @@ class ProductsFragment : Fragment() {
                         binding.recyclerView.visibility = View.VISIBLE
                         adapter?.setProducts(it.data.data?.products)
                     }
+                    binding.tvOrdersCount.text = it.data.data?.products?.size.toString() + " " + getString(R.string.products)
                 }
                 Status.ERROR -> {
                     dialog.dismiss()
@@ -137,12 +99,51 @@ class ProductsFragment : Fragment() {
             override fun onClicked(productObj: DataItem) {
                 startActivity(
                     Intent(requireActivity(), ProductDetailsActivity::class.java)
-                        .putExtra("name", productObj.name)
-                        .putExtra("status", productObj.status)
-                        .putExtra("productId", productObj.id)
                         .putExtra("obj", productObj)
                 )
             }
         })
+    }
+    override fun onResume() {
+        super.onResume()
+        if (adaptercategories != null && adaptercategories?.getCategories()?.size!! > 0) {
+            setProductData()
+        }
+    }
+
+    fun GetAllCatgories() {
+        binding.listCategories.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
+        binding.listCategories.adapter = adaptercategories
+        viewModel.allCategories().observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    val datacategories = ArrayList<CatgoriesItem?>()
+                    val cat = CatgoriesItem()
+                    cat.name = "All"
+                    cat.id = 0
+                    datacategories.add(cat)
+                    datacategories.addAll((it.data as MainOfMainCategories).data?.catgories!!)
+                    adaptercategories?.setCategories(datacategories)
+                    setProductData()
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                }
+                Status.LOADING -> {
+                    dialog.show()
+                }
+                else ->
+                    dialog.dismiss()
+
+            }
+        })
+
+        adaptercategories!!.setListener(object : CategoriesAdapter.onItemClick {
+            override fun onClicked(Obj: CatgoriesItem) {
+                setProductData(Obj.id!!)
+            }
+        })
+
     }
 }

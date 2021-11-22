@@ -71,8 +71,7 @@ class ProductsAdapter(var mContext: Context) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val product = products[position]
         holder.itemView.tvName.text = product.name
-        holder.itemView.tvPublishStatus.text = product.status
-        arrayOf("Out of stock", "In stock")
+        holder.itemView.tvPublishStatus.text = mContext.getString(R.string.sKU) + " " + product.sku
 
         when (product.inStock) {
             true -> {
@@ -89,52 +88,10 @@ class ProductsAdapter(var mContext: Context) :
                 holder.itemView.tvStatus.text = mContext.getString(R.string.outstock)
             }
         }
-        if (product.images?.isNotEmpty()!!) {
-            val url: String = product.images[0]?.originalImageUrl.toString()
-
-            val glideUrl = GlideUrl(
-                url,
-                LazyHeaders.Builder()
-                    .addHeader(
-                        "Authorization",
-                        "Bearer 1637134988Z1Gw0oZPomBUzs4rCzM1AFQZH88hgQsMoHABNc3fz0gGNK6g"
-                    ).addHeader("Accept", "application/json")
-                    .addHeader("Content-Type", "application/json")
-                    .build()
-            )
-
-            Glide.with(mContext)
-                .load(glideUrl)
-                .into(holder.itemView.icon);
+        product.baseImage?.apply {
+            Glide.with(mContext).load(originalImageUrl).placeholder(R.drawable.ic_mtn_logo)
+                .into(holder.itemView.icon)
         }
-//        when (product.name) {
-//            "Green Apple" -> holder.itemView.icon.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    mContext,
-//                    R.drawable.applepng
-//                )
-//            )
-//            "Carrot" -> holder.itemView.icon.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    mContext,
-//                    R.drawable.carrot
-//                )
-//            )
-//            "Tomato" -> holder.itemView.icon.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    mContext,
-//                    R.drawable.tomato
-//                )
-//            )
-//            "Banana" -> holder.itemView.icon.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    mContext,
-//                    R.drawable.bannana
-//                )
-//            )
-//
-//        }
-
         holder.itemView.setOnClickListener {
             if (listener != null) {
                 listener?.onClicked(product)
@@ -159,7 +116,6 @@ class ProductsAdapter(var mContext: Context) :
                     R.string.outstock
                 )
                 val qStatus = productModel.status?.toUpperCase(Locale.getDefault())
-
                 if (status[0] == charText[0] && status.contains(charText)) {
                     products?.add(productModel)
                 } else if (qStatus!![0] == charText[0] && qStatus.contains(charText)) {
@@ -169,24 +125,4 @@ class ProductsAdapter(var mContext: Context) :
         }
         notifyDataSetChanged()
     }
-
-
-    class ProductObj {
-        val statusArr =
-            arrayOf("In stock", "Out of stock")
-        val nameArr =
-            arrayOf(
-                "Green Apple ",
-                "Tomato",
-                "Banana",
-                "Carrot",
-            )
-        val qStatusArr =
-            arrayOf("published", "unpublished", "under review")
-
-        var name: String = nameArr[Random.nextInt(0, 4)]
-        var qStatus: String = qStatusArr[Random.nextInt(0, 3)]
-        var status: String = statusArr[Random.nextInt(0, 2)]
-
     }
-}

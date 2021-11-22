@@ -172,6 +172,7 @@
     <string name="setupyourstorefront_msg">In addition to selling your products on the MoMo MarketPlace, you can also set up your own web storefront with customised branding to help you build your online presence.If you don\'t want to do it now, you can setup your storefront at anytime from the *More* button on the main menu navigation.</string>
     <string name="setupnow">Set up now</string>
     <string name="later">Later</string>
+    <string name="products"> Products</string>
     <string name="paylink_details">PayLink Details</string>
     <string name="order_id">Order ID</string>
     <string name="terminaliD">Terminal ID</string>

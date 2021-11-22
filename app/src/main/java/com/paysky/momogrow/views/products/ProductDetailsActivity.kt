@@ -1,11 +1,14 @@
 package com.paysky.momogrow.views.products
 
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.paysky.momogrow.MyApplication
 import com.paysky.momogrow.R
 import com.paysky.momogrow.R2
 import com.paysky.momogrow.data.api.ApiClientMomo
@@ -17,6 +20,7 @@ import com.paysky.momogrow.databinding.FragmentProductDetailsBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.utilis.MyUtils
 import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
+import kotlinx.android.synthetic.main.custom_item_catalog.view.*
 
 class ProductDetailsActivity : AppCompatActivity() {
     private lateinit var dialog: Dialog
@@ -35,62 +39,34 @@ class ProductDetailsActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         dialog = MyUtils.getDlgProgress(this)
-        val name = intent?.getStringExtra("name")
-        val status = intent?.getStringExtra("status")
-        val productId = intent?.getIntExtra("productId", 0)
-        var obj = intent?.getSerializableExtra("obj") as DataItem
-
-
-//        binding.containerButtons.visibility = View.GONE
-
-
-        val it: DataItem = obj
-        var productEntity: ProductEntity? = null
-        binding.tvStatus.text = it.status
-        binding.tvNameFruit.text = it.name
-        binding.tvCategory.text = it.type
-        binding.tvName.text = it.type
-        binding.tvDescripyion.text = it.description
-        binding.tvSku.text = it.sku
-        it.price.let {
-            binding.tvPrice.text = it.toString()
+        val itObj = intent?.getSerializableExtra("obj") as DataItem
+        itObj.baseImage?.apply {
+            Glide.with(view.context).load(originalImageUrl).placeholder(R.drawable.ic_mtn_logo)
+                .into(binding.image)
+            Glide.with(view.context).load(originalImageUrl).placeholder(R.drawable.ic_mtn_logo)
+                .into(binding.ivImage1)
         }
-        binding.tvWidth.text = it.width
-        binding.tvHeight.text = it.height
-        binding.tvWeight.text = it.weight
-//        binding.tvQuantity.text = it.quantity
-//        binding.switchFeature.isChecked = it.featureUser
-//        binding.switchNew.isChecked = it.new
-//        binding.switchPublish.isChecked = it.publish
-
-//        viewModel.getProductById(productId!!)
-//            .observe(this@ProductDetailsActivity, Observer {
-//                if (it != null) {
-//                    productEntity = it
-//                    binding.tvStatus.text = it.status
-//                    binding.tvNameFruit.text = it.name
-//                    binding.tvCategory.text = it.category
-//                    binding.tvName.text = it.category
-//                    binding.tvDescripyion.text = it.description
-//                    binding.tvSku.text = it.sku
-//                    binding.tvPrice.text = it.price
-//                    binding.tvWidth.text = it.width
-//                    binding.tvHeight.text = it.height
-//                    binding.tvWeight.text = it.weight
-//                    binding.tvQuantity.text = it.quantity
-//                    binding.switchFeature.isChecked = it.featureUser
-//                    binding.switchNew.isChecked = it.new
-//                    binding.switchPublish.isChecked = it.publish
-//                }
-//            })
+        binding.tvStatus.text = itObj.status
+        binding.tvNameFruit.text = itObj.name
+        itObj.categories?.forEach {
+            binding.tvCategory.text = itObj.name
+        }
+        binding.tvName.text = itObj.type
+        binding.tvDescripyion.text = itObj.description
+        binding.tvSku.text = itObj.sku
+        itObj.formatedPrice.let {
+            binding.tvPrice.text = itObj.toString()
+        }
+        binding.tvWidth.text = itObj.width
+        binding.tvHeight.text = itObj.height
+        binding.tvWeight.text = itObj.weight
+        binding.tvQuantity.text = itObj.quantity.toString()
+        binding.switchFeature.isChecked = itObj.featured == 1
+        binding.switchNew.isChecked = itObj.jsonMemberNew == 1
+        binding.switchPublish.isChecked = itObj.active == 1
 
         binding.btnDelete.setOnClickListener {
-//            CoroutineScope(Dispatchers.IO).launch {
-//                productEntity?.let { it1 -> viewModel.deleteProduct(it1) }
-//                finish()
-//            }
-
-            viewModel.deleteProduct(productId.toString()).observe(this, Observer {
+            viewModel.deleteProduct(itObj.id.toString()).observe(this, Observer {
                 when (it.status) {
                     Status.SUCCESS -> {
                         dialog.dismiss()
@@ -111,7 +87,12 @@ class ProductDetailsActivity : AppCompatActivity() {
         binding.ivBack.setOnClickListener {
             finish()
         }
-        when (status) {
+        binding.btnEdit.setOnClickListener {
+            MyApplication.productObj = itObj
+            startActivity(Intent(this, AddProductActivity::class.java))
+        }
+
+        when (itObj.status?.lowercase()) {
             "published" -> binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_green, 0, 0, 0,
             )
@@ -122,33 +103,5 @@ class ProductDetailsActivity : AppCompatActivity() {
                 R.drawable.ic_oval_status_red, 0, 0, 0,
             )
         }
-
-//        when (name) {
-//            "Green Apple" -> binding.image.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    this,
-//                    R.drawable.applepng
-//                )
-//            )
-//            "Carrot" -> binding.image.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    this,
-//                    R.drawable.carrot
-//                )
-//            )
-//            "Tomato" -> binding.image.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    this,
-//                    R.drawable.tomato
-//                )
-//            )
-//            "Banana" -> binding.image.setImageDrawable(
-//                AppCompatResources.getDrawable(
-//                    this,
-//                    R.drawable.bannana
-//                )
-//            )
-//        }
-
     }
 }

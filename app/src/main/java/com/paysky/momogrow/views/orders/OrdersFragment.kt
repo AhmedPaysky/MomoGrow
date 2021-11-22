@@ -88,6 +88,8 @@ class OrdersFragment : Fragment(), View.OnClickListener {
                         binding.recyclerView.visibility = View.VISIBLE
                         adapter?.setOrdersList(it.data.data?.orders as ArrayList<OrdersItem>?)
                     }
+                    binding.tvOrdersCount.text = (it.data.data?.orders as ArrayList<OrdersItem>?)?.size.toString() + " Orders"
+
                 }
                 Status.ERROR -> {
                     dialog.dismiss()

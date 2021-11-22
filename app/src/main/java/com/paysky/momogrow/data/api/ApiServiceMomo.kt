@@ -1,7 +1,10 @@
 package com.paysky.momogrow.data.api
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable
 import com.paysky.momogrow.data.models.AddProductRequestModel
 import com.paysky.momogrow.data.models.momo.*
+import com.paysky.momogrow.data.models.momo.orders.OrderDetailsItem
+import com.paysky.momogrow.data.models.momo.orders.OrderDetailsResponse
 import com.paysky.momogrow.data.models.momo.orders.OrdersResponse
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -10,15 +13,21 @@ interface ApiServiceMomo {
     @GET("/service/admin/catalog/attribute-families")
     suspend fun getAttributeFamilies(): AttributesFamiliesMainModel
 
-
     @GET("/service/admin/catalog/products")
     suspend fun getAllProducts(): ProductsResponse
 
-    @GET("service/admin/catalog/categories")
-    suspend fun getAllCategories(): ArrayList<CatgoriesItem>
+    @GET("/service/admin/catalog/products")
+    suspend fun getAllProductsWithID(@Query ("category_id") id: Int): ProductsResponse
 
-    @GET("/service/admin/catalog/orders")
+    @GET("/service/admin/catalog/categories")
+    suspend fun getAllCategories(): MainOfMainCategories
+
+    @GET("/service/admin/sale/orders")
     suspend fun getAllOrders(): OrdersResponse
+
+
+    @GET("/service/admin/sale/orders/show/{id}")
+    suspend fun getOrderDetails(@Path("id") id: Int): OrderDetailsResponse
 
     @GET("/service/admin/catalog/products/show/{id}")
     suspend fun getProductDetails(@Path("id") id: String): ProductsResponse

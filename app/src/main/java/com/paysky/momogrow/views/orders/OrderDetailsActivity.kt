@@ -1,31 +1,44 @@
 package com.paysky.momogrow.views.orders
 
+import android.app.Dialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.api.ApiClientMomo
+import com.paysky.momogrow.data.api.ApiServiceMomo
+import com.paysky.momogrow.data.models.momo.ProductsResponse
+import com.paysky.momogrow.data.models.momo.orders.OrderDetailsResponse
+import com.paysky.momogrow.data.models.momo.orders.OrderProductItem
 import com.paysky.momogrow.data.models.momo.orders.OrdersItem
+import com.paysky.momogrow.data.models.momo.orders.OrdersResponse
 import com.paysky.momogrow.databinding.ActivityOrderDetailsBinding
 import com.paysky.momogrow.databinding.FragmentOrderDetailsBinding
+import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.MyUtils
+import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
 import com.paysky.momogrow.views.bottomsheets.*
+import com.paysky.momogrow.views.products.CategoriesAdapter
+import com.paysky.momogrow.views.products.ProductsAdapter
 import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.activity_order_details.view.*
 import kotlinx.android.synthetic.main.custom_item_order.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_order_details.view.*
+import kotlinx.android.synthetic.main.fragment_orders.view.*
 
 class OrderDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOrderDetailsBinding
-
-    // When requested, this adapter returns a OrderDetailsFragment,
-    // representing an object in the collection.
     private lateinit var introPagerAdapter: OrdersDetailsPagerAdapter
 
     companion object {
@@ -113,6 +126,19 @@ class OrdersDetailsPagerAdapter(
 private const val ARG_OBJECT = "object"
 
 class OrderDetailsFragment : Fragment() {
+
+    private var adapter: OrderProductsAdapter? = null
+
+    private val viewModel: OrdersViewModel by activityViewModels {
+        ViewModelFactoryMomo(
+            ApiClientMomo.apiClient().create(
+                ApiServiceMomo::class.java
+            )
+        )
+    }
+
+
+
     private var _binding: FragmentOrderDetailsBinding? = null
 
     // This property is only valid between onCreateView and
@@ -125,6 +151,7 @@ class OrderDetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentOrderDetailsBinding.inflate(inflater, container, false)
+        dialog = MyUtils.getDlgProgress(requireActivity())
         val view = binding.root
 
         val orderOBJ = arguments?.getSerializable(ARG_OBJECT) as OrdersItem
@@ -143,6 +170,14 @@ class OrderDetailsFragment : Fragment() {
         }
 
         binding.tvOrderNo.text = "Order no. ${orderOBJ.id}"
+        binding.tvStatus.text = orderOBJ.statusLabel
+        binding.tvPrice.text = orderOBJ.orderCurrencyCode + " " + orderOBJ.grandTotal
+        binding.tvDate.text = orderOBJ.createdAt
+        binding.name.text = orderOBJ.customerFirstName
+        binding.last.text = orderOBJ.customerLastName
+
+
+
         binding.btnCancel.setOnClickListener {
             showCancelOrderBottomSheet(view)
         }
@@ -160,40 +195,56 @@ class OrderDetailsFragment : Fragment() {
         }
 
         binding.tvStatus.text = orderOBJ.status
-        when (orderOBJ.status) {
-            "Not processed" -> {
-                binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_oval_status_grey, 0, 0, 0,
-                )
-                binding.containerButtonsNotProcessed.visibility = View.VISIBLE
-            }
-            "In transit" -> {
-                binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_oval_status_yellow, 0, 0, 0,
-                )
-            }
-            "Delivered" -> {
-                binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_oval_status_green, 0, 0, 0,
-                )
-                binding.containerDelivered.visibility = View.VISIBLE
-
-            }
-            "Cancelled" -> {
-                binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_oval_status_red, 0, 0, 0,
-                )
-            }
-            "Refund request" -> {
-                binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.ic_oval_status_orange, 0, 0, 0,
-                )
-                binding.containerButtonsRefundedRequest.visibility = View.VISIBLE
-
-            }
+        when (orderOBJ.status?.lowercase()) {
+            "pending" -> binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_oval_status_grey, 0, 0, 0,
+            )
+            "processing" -> binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_oval_status_yellow, 0, 0, 0,
+            )
+            "delivered" -> binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_oval_status_green, 0, 0, 0,
+            )
+            "canceled" -> binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_oval_status_red, 0, 0, 0,
+            )
+            "refund request" -> binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.ic_oval_status_orange, 0, 0, 0,
+            )
         }
+
+        adapter = OrderProductsAdapter(requireActivity())
+        view.list_products.layoutManager = LinearLayoutManager(context)
+        view.list_products.adapter = adapter
+        viewModel.getOrderDetails(orderOBJ.id!!).observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    val orderdata = (it.data as OrderDetailsResponse).data?.order
+                    adapter?.setProducts(orderdata?.items)
+                    binding.address.text = orderdata?.address?.country_name + "," + orderdata?.address?.city
+                    binding.transId.text = orderdata?.id.toString()
+                    binding.type.text = orderdata?.payment_title
+                    binding.tvTotalAmount.text = orderdata?.grandTotal.toString()
+                    binding.tvCurrency.text = orderdata?.orderCurrencyCode
+                    binding.tvDelivery.text = "- " + orderdata?.formatedShippingAmount
+                    binding.tvCommision.text = "- " + orderdata?.orderCurrencyCode + " " + (orderdata?.grandTotal!! * 0.05).toString()
+                    binding.tvSettlment.text =  orderdata?.orderCurrencyCode + " " + (orderdata?.grandTotal - ((orderdata?.grandTotal!! * 0.05)  + orderdata?.shippingAmount!!)).toString()
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                }
+                Status.LOADING -> {
+                    dialog.show()
+
+                }
+                else -> dialog.dismiss()
+            }
+        })
+
         return view
     }
+    private lateinit var dialog: Dialog
 
     private fun showCancelOrderBottomSheet(v: View) {
         val modalbottomSheetFragment = CancelBottomSheet(fragmentView = v)

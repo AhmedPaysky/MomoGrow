@@ -24,4 +24,21 @@ class OrdersViewModel(private val apiServiceMomo: ApiServiceMomo) : ViewModel() 
         }
     }
 
+
+    fun getOrderDetails(id: Int) = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = apiServiceMomo.getOrderDetails(id)))
+        } catch (exception: HttpException) {
+            emit(
+                Resource.errorHttp(
+                    data = exception,
+                    message = exception.message ?: "Error occured"
+                )
+            )
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error occured"))
+        }
+    }
+
 }

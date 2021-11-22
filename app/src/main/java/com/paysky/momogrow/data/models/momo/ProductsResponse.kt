@@ -3,6 +3,21 @@ package com.paysky.momogrow.data.models.momo
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+data class MainOfMainCategories(
+
+    @field:SerializedName("status_code")
+    val statusCode: Int? = null,
+
+    @field:SerializedName("data")
+    val data: MainCategoriesModel? = null,
+
+    @field:SerializedName("success")
+    val success: Boolean? = null,
+
+    @field:SerializedName("message")
+    val message: String? = null
+) : Serializable
+
 data class ProductsResponse(
 
     @field:SerializedName("status_code")
@@ -107,6 +122,9 @@ data class DataItem(
     @field:SerializedName("width")
     val width: String? = null,
 
+    @field:SerializedName("quantity")
+    val quantity: Int? = null,
+
     @field:SerializedName("status")
  val status: String? = null
 ) : Serializable
@@ -128,12 +146,18 @@ data class Reviews(
 
 data class AllProductsData(
 
-    @field:SerializedName("catgories")
+    @field:SerializedName("categories")
     val catgories: List<CatgoriesItem?>? = null,
 
     @field:SerializedName("products")
     val products: List<DataItem?>? = null
 ) : Serializable
+
+data class MainCategoriesModel(
+    @field:SerializedName("categories")
+    val catgories: ArrayList<CatgoriesItem?>?,
+) : Serializable
+
 
 data class CatgoriesItem(
 
@@ -168,10 +192,10 @@ data class CatgoriesItem(
     val updatedAt: String? = null,
 
     @field:SerializedName("name")
-    val name: String? = null,
+    var name: String? = null,
 
     @field:SerializedName("id")
-    val id: Int? = null,
+    var id: Int? = null,
 
     @field:SerializedName("slug")
     val slug: String? = null,

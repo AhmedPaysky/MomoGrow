@@ -45,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:id="@+id/tvDate"
             android:layout_marginTop="@dimen/_12sdp"
             android:text="25/08/21 • 11:00 AM"
             android:textColor="@color/gray_light"
@@ -64,10 +65,12 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:fontFamily="@font/mtn_brighter_sans_bold"
                 android:text="UGX"
+                android:id="@+id/tvCurrency"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
             <TextView
+                android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -143,302 +146,10 @@
                 android:text="@string/order_details"
                 android:textColor="@color/gray_light"
                 android:textSize="@dimen/_12sdp" />
-
-
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_33sdp"
-                        android:layout_height="@dimen/_33sdp"
-                        android:src="@drawable/applepng"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_oval_grey_bold"
-                        android:paddingStart="@dimen/_4sdp"
-                        android:paddingTop="@dimen/_2sdp"
-                        android:paddingEnd="@dimen/_4sdp"
-                        android:paddingBottom="@dimen/_2sdp"
-                        android:text="x2"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_9sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:gravity="center|start"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/mtn_brighter_sans_medium"
-                        android:text="Green Apple "
-                        android:textColor="@color/et_color_black_100_opacity"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/mtn_brighter_sans_regular"
-                        android:text="SKU 1234568 "
-                        android:textColor="@color/gray_light"
-                        android:textSize="@dimen/_10sdp" />
-                </LinearLayout>
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:id="@+id/tvCurrency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:text="UGX"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:gravity="center"
-                        android:text="150.00"
-                        android:textColor="#E81B1B1B"
-                        android:textSize="@dimen/_15sdp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_33sdp"
-                        android:layout_height="@dimen/_33sdp"
-                        android:src="@drawable/tomato"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_oval_grey_bold"
-                        android:paddingStart="@dimen/_4sdp"
-                        android:paddingTop="@dimen/_2sdp"
-                        android:paddingEnd="@dimen/_4sdp"
-                        android:paddingBottom="@dimen/_2sdp"
-                        android:text="x2"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_9sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:gravity="center|start"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/mtn_brighter_sans_medium"
-                        android:text="Tomato "
-                        android:textColor="@color/et_color_black_100_opacity"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/mtn_brighter_sans_regular"
-                        android:text="SKU 1234568 "
-                        android:textColor="@color/gray_light"
-                        android:textSize="@dimen/_10sdp" />
-                </LinearLayout>
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:text="UGX"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:gravity="center"
-                        android:text="150.00"
-                        android:textColor="#E81B1B1B"
-                        android:textSize="@dimen/_15sdp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_33sdp"
-                        android:layout_height="@dimen/_33sdp"
-                        android:src="@drawable/bannana"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_oval_grey_bold"
-                        android:paddingStart="@dimen/_4sdp"
-                        android:paddingTop="@dimen/_2sdp"
-                        android:paddingEnd="@dimen/_4sdp"
-                        android:paddingBottom="@dimen/_2sdp"
-                        android:text="x2"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_9sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:gravity="center|start"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/mtn_brighter_sans_medium"
-                        android:text="Banana "
-                        android:textColor="@color/et_color_black_100_opacity"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/mtn_brighter_sans_regular"
-                        android:text="SKU 1234568 "
-                        android:textColor="@color/gray_light"
-                        android:textSize="@dimen/_10sdp" />
-                </LinearLayout>
-
-                <androidx.legacy.widget.Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:text="UGX"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_4sdp"
-                        android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:gravity="center"
-                        android:text="150.00"
-                        android:textColor="#E81B1B1B"
-                        android:textSize="@dimen/_15sdp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:id="@+id/list_products"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -483,6 +194,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="Ahmed"
+                    android:id="@+id/name"
                     android:textColor="@color/gray_light"
                     android:textSize="@dimen/_12sdp" />
 
@@ -510,6 +222,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/last"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="Ali"
                     android:textColor="@color/gray_light"
@@ -540,8 +253,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
-                    android:text="Apt 7, Entebbe Rd, "
+                    android:id="@+id/address"
+                    android:text="-- "
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -588,7 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
+                    android:id="@+id/type"
                     android:text="Card"
                     android:textSize="@dimen/_12sdp" />
 
@@ -617,8 +330,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
-                    android:text="12346567"
+                    android:id="@+id/trans_id"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -646,8 +358,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
-                    android:text="Settled"
+                    android:text="pending"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -694,8 +405,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
-                    android:text="UGX 200"
+                    android:id="@+id/tvTotalAmount"
+                    android:text="UGX 0.00"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -723,8 +434,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
-                    android:text="- UGX 30"
+                    android:id="@+id/tvCommision"
+                    android:text="UGX 0.00"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -752,8 +463,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
-                    android:text="- UGX 20"
+                    android:id="@+id/tvDelivery"
+                    android:text="UGX 0.00"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -781,8 +492,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-
-                    android:text="UGX 150"
+                    android:text="UGX 0.00"
+                    android:id="@+id/tvSettlment"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>

@@ -50,9 +50,9 @@ object ApiClientMomo {
         httpClient.writeTimeout(400, TimeUnit.SECONDS)
 
 
-        if (PreferenceProcessor.getBool(Constants.Companion.Preference.IS_LOGIN, false)) {
+//        if (PreferenceProcessor.getBool(Constants.Companion.Preference.IS_LOGIN, false)) {
             httpClient.addInterceptor(interceptor)
-        }
+//        }
         httpClient.addInterceptor(
             LoggingInterceptor.Builder()
                 .loggable(BuildConfig.DEBUG)

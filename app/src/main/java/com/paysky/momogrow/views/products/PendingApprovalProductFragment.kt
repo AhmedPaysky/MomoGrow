@@ -24,9 +24,7 @@ class PendingApprovalProductFragment : Fragment() {
         val view = binding.root
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_pendingApprovalProductFragment_to_productDetailsFragment, arguments
-            )
+            requireActivity().finish()
         }
         return view
     }
