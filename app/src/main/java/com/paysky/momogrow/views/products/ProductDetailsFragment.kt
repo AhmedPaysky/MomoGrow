@@ -43,7 +43,7 @@ class ProductDetailsFragment : Fragment() {
             bundle.putSerializable("productdata", productdata)
             findNavController().navigate(R.id.action_productDetailsFragment_to_addProductFragment,bundle)
         }
-        productdata = (arguments?.getSerializable("productdata") as AddProductResponse).data!!
+        productdata = (arguments?.getSerializable("productdata") as AddProductResponse).data?.product!!
 
         binding.btnDelete.setOnClickListener {
             viewModel.deleteProduct(productdata.id.toString()).observe(viewLifecycleOwner, {
@@ -88,6 +88,7 @@ class ProductDetailsFragment : Fragment() {
         binding.switchFeature.isChecked = productdata.featured == 1
         binding.switchNew.isChecked = productdata.new  == 1
         binding.switchPublish.isChecked = productdata.active == 1
+
         return view
     }
 

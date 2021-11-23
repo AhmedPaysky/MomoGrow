@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -43,19 +44,17 @@ class ProductDetailsActivity : AppCompatActivity() {
         itObj.baseImage?.apply {
             Glide.with(view.context).load(originalImageUrl).placeholder(R.drawable.ic_mtn_logo)
                 .into(binding.image)
-            Glide.with(view.context).load(originalImageUrl).placeholder(R.drawable.ic_mtn_logo)
-                .into(binding.ivImage1)
         }
         binding.tvStatus.text = itObj.status
         binding.tvNameFruit.text = itObj.name
         itObj.categories?.forEach {
-            binding.tvCategory.text = itObj.name
+            binding.tvCategory.text = it?.name
         }
         binding.tvName.text = itObj.type
         binding.tvDescripyion.text = itObj.description
         binding.tvSku.text = itObj.sku
         itObj.formatedPrice.let {
-            binding.tvPrice.text = itObj.toString()
+            binding.tvPrice.text = it?.toString()
         }
         binding.tvWidth.text = itObj.width
         binding.tvHeight.text = itObj.height
@@ -103,5 +102,27 @@ class ProductDetailsActivity : AppCompatActivity() {
                 R.drawable.ic_oval_status_red, 0, 0, 0,
             )
         }
+
+
+        if (itObj.images?.size!! > 0) {
+            for (i in 0..itObj.images.size) {
+                if (i >= itObj.images.size){
+                    break
+                }
+                else if (i == 0) {
+                    Glide.with(view.context).load(itObj.images[i]?.mediumImageUrl).placeholder(R.drawable.ic_add_product).into(binding.ivImage1)
+                }
+                else if (i == 1) {
+                    Glide.with(view.context).load(itObj.images[i]?.mediumImageUrl).placeholder(R.drawable.ic_add_product).into(binding.ivImage2)
+                }
+                else if (i == 2) {
+                    Glide.with(view.context).load(itObj.images[i]?.mediumImageUrl).placeholder(R.drawable.ic_add_product).into(binding.ivImage3)
+                }
+                else {
+                    Glide.with(view.context).load(itObj.images[i]?.mediumImageUrl).placeholder(R.drawable.ic_add_product).into(binding.ivImage4)
+                }
+            }
+        }
+
     }
 }

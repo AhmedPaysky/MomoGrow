@@ -31,14 +31,28 @@
             android:textColor="@color/black" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="1">
     <ImageView
         android:id="@+id/ivQr"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:src="@drawable/qr" />
-
+    <TextView
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/mtn_brighter_sans_medium"
+        android:text="Show QR to be paid"
+        android:textColor="@color/gray_light" />
+    </LinearLayout>
     <Button
         android:id="@+id/btnDone"
         android:layout_width="match_parent"

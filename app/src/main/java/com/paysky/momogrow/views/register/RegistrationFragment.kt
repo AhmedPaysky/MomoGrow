@@ -64,7 +64,7 @@ class RegistrationFragment : Fragment() {
         request.mobileNumber = viewModel.mobileNumber.value
 //        request.mobileNumber = "256785826095"
 
-        viewModel.moMoPayGetMerchantInfo(request).observe(requireActivity(), Observer {
+        viewModel.moMoPayGetMerchantInfo(request).observe(requireActivity(), {
             when (it.status) {
                 Status.SUCCESS -> {
 //                    startActivity(
@@ -76,17 +76,13 @@ class RegistrationFragment : Fragment() {
                         bindView(it.data)
 
                     }
-                    Log.d("LoginActivity", it.data?.message!!)
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireActivity(), "Fail", Toast.LENGTH_LONG).show()
-                    Log.d("LoginActivity", it.message!!)
                     dialog.dismiss()
                 }
                 Status.LOADING -> {
                     dialog.show()
-                    Log.d("LoginActivity", "Loading")
-
                 }
             }
         })

@@ -222,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_bold"
-                    android:text="986"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_20sdp" />
             </LinearLayout>
@@ -332,7 +332,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:text="28"
+                        android:text="0"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_26sdp" />
                 </LinearLayout>
@@ -362,7 +362,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:fontFamily="@font/mtn_brighter_sans_bold"
-                        android:text="21"
+                        android:text="0"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_26sdp" />
                 </LinearLayout>

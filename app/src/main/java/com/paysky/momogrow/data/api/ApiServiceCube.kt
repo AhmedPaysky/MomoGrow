@@ -25,6 +25,9 @@ interface ApiServiceCube {
     @POST("PayLink.svc/api/InitiateOrder")
     suspend fun initiateOrder(@Body initiateOrder: InitiateOrderRequest): InitiateOrderResponse
 
+    @POST("PayLink.svc/api/BuildTransactionChart")
+    suspend fun showChartData(@Body buildchart: BuildChartRequest): BuildChartModel
+
     @POST("PayLink.svc/api/MoMoPayAuthorizeForResetPassword")
     suspend fun moMoPayAuthorizeForResetPassword(@Body initiateOrder: MoMoPayAuthorizeForResetPasswordRequest): MoMoPayAuthorizeForResetPasswordResponse
 

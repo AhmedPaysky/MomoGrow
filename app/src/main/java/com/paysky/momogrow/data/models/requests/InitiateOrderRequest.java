@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import com.paysky.momogrow.utilis.DateTimeUtil;
 
 public class InitiateOrderRequest {
-
     @SerializedName("DateTimeLocalTrxn")
     @Expose
     private String dateTimeLocalTrxn;

@@ -47,7 +47,7 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
     }
 
     fun nextPage(view: View) {
-        if (TextUtils.replaceAll("\\D", binding.etMobileNum.text.toString()).length < 9) {
+        if (TextUtils.replaceAll("\\D", "256" + binding.etMobileNum.text.toString()).length < 9) {
             binding.linearMobileNum.setBackgroundResource(com.paysky.momogrow.R.drawable.ic_rectangle_red)
             binding.tvIncorrectMsg.visibility = View.VISIBLE
             return
@@ -61,10 +61,10 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
             MOMOPayCheckMerchantIsRegisterRequest()
         //todo replace with mobile number property
 //        request.mobileNumber = "256785826095"
-        request.mobileNumber = TextUtils.replaceAll("\\D", binding.etMobileNum.text.toString())
+        request.mobileNumber = TextUtils.replaceAll("\\D", "256" + binding.etMobileNum.text.toString())
         PreferenceProcessor.setStr(
             Constants.Companion.Preference.MOBILE_NUM,
-            binding.etMobileNum.text.toString()
+            "256" + binding.etMobileNum.text.toString()
         )
         viewModel.mOMOPayCheckMerchantIsRegister(request).observe(this, Observer {
             when (it.status) {
@@ -78,7 +78,7 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
                                         "mobile_number",
                                         TextUtils.replaceAll(
                                             "\\D",
-                                            binding.etMobileNum.text.toString()
+                                            "256" + binding.etMobileNum.text.toString()
                                         )
                                     )
                             )
@@ -89,7 +89,7 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
                                         "mobile_number",
                                         TextUtils.replaceAll(
                                             "\\D",
-                                            binding.etMobileNum.text.toString()
+                                            "256" + binding.etMobileNum.text.toString()
                                         )
                                     )
                             )
@@ -99,13 +99,10 @@ class MobileNumberActivity : AppCompatActivity(), View.OnTouchListener {
                 Status.ERROR -> {
                     dialog.dismiss()
                     Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show()
-                    Log.d("MobileActivity", it.message!!)
 
                 }
                 Status.LOADING -> {
                     dialog.show()
-                    Log.d("Mobilectivity", "Loading")
-
                 }
                 Status.ERRORHttp -> {
                     dialog.dismiss()

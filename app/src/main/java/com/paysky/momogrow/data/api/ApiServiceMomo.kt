@@ -50,5 +50,5 @@ interface ApiServiceMomo {
 
     @Multipart
     @POST("/service/admin/catalog/products/images/{id}/add")
-    suspend fun AddImagesToProduct(@Path("id") id: Int,@Part images: ArrayList<MultipartBody.Part>): AddProductResponse
+    suspend fun AddImagesToProduct(@Path("id") id: Int,@Part images: ArrayList<MultipartBody.Part>): EmptyResponse
 }

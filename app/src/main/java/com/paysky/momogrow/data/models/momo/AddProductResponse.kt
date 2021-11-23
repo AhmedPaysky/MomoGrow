@@ -3,19 +3,35 @@ package com.paysky.momogrow.data.models.momo
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+
+data class EmptyResponse(
+    @field:SerializedName("status_code")
+    val statusCode: Int? = null,
+    @field:SerializedName("success")
+    val success: Boolean? = null,
+    @field:SerializedName("message")
+    val message: String? = null
+): Serializable
+
+
 data class AddProductResponse(
 
     @field:SerializedName("status_code")
     val statusCode: Int? = null,
 
     @field:SerializedName("data")
-    val data: Data? = null,
+    val data: ProductTitle? = null,
 
     @field:SerializedName("success")
     val success: Boolean? = null,
 
     @field:SerializedName("message")
     val message: String? = null
+): Serializable
+
+data class ProductTitle(
+    @field:SerializedName("product")
+    val product: Data? = null
 ): Serializable
 
 data class Data(

@@ -13,6 +13,7 @@ import android.R
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.view.*
 import android.widget.Button
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -46,6 +47,7 @@ class MoreFragment : Fragment() {
         }
 
         binding.tvLogout.setOnClickListener {
+
         }
         return view
     }
@@ -59,6 +61,7 @@ class MoreFragment : Fragment() {
         val btnLater: Button = dialog.findViewById(com.paysky.momogrow.R.id.btnLater) as Button
         btnNext.setOnClickListener {
             dialog.dismiss()
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com")))
         }
         btnLater.setOnClickListener {
             dialog.dismiss()

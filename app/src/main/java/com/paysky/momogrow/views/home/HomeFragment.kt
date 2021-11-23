@@ -1,5 +1,6 @@
 package com.paysky.momogrow.views.home
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,24 +28,57 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.util.*
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.gson.Gson
 import com.paysky.momogrow.MyApplication
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.api.ApiClientCube
+import com.paysky.momogrow.data.api.ApiClientMomo
+import com.paysky.momogrow.data.api.ApiServiceCube
+import com.paysky.momogrow.data.api.ApiServiceMomo
+import com.paysky.momogrow.data.models.BuildChartModel
+import com.paysky.momogrow.data.models.InitiateOrderResponse
+import com.paysky.momogrow.data.models.momo.orders.OrdersItem
+import com.paysky.momogrow.data.models.momo.orders.OrdersResponse
+import com.paysky.momogrow.data.models.requests.BuildChartRequest
+import com.paysky.momogrow.data.models.requests.InitiateOrderRequest
+import com.paysky.momogrow.helper.Status
+import com.paysky.momogrow.utilis.Constants
+import com.paysky.momogrow.utilis.DateTimeUtil
+import com.paysky.momogrow.utilis.MyUtils
+import com.paysky.momogrow.utilis.PreferenceProcessor
+import com.paysky.momogrow.viewmodels.ViewModelFactoryCube
+import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
+import com.paysky.momogrow.views.orders.OrdersViewModel
 
 import com.paysky.momogrow.views.products.AddProductActivity
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : BaseFragment(), View.OnClickListener {
+    private val viewModelOrder: OrdersViewModel by activityViewModels {
+        ViewModelFactoryMomo(
+            ApiClientMomo.apiClient().create(
+                ApiServiceMomo::class.java
+            )
+        )
+    }
+
+
+
+    private lateinit var dialog: Dialog
+
     private var _binding: FragmentHomeBinding? = null
-    private val MAX_X_VALUE = 7
-    private val MAX_Y_VALUE = 50
-    private val MIN_Y_VALUE = 2
     private val SET_LABEL = ""
-    private val DAYS = arrayOf("08h", "12h", "14h", "16h", "18h", "20h", "22h")
-    private val AMOUNTS = arrayOf("0 ", "150", "300", "450", "300", "100", "200")
+    private val DaysArr = ArrayList<String>()
+    private val AmountsArr = ArrayList<Int>()
 
     companion object {
         public lateinit var lviewPager: ViewPager
@@ -66,6 +100,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        dialog = MyUtils.getDlgProgress(requireContext())
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         mChart = view.findViewById(com.paysky.momogrow.R.id.chart1)
@@ -122,24 +157,74 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         binding.ivClose.setOnClickListener {
             binding.intro.visibility = View.GONE
         }
-        val data = createChartData()
-        configureChartAppearance()
-        prepareChartData(data!!)
-
         binding.tvToday.setOnClickListener(this)
         binding.tvThisWeek.setOnClickListener(this)
         binding.tvThisMonth.setOnClickListener(this)
         binding.tvCustom.setOnClickListener(this)
 
+        viewModelOrder.getAllOrders().observe(viewLifecycleOwner,  {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.tvMarketplaceOrders.text = ((it.data as OrdersResponse).data?.orders as ArrayList<OrdersItem>?)?.size.toString()
+                }
+            }
+        })
+        ShowChartsData()
         return view
+    }
+
+    fun ShowChartsData(durationType: Int = 1){
+        val request = BuildChartRequest()
+        request.dateTimeLocalTrxn = DateTimeUtil.getDateTimeLocalTrxn()
+        request.merchantId = PreferenceProcessor.getStr(Constants.Companion.Preference.MERCHANT_ID, "")
+        request.terminalId = PreferenceProcessor.getStr(Constants.Companion.Preference.TERMINAL_ID, "")
+        request.durationType = durationType
+        viewModel.CallBuildChart(request).observe(viewLifecycleOwner,  {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    dialog.dismiss()
+                    val data = it.data as BuildChartModel
+                    if (data.success) {
+                        DaysArr.clear()
+                        AmountsArr.clear()
+                        it.data.transactionsByDurationCategory.chartDataMobile.forEach {
+                            DaysArr.add(it.key)
+                            AmountsArr.add(it.value)
+                        }
+                        setGraphData(data.totalAmount,data.totalCount)
+                    } else {
+                        Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG).show()
+                    }
+                }
+                Status.LOADING -> {
+                    dialog.show()
+                }
+                Status.ERROR -> {
+                    dialog.dismiss()
+                    Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG).show()
+
+                }
+                Status.ERRORHttp -> {
+                    dialog.dismiss()
+                    Toast.makeText(requireContext(), it.message.toString(), Toast.LENGTH_LONG).show()
+
+                }
+            }
+        })
+    }
+    private val viewModel: HomeViewModel by activityViewModels {
+        ViewModelFactoryCube(
+            ApiClientCube.apiClient().create(
+                ApiServiceCube::class.java
+            )
+        )
     }
 
     private fun createChartData(): BarData? {
         val values = ArrayList<BarEntry>()
-        for (i in 0 until MAX_X_VALUE) {
+        for (i in 0 until DaysArr.size) {
             val x = i.toFloat()
-            val y = MIN_Y_VALUE + Random()
-                .nextFloat() * (MAX_X_VALUE - MIN_Y_VALUE)
+            val y = AmountsArr[i].toFloat()
             values.add(BarEntry(x, y))
         }
         val set1 = BarDataSet(values, SET_LABEL)
@@ -151,12 +236,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun configureChartAppearance() {
-
         //config chart
         mChart.setDrawBarShadow(false)
         mChart.setDrawValueAboveBar(false)
         mChart.description.isEnabled = false
-        mChart.setMaxVisibleValueCount(DAYS.size)
+        mChart.setMaxVisibleValueCount(DaysArr.size)
         mChart.setPinchZoom(false)
         mChart.isDoubleTapToZoomEnabled = false
         mChart.setScaleEnabled(false)
@@ -166,12 +250,12 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         mChart.setDrawGridBackground(true);
         mChart.legend.isEnabled = false;
 
-        val xAxisFormatter: ValueFormatter = IndexAxisValueFormatter(DAYS)
+        val xAxisFormatter: ValueFormatter = IndexAxisValueFormatter(DaysArr)
         val xAxis = mChart.xAxis
 
-        xAxis.setLabelCount(DAYS.size, true)
+        xAxis.setLabelCount(DaysArr.size, true)
         xAxis.valueFormatter = xAxisFormatter
-        xAxis.labelCount = DAYS.size
+        xAxis.labelCount = DaysArr.size
 
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
@@ -185,7 +269,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 //        xAxis.xOffset = 10f
         val custom: ValueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return AMOUNTS[value.toInt()]
+                return AmountsArr[value.toInt()].toString()
             }
         }
 
@@ -245,7 +329,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 binding.tvThisWeek.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvThisMonth.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvCustom.setTextColor(resources.getColor(R.color.gray_light, null))
-                randomData()
+                ShowChartsData(1)
             }
             R.id.tvThisWeek -> {
                 binding.tvThisWeek.setBackgroundResource(R.drawable.bc_blue_shape)
@@ -256,7 +340,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 binding.tvToday.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvThisMonth.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvCustom.setTextColor(resources.getColor(R.color.gray_light, null))
-                randomData()
+                ShowChartsData(2)
             }
             R.id.tvThisMonth -> {
                 binding.tvThisMonth.setBackgroundResource(R.drawable.bc_blue_shape)
@@ -267,7 +351,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 binding.tvToday.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvThisWeek.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvCustom.setTextColor(resources.getColor(R.color.gray_light, null))
-                randomData()
+                ShowChartsData(3)
             }
             R.id.tvCustom -> {
                 binding.tvCustom.setBackgroundResource(R.drawable.bc_blue_shape)
@@ -278,23 +362,17 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 binding.tvToday.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvThisWeek.setTextColor(resources.getColor(R.color.gray_light, null))
                 binding.tvThisMonth.setTextColor(resources.getColor(R.color.gray_light, null))
-                randomData()
             }
         }
     }
 
-    fun randomData() {
+    fun setGraphData(total: String,count: Int) {
         val data = createChartData()
         configureChartAppearance()
         prepareChartData(data!!)
-        val d1 = (300..1000).random() // generated random from 0 to 10 included
-        val d2 = (0..100).random() // generated random from 0 to 10 included
-        val d3 = (0..100).random() // generated random from 0 to 10 included
 
-
-        binding.tvTotalAmount.text = d1.toString()
-        binding.tvPaymentTransactions.text = d2.toString()
-        binding.tvMarketplaceOrders.text = d3.toString()
+        binding.tvTotalAmount.text = total
+        binding.tvPaymentTransactions.text = count.toString()
     }
 }
 

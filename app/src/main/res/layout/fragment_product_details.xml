@@ -143,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-                    android:text=""
+                    android:text="Fruit"
                     android:textColor="@color/gray_light"
                     android:textSize="@dimen/_12sdp" />
 
@@ -382,13 +382,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <ImageView
                     android:id="@+id/ivImage1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:src="@drawable/fruitbitmappng" />
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="@dimen/_8sdp" />
+                <ImageView
+                    android:id="@+id/ivImage2"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_8sdp" />
+                <ImageView
+                    android:id="@+id/ivImage3"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_8sdp" />
+                <ImageView
+                    android:id="@+id/ivImage4"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_8sdp" />
             </LinearLayout>
         </LinearLayout>
 

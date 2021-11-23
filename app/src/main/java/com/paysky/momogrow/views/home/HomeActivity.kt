@@ -26,8 +26,6 @@ class HomeActivity : AppCompatActivity() {
                 R.id.dashboard -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragments_container, HomeFragment()).commit()
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(R.id.fragments_container, HomeFragmentJava()).commit()
                     fabAdd.visibility = View.GONE
                     ivCalculate.visibility = View.VISIBLE
                     container.visibility = View.VISIBLE

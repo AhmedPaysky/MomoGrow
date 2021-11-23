@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.paysky.momogrow.R
 import com.paysky.momogrow.data.api.ApiClientMomo
@@ -24,15 +25,11 @@ import com.paysky.momogrow.data.api.ApiServiceMomo
 import com.paysky.momogrow.databinding.FragmentAddProductBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import com.google.gson.Gson
 import com.paysky.momogrow.MyApplication
 import com.paysky.momogrow.data.models.AddProductRequestModel
 import com.paysky.momogrow.data.models.momo.*
 import com.paysky.momogrow.utilis.MyUtils
-import okhttp3.MediaType
+import kotlinx.android.synthetic.main.activity_home.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -47,7 +44,6 @@ class AddProductFragment : Fragment() {
         )
     }
     private var attributesid = 0
-
     private lateinit var dialog: Dialog
     private lateinit var mImage1: Uri
     private lateinit var mImage2: Uri
@@ -55,13 +51,13 @@ class AddProductFragment : Fragment() {
     private lateinit var mImage4: Uri
     private var _binding: FragmentAddProductBinding? = null
     private val binding get() = _binding!!
-    var allCategories : ArrayList<CatgoriesItem?>? = null
+    var allCategories: ArrayList<CatgoriesItem?>? = null
     var quantity = 1
     var handler: Handler = Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
 
-    fun CheckEmptyFields() : Boolean {
-        var isError  = false
+    fun CheckEmptyFields(): Boolean {
+        var isError = false
         if (binding.etProductName.text.toString().trim().isEmpty()) {
             binding.etProductName.error = getString(R.string.product_name_error)
             isError = true
@@ -89,24 +85,25 @@ class AddProductFragment : Fragment() {
         return isError
     }
 
-    fun GenerateImagesArray() : ArrayList<MultipartBody.Part> {
+    fun GenerateImagesArray(): ArrayList<MultipartBody.Part> {
         val parts = ArrayList<MultipartBody.Part>()
+        MultipartBody.Builder().setType(MultipartBody.FORM)
         if (this::mImage1.isInitialized) {
             mImage1.path?.apply {
                 try {
-                    Log.e("addImagesToProduct","first")
                     val file = File(this)
-                    Log.e("addImagesToProduct","second")
                     if (file.exists()) {
-                        val requestFile = RequestBody.create(
-                            activity?.getContentResolver()?.getType(mImage1)!!.toMediaTypeOrNull(), file)
-                        Log.e("addImagesToProduct","third")
-                        parts.add(MultipartBody.Part.createFormData("images[0]", substring(lastIndexOf('/') + 1), requestFile))
-                        Log.e("addImagesToProduct","fourth")
+                        val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+                        parts.add(
+                            MultipartBody.Part.createFormData(
+                                "images[]",
+                                substring(lastIndexOf('/') + 1),
+                                requestFile
+                            )
+                        )
                     }
                 } catch (e: Exception) {
-                    Log.e("addImagesToProduct","exception:"+e.toString())
-                    Log.e("addImagesToProduct","exception2:"+e.message)
+                    Log.e("addImagesToProduct", "exception:" + e.toString())
                 }
             }
         }
@@ -115,8 +112,14 @@ class AddProductFragment : Fragment() {
                 try {
                     val file = File(this)
                     if (file.exists()) {
-                        val requestFile = RequestBody.create(MultipartBody.FORM, file)
-                        parts.add(MultipartBody.Part.createFormData("images[1]", substring(lastIndexOf('/') + 1), requestFile))
+                        val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+                        parts.add(
+                            MultipartBody.Part.createFormData(
+                                "images[]",
+                                substring(lastIndexOf('/') + 1),
+                                requestFile
+                            )
+                        )
                     }
                 } catch (e: Exception) {
 
@@ -128,8 +131,14 @@ class AddProductFragment : Fragment() {
                 try {
                     val file = File(this)
                     if (file.exists()) {
-                        val requestFile = RequestBody.create(MultipartBody.FORM, file)
-                        parts.add(MultipartBody.Part.createFormData("images[2]", substring(lastIndexOf('/') + 1), requestFile))
+                        val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+                        parts.add(
+                            MultipartBody.Part.createFormData(
+                                "images[]",
+                                substring(lastIndexOf('/') + 1),
+                                requestFile
+                            )
+                        )
                     }
                 } catch (e: Exception) {
 
@@ -141,8 +150,14 @@ class AddProductFragment : Fragment() {
                 try {
                     val file = File(this)
                     if (file.exists()) {
-                        val requestFile = RequestBody.create(MultipartBody.FORM, file)
-                        parts.add(MultipartBody.Part.createFormData("images[3]", substring(lastIndexOf('/') + 1), requestFile))
+                        val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+                        parts.add(
+                            MultipartBody.Part.createFormData(
+                                "images[]",
+                                substring(lastIndexOf('/') + 1),
+                                requestFile
+                            )
+                        )
                     }
                 } catch (e: Exception) {
 
@@ -152,6 +167,7 @@ class AddProductFragment : Fragment() {
 
         return parts
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -174,7 +190,7 @@ class AddProductFragment : Fragment() {
                 val productEntity = AddProductRequestModel()
                 productEntity.name = binding.etProductName.text.toString()
                 productEntity.meta_title = binding.etProductName.text.toString()
-                productEntity.url_key = binding.etProductName.text.toString().replace(" ","-")
+                productEntity.url_key = binding.etProductName.text.toString().replace(" ", "-")
                 productEntity.description = binding.etProductDescription.text.toString()
                 productEntity.short_description = binding.etProductDescription.text.toString()
                 productEntity.meta_description = binding.etProductDescription.text.toString()
@@ -184,53 +200,76 @@ class AddProductFragment : Fragment() {
                 productEntity.weight = binding.etWeight.text.toString()
                 productEntity.width = binding.etWidth.text.toString()
                 productEntity.height = binding.etHeight.text.toString()
-                productEntity.quantity = binding.tvQuantity.text.toString()
+                productEntity.quantity = binding.tvQuantity.text.toString().toInt()
                 productEntity.featured = if (binding.switchFeature.isChecked) 1 else 0
                 productEntity.new = if (binding.switchNew.isChecked) 1 else 0
                 productEntity.show_on_marketplace = if (binding.switchPublish.isChecked) 1 else 0
                 productEntity.categories = categories
                 if (MyApplication.productObj != null) {
-                    viewModel.updateproduct(MyApplication.productObj.id!! , productEntity).observe(viewLifecycleOwner, {
-                        when (it.status) {
-                            Status.SUCCESS -> {
-                                dialog.dismiss()
-                                Toast.makeText(context,"Product Edited successfully",Toast.LENGTH_LONG).show()
-                                requireActivity().finish()
-                            }
-                            Status.ERROR -> {
-                                dialog.dismiss()
-                            }
-                            Status.LOADING -> {
-                                dialog.show()
-                            }
-                            else ->
-                                dialog.dismiss()
+                    viewModel.updateproduct(MyApplication.productObj.id!!, productEntity)
+                        .observe(viewLifecycleOwner, {
+                            when (it.status) {
+                                Status.SUCCESS -> {
+                                    val images = GenerateImagesArray()
+                                    if (images.size > 0) {
+                                        GoImagesApi(
+                                            (it.data as AddProductResponse).data?.product?.id!!,
+                                            images
+                                        )
+                                    } else {
+                                        dialog.dismiss()
+                                        Toast.makeText(
+                                            context,
+                                            "Product Edited successfully",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        requireActivity().finish()
+                                    }
+                                }
+                                Status.ERROR -> {
+                                    Toast.makeText(
+                                        context,
+                                        it.message,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    dialog.dismiss()
+                                }
+                                Status.LOADING -> {
+                                    dialog.show()
+                                }
+                                else ->
+                                    dialog.dismiss()
 
-                        }
-                    })
-                }
-                else {
+                            }
+                        })
+                } else {
                     viewModel.addproduct(productEntity).observe(viewLifecycleOwner, {
                         when (it.status) {
                             Status.SUCCESS -> {
-//                                dialog.dismiss()
-                                GoImagesApi(48)
-//                                if (productEntity.show_on_marketplace != 1) {
-//                                    Toast.makeText(context,"Product addedd successfully",Toast.LENGTH_LONG).show()
-//                                    requireActivity().finish()
-//                                }
-//                                else {
-//                                    requireActivity().finish()
-//                                    CoroutineScope(Dispatchers.IO).launch {
-//                                        findNavController().navigate(
-//                                            R.id.action_addProductFragment_to_pendingApprovalProductFragment
-//                                        )
-//
-//                                    }
-//                                }
+                                val images = GenerateImagesArray()
+                                if (images.size > 0) {
+                                    GoImagesApi(
+                                        (it.data as AddProductResponse).data?.product?.id!!, images)
+                                } else {
+                                    dialog.dismiss()
+                                    if (productEntity.show_on_marketplace != 1) {
+                                        Toast.makeText(
+                                            context,
+                                            "Product addedd successfully",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        requireActivity().finish()
+                                    } else {
+                                        requireActivity().finish()
+                                        findNavController().navigate(
+                                            R.id.action_addProductFragment_to_pendingApprovalProductFragment
+                                        )
+                                    }
+                                }
                             }
                             Status.ERROR -> {
                                 dialog.dismiss()
+                                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                             }
                             Status.LOADING -> {
                                 dialog.show()
@@ -252,32 +291,36 @@ class AddProductFragment : Fragment() {
         return view
     }
 
-
-    fun GoImagesApi(id: Int) {
-        viewModel.addImagesToProduct(id, GenerateImagesArray()).observe(viewLifecycleOwner, {
+    fun GoImagesApi(id: Int, arr: ArrayList<MultipartBody.Part>) {
+        viewModel.addImagesToProduct(id, arr).observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
                     dialog.dismiss()
-                    val bundle = Bundle()
-                    bundle.putSerializable(
-                        "productdata",
-                        ((it.data) as AddProductResponse).data!!
-                    )
-                    CoroutineScope(Dispatchers.IO).launch {
-                        findNavController().navigate(
-                            R.id.action_addProductFragment_to_pendingApprovalProductFragment,
-                            bundle
-                        )
-
+                    if (MyApplication.productObj != null) {
+                        Toast.makeText(context, "Product Edited successfully", Toast.LENGTH_LONG
+                        ).show()
+                        requireActivity().finish()
+                    } else if (!binding.switchNew.isChecked) {
+                        Toast.makeText(context, "Product addedd successfully", Toast.LENGTH_LONG).show()
+                        requireActivity().finish()
+                    } else {
+                        requireActivity().finish()
+                        findNavController().navigate(R.id.action_addProductFragment_to_pendingApprovalProductFragment)
                     }
                 }
                 Status.ERROR -> {
+                    Toast.makeText(
+                        context,
+                        it.message,
+                        Toast.LENGTH_LONG
+                    ).show()
                     dialog.dismiss()
                 }
             }
         })
 
     }
+
     private val startForImage_1Result =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val resultCode = result.resultCode
@@ -435,7 +478,11 @@ class AddProductFragment : Fragment() {
                         arrOfStrings.add(it?.name!!)
                     }
                     val adapter: ArrayAdapter<String> =
-                        ArrayAdapter<String>(requireActivity(), android.R.layout.simple_spinner_item, arrOfStrings)
+                        ArrayAdapter<String>(
+                            requireActivity(),
+                            android.R.layout.simple_spinner_item,
+                            arrOfStrings
+                        )
                     adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
                     binding.spinner.adapter = adapter
                 }
@@ -452,11 +499,12 @@ class AddProductFragment : Fragment() {
         })
     }
 
-    fun inialAttributesFamilies(){
+    fun inialAttributesFamilies() {
         viewModel.allAttributesFamilies().observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
-                    attributesid = (it.data as AttributesFamiliesMainModel).data?.families?.get(0)?.id!!
+                    attributesid =
+                        (it.data as AttributesFamiliesMainModel).data?.families?.get(0)?.id!!
                 }
             }
         })
@@ -507,9 +555,7 @@ class AddProductFragment : Fragment() {
     }
 
 
-
-
-    fun SetDataOfProductToFieldsToUpdate(productdata : DataItem) {
+    fun SetDataOfProductToFieldsToUpdate(productdata: DataItem) {
         productdata.categories?.forEach {
             binding.spinner.setSelection(0)
         }
@@ -520,9 +566,30 @@ class AddProductFragment : Fragment() {
         binding.etWidth.setText(productdata.width.toString())
         binding.etHeight.setText(productdata.height.toString())
         binding.etWeight.setText(productdata.weight.toString())
-        binding.tvQuantity.setText("1")
+        binding.tvQuantity.setText(productdata.quantity.toString())
         binding.switchFeature.isChecked = productdata.featured == 1
-        binding.switchNew.isChecked = productdata.jsonMemberNew  == 1
+        binding.switchNew.isChecked = productdata.jsonMemberNew == 1
         binding.switchPublish.isChecked = productdata.active == 1
+
+
+        if (productdata.images?.size!! > 0) {
+            for (i in 0..productdata.images.size) {
+                if (i >= productdata.images.size){
+                    break
+                }
+                else if (i == 0) {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image1)
+                }
+                else if (i == 1) {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image2)
+                }
+                else if (i == 2) {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image3)
+                }
+                else {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image4)
+                }
+            }
+        }
     }
 }

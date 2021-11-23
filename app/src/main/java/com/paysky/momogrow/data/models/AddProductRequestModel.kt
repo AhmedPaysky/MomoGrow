@@ -3,7 +3,7 @@ package com.paysky.momogrow.data.models
 import java.io.Serializable
 
 class AddProductRequestModel : Serializable {
-    val channel: String = "test"
+    val channel: String = "emanfateen"
     val type: String = "simple"
     val locale: String = "en"
     val visible_individually: String = "1"
@@ -19,7 +19,7 @@ class AddProductRequestModel : Serializable {
     lateinit var width: String
     lateinit var height: String
     lateinit var weight: String
-    lateinit var quantity: String
+    var quantity: Int = 0
     var featured: Int = 0
     var new: Int = 0
     var show_on_marketplace: Int = 0
