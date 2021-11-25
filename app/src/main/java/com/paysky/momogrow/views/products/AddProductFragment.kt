@@ -26,7 +26,7 @@ import com.paysky.momogrow.databinding.FragmentAddProductBinding
 import com.paysky.momogrow.helper.Status
 import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
 import com.paysky.momogrow.MyApplication
-import com.paysky.momogrow.data.models.AddProductRequestModel
+import com.paysky.momogrow.data.models.momo.requests.AddProductRequestModel
 import com.paysky.momogrow.data.models.momo.*
 import com.paysky.momogrow.utilis.MyUtils
 import kotlinx.android.synthetic.main.activity_home.*

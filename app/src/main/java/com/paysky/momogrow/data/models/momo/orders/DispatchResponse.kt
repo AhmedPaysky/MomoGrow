@@ -1,14 +1,15 @@
-package com.paysky.momogrow.data.models.momo
+package com.paysky.momogrow.data.models.momo.orders
 
 import com.google.gson.annotations.SerializedName
 
-data class SimpleResponse(
+
+data class DispatchResponse(
 
     @field:SerializedName("status_code")
     val statusCode: Int? = null,
 
     @field:SerializedName("data")
-    val data: Any? = null,
+    val data: DataDispatch? = null,
 
     @field:SerializedName("success")
     val success: Boolean? = null,
@@ -19,7 +20,7 @@ data class SimpleResponse(
 
 data class DataDispatch(
     @field:SerializedName("reference_number")
-    val reference_number: Int? = null,
+    val reference_number: String? = null,
     @field:SerializedName("status")
-    val status: Int? = null
+    val status: String? = null
 )

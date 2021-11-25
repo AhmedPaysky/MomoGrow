@@ -133,7 +133,7 @@
     <string name="orderdispatched">Order dispatched</string>
     <string name="orderdispatched_msg">Make sure you are available at the pickup location when the deliveryman arrives</string>
     <string name="deliveryref">Delivery ref</string>
-    <string name="intransit">In transit</string>
+    <string name="intransit">Processing</string>
     <string name="confirm_dispatch">Confirm dispatch</string>
     <string name="deliverydetails">Delivery details</string>
     <string name="deliverydetails_msg">We\'ll initiate the refund once you confirmed the cancellation.</string>
@@ -228,4 +228,6 @@ Link expires on  %5$s
 \nPowered by PaySky Payment Solutions.
     </string>
     <string name="invalid_amount_msg">Please enter valid amount</string>
+    <string name="ref">Ref</string>
+    <string name="status">Status</string>
 </resources>

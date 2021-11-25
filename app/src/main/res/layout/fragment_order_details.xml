@@ -42,10 +42,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
+            android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:id="@+id/tvDate"
             android:layout_marginTop="@dimen/_12sdp"
             android:text="25/08/21 • 11:00 AM"
             android:textColor="@color/gray_light"
@@ -59,13 +59,13 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvCurrency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:fontFamily="@font/mtn_brighter_sans_bold"
                 android:text="UGX"
-                android:id="@+id/tvCurrency"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
@@ -146,10 +146,11 @@
                 android:text="@string/order_details"
                 android:textColor="@color/gray_light"
                 android:textSize="@dimen/_12sdp" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
                 android:id="@+id/list_products"
-                android:layout_height="wrap_content"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -190,11 +191,11 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="Ahmed"
-                    android:id="@+id/name"
                     android:textColor="@color/gray_light"
                     android:textSize="@dimen/_12sdp" />
 
@@ -220,9 +221,9 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/last"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/last"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="Ali"
                     android:textColor="@color/gray_light"
@@ -250,10 +251,10 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-                    android:id="@+id/address"
                     android:text="-- "
                     android:textSize="@dimen/_12sdp" />
 
@@ -298,10 +299,10 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-                    android:id="@+id/type"
                     android:text="Card"
                     android:textSize="@dimen/_12sdp" />
 
@@ -327,10 +328,10 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/trans_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-                    android:id="@+id/trans_id"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -402,10 +403,10 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvTotalAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-                    android:id="@+id/tvTotalAmount"
                     android:text="UGX 0.00"
                     android:textSize="@dimen/_12sdp" />
 
@@ -431,10 +432,10 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvCommision"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-                    android:id="@+id/tvCommision"
                     android:text="UGX 0.00"
                     android:textSize="@dimen/_12sdp" />
 
@@ -460,10 +461,10 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvDelivery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
-                    android:id="@+id/tvDelivery"
                     android:text="UGX 0.00"
                     android:textSize="@dimen/_12sdp" />
 
@@ -489,11 +490,90 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/tvSettlment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mtn_brighter_sans_regular"
                     android:text="UGX 0.00"
-                    android:id="@+id/tvSettlment"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/containerDelivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:background="@drawable/ic_rectangle_grey"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deliverydetails"
+                android:textColor="@color/gray_light"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_bold"
+                    android:text="@string/ref"
+                    android:textColor="@color/et_color_black_100_opacity"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvRef"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
+                    android:gravity="end"
+                    android:text="UGX 0.00"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_bold"
+                    android:text="@string/status"
+                    android:textColor="@color/et_color_black_100_opacity"
+                    android:textSize="@dimen/_12sdp" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tvStatusDelivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/mtn_brighter_sans_regular"
+                    android:text="UGX 0.00"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
@@ -531,7 +611,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/container_buttons_not_processed"
+            android:id="@+id/container_buttons_pending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

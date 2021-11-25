@@ -26,12 +26,13 @@ data class OrderDetailsResponse(
 
 @Parcelize
 data class ShippingAddress(
+    @field:SerializedName("address1")
+    val address1: List<String?>? = null,
     @field:SerializedName("country_name")
     val country_name: String?,
     @field:SerializedName("city")
     val city: String?,
 ) : Parcelable, Serializable
-
 
 
 @Parcelize
@@ -73,7 +74,7 @@ data class OrderDetailsItem(
     val formatedShippingAmount: String? = null,
 
 
- @field:SerializedName("shipping_amount")
+    @field:SerializedName("shipping_amount")
     val shippingAmount: Double? = null,
 
     @field:SerializedName("updated_at")
@@ -90,8 +91,6 @@ data class OrderDetailsItem(
 
     @field:SerializedName("payment_title")
     val payment_title: String? = null,
-
-
 
 
     @field:SerializedName("grand_total")

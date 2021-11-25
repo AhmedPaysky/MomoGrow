@@ -1,4 +1,4 @@
-package com.paysky.momogrow.data.models
+package com.paysky.momogrow.data.models.momo.requests
 
 import java.io.Serializable
 

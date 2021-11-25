@@ -35,6 +35,7 @@ class OrderProductsAdapter(var mContext: Context) :
         this.products = products as MutableList<OrderProductItem>
         notifyDataSetChanged()
     }
+
     private var products = mutableListOf<OrderProductItem>()
 
     override fun onCreateViewHolder(
@@ -51,9 +52,9 @@ class OrderProductsAdapter(var mContext: Context) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val prod = products[position]
         holder.itemView.product_name.text = prod.name
-        holder.itemView.sku.text =  "SKU " + prod.sku
+        holder.itemView.sku.text = "SKU " + prod.sku
         holder.itemView.tvAmount.text = prod.formated_price
-        holder.itemView.product_qnt.text =  "x" + prod.qty_ordered.toString()
+        holder.itemView.product_qnt.text = "x" + prod.qty_ordered.toString()
         prod.product?.baseImage?.apply {
             Glide.with(mContext).load(originalImageUrl).placeholder(R.drawable.ic_mtn_logo)
                 .into(holder.itemView.product_image)
@@ -64,4 +65,4 @@ class OrderProductsAdapter(var mContext: Context) :
         return products.size
     }
 
-    }
+}

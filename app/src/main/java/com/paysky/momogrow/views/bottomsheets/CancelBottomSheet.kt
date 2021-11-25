@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paysky.momogrow.R
+import com.paysky.momogrow.helper.OnBottomSheetButtonClicked
 import kotlinx.android.synthetic.main.fragment_modal_bottom_sheet_cancel.view.*
 
-class CancelBottomSheet(var fragmentView: View) : BottomSheetDialogFragment() {
+class CancelBottomSheet(var fragmentView: View, var listener: OnBottomSheetButtonClicked) :
+    BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,16 +23,10 @@ class CancelBottomSheet(var fragmentView: View) : BottomSheetDialogFragment() {
         )
         v.btnCancel.setOnClickListener {
             dismiss()
-            showConfirmCancelBottomSheet(fragmentView)
+            listener.onClicked("", "cancel")
         }
         return v
     }
 
-    private fun showConfirmCancelBottomSheet(v: View) {
-        val modalbottomSheetFragment = OrderCanclledBottomSheet(fragmentView = v)
-        modalbottomSheetFragment.show(
-            requireActivity().supportFragmentManager,
-            modalbottomSheetFragment.tag
-        )
-    }
+
 }

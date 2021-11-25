@@ -47,11 +47,14 @@
             android:layout_weight="1" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvOrderRef"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_2sdp"
-            android:text="ABC123455"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="ABC1234jsdbjkdbsjkdsbjkbdsjkbsdjkbsdkjdsbkjsdbjksd55"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
 

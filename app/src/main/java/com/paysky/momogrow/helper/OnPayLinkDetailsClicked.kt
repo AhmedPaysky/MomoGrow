@@ -1,4 +1,4 @@
-package com.paysky.momogrow.utilis
+package com.paysky.momogrow.helper
 
 interface OnPayLinkDetailsClicked {
     fun onPayLinkDetailsClicked()
