@@ -4,13 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.paysky.momogrow.R
+import com.paysky.momogrow.data.api.ApiClientMomo
+import com.paysky.momogrow.data.api.ApiServiceMomo
 import com.paysky.momogrow.helper.OnBottomSheetButtonClicked
+import com.paysky.momogrow.viewmodels.ViewModelFactoryMomo
+import com.paysky.momogrow.views.orders.OrdersViewModel
 import kotlinx.android.synthetic.main.fragment_modal_bottom_sheet_cancel.view.*
 
 class CancelBottomSheet(var fragmentView: View, var listener: OnBottomSheetButtonClicked) :
     BottomSheetDialogFragment() {
+    private val viewModel: OrdersViewModel by activityViewModels {
+        ViewModelFactoryMomo(
+            ApiClientMomo.apiClient().create(
+                ApiServiceMomo::class.java
+            )
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,6 +34,7 @@ class CancelBottomSheet(var fragmentView: View, var listener: OnBottomSheetButto
             container,
             false
         )
+        v.tvTotalAmount.text = viewModel.grandTotal.value
         v.btnCancel.setOnClickListener {
             dismiss()
             listener.onClicked("", "cancel")

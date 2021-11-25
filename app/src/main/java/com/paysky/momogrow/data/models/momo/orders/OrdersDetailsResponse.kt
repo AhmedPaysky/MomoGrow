@@ -46,6 +46,9 @@ data class OrderDetailsItem(
     val items: ArrayList<OrderProductItem?>?,
 
 
+    @field:SerializedName("shipments")
+    val shipments: ArrayList<ShipmentsModel?>?,
+
     @field:SerializedName("channel_name")
     val channelName: String? = null,
 

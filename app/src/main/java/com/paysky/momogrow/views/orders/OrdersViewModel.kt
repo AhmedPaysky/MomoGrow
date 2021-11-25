@@ -12,6 +12,7 @@ import retrofit2.HttpException
 
 class OrdersViewModel(private val apiServiceMomo: ApiServiceMomo) : ViewModel() {
     val deliveryAddress = MutableLiveData<String>()
+    val grandTotal = MutableLiveData<String>()
     val pickupInstructions = MutableLiveData<String>()
     val statusDispatch = MutableLiveData<String>()
     val reference_number = MutableLiveData<String>()

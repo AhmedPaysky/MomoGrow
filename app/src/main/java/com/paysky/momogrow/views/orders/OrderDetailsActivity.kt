@@ -204,7 +204,7 @@ class OrderDetailsFragment : Fragment(), OnBottomSheetButtonClicked,
                 binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_oval_status_yellow, 0, 0, 0,
                 )
-                binding.containerDelivery.visibility = View.VISIBLE
+//                binding.containerDelivery.visibility = View.VISIBLE
 
             }
             "delivered" -> {
@@ -213,7 +213,7 @@ class OrderDetailsFragment : Fragment(), OnBottomSheetButtonClicked,
                 )
 
                 binding.containerDelivered.visibility = View.VISIBLE
-                binding.containerDelivery.visibility = View.VISIBLE
+//                binding.containerDelivery.visibility = View.VISIBLE
             }
             "canceled" -> binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
                 R.drawable.ic_oval_status_red, 0, 0, 0,
@@ -248,6 +248,14 @@ class OrderDetailsFragment : Fragment(), OnBottomSheetButtonClicked,
                         orderdata?.orderCurrencyCode + " " + (orderdata?.grandTotal - ((orderdata?.grandTotal!! * 0.05) + orderdata?.shippingAmount!!)).toString()
 
                     viewModel.deliveryAddress.value = orderdata.address?.address1?.get(0)
+                    viewModel.grandTotal.value = orderdata.grandTotal.toString()
+                    it.data.data?.order?.shipments.let { shipments ->
+                        if (shipments?.size!! > 0) {
+                            binding.containerDelivery.visibility = View.VISIBLE
+                            binding.tvRef.text = shipments[0]?.trackNumber
+                            binding.tvStatusDelivery.text = shipments[0]?.status
+                        }
+                    }
                 }
                 Status.ERROR -> {
                     dialog.dismiss()
