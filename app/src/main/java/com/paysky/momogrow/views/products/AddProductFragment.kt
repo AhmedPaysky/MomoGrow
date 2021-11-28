@@ -30,9 +30,11 @@ import com.paysky.momogrow.data.models.momo.requests.AddProductRequestModel
 import com.paysky.momogrow.data.models.momo.*
 import com.paysky.momogrow.utilis.MyUtils
 import kotlinx.android.synthetic.main.activity_home.*
+import okhttp3.Headers
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.http.Multipart
 import java.io.File
 
 class AddProductFragment : Fragment() {
@@ -53,8 +55,13 @@ class AddProductFragment : Fragment() {
     private val binding get() = _binding!!
     var allCategories: ArrayList<CatgoriesItem?>? = null
     var quantity = 1
+    var id1 = ""
+    var id2 = ""
+    var id3 = ""
+    var id4 = ""
     var handler: Handler = Handler(Looper.getMainLooper())
     var runnable: Runnable? = null
+    private val images = HashMap<String, String>()
 
     fun CheckEmptyFields(): Boolean {
         var isError = false
@@ -87,13 +94,36 @@ class AddProductFragment : Fragment() {
 
     fun GenerateImagesArray(): ArrayList<MultipartBody.Part> {
         val parts = ArrayList<MultipartBody.Part>()
+        val tempParts = ArrayList<MultipartBody.Part>()
         MultipartBody.Builder().setType(MultipartBody.FORM)
+        if (MyApplication.productObj != null) {
+            if (MyApplication.productObj.images != null) {
+                for (image in MyApplication.productObj.images!!) {
+                    val requestFile =
+                        RequestBody.create("text/plain".toMediaTypeOrNull(), "")
+                    val part = MultipartBody.Part.createFormData(
+                        "images[${image?.id}]",
+                        "",
+                        requestFile
+                    )
+                    parts.add(part)
+                    tempParts.add(part)
+                }
+            }
+        }
         if (this::mImage1.isInitialized) {
+
+
+            if (id1.isNotEmpty()) {
+                parts.remove(tempParts[0])
+            }
+
             mImage1.path?.apply {
                 try {
                     val file = File(this)
                     if (file.exists()) {
-                        val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+                        val requestFile =
+                            RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
                         parts.add(
                             MultipartBody.Part.createFormData(
                                 "images[]",
@@ -108,6 +138,11 @@ class AddProductFragment : Fragment() {
             }
         }
         if (this::mImage2.isInitialized) {
+            if (images.contains(id2)) {
+                images.remove(id2)
+            }
+
+
             mImage2.path?.apply {
                 try {
                     val file = File(this)
@@ -127,6 +162,10 @@ class AddProductFragment : Fragment() {
             }
         }
         if (this::mImage3.isInitialized) {
+            if (images.contains(id3)) {
+                images.remove(id3)
+            }
+
             mImage3.path?.apply {
                 try {
                     val file = File(this)
@@ -146,6 +185,10 @@ class AddProductFragment : Fragment() {
             }
         }
         if (this::mImage4.isInitialized) {
+
+            if (id4.isNotEmpty()) {
+                parts.remove(tempParts[3])
+            }
             mImage4.path?.apply {
                 try {
                     val file = File(this)
@@ -179,6 +222,7 @@ class AddProductFragment : Fragment() {
         initQuantityCounter()
         initImages()
         inialAttributesFamilies()
+
         //clickable
         binding.ivBack.setOnClickListener {
             requireActivity().finish()
@@ -205,12 +249,14 @@ class AddProductFragment : Fragment() {
                 productEntity.new = if (binding.switchNew.isChecked) 1 else 0
                 productEntity.show_on_marketplace = if (binding.switchPublish.isChecked) 1 else 0
                 productEntity.categories = categories
+                productEntity.images = images
                 if (MyApplication.productObj != null) {
                     viewModel.updateproduct(MyApplication.productObj.id!!, productEntity)
                         .observe(viewLifecycleOwner, {
                             when (it.status) {
                                 Status.SUCCESS -> {
                                     val images = GenerateImagesArray()
+                                    Log.v("ImagesContent", images.toString())
                                     if (images.size > 0) {
                                         GoImagesApi(
                                             (it.data as AddProductResponse).data?.product?.id!!,
@@ -249,7 +295,8 @@ class AddProductFragment : Fragment() {
                                 val images = GenerateImagesArray()
                                 if (images.size > 0) {
                                     GoImagesApi(
-                                        (it.data as AddProductResponse).data?.product?.id!!, images)
+                                        (it.data as AddProductResponse).data?.product?.id!!, images
+                                    )
                                 } else {
                                     dialog.dismiss()
                                     if (productEntity.show_on_marketplace != 1) {
@@ -297,11 +344,13 @@ class AddProductFragment : Fragment() {
                 Status.SUCCESS -> {
                     dialog.dismiss()
                     if (MyApplication.productObj != null) {
-                        Toast.makeText(context, "Product Edited successfully", Toast.LENGTH_LONG
+                        Toast.makeText(
+                            context, "Product Edited successfully", Toast.LENGTH_LONG
                         ).show()
                         requireActivity().finish()
                     } else if (!binding.switchNew.isChecked) {
-                        Toast.makeText(context, "Product addedd successfully", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Product addedd successfully", Toast.LENGTH_LONG)
+                            .show()
                         requireActivity().finish()
                     } else {
                         requireActivity().finish()
@@ -316,6 +365,7 @@ class AddProductFragment : Fragment() {
                     ).show()
                     dialog.dismiss()
                 }
+                else -> dialog.dismiss()
             }
         })
 
@@ -330,6 +380,9 @@ class AddProductFragment : Fragment() {
                     val fileUri = data?.data!!
                     mImage1 = fileUri
                     binding.image1.setImageURI(fileUri)
+                    if (images.contains(id1)) {
+                        images.remove(id1)
+                    }
                 }
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(
@@ -356,6 +409,9 @@ class AddProductFragment : Fragment() {
                     val fileUri = data?.data!!
                     mImage2 = fileUri
                     binding.image2.setImageURI(fileUri)
+                    if (images.contains(id2)) {
+                        images.remove(id2)
+                    }
                 }
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(
@@ -382,6 +438,9 @@ class AddProductFragment : Fragment() {
                     val fileUri = data?.data!!
                     mImage3 = fileUri
                     binding.image3.setImageURI(fileUri)
+                    if (images.contains(id3)) {
+                        images.remove(id3)
+                    }
                 }
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(
@@ -408,6 +467,9 @@ class AddProductFragment : Fragment() {
                     val fileUri = data?.data!!
                     mImage4 = fileUri
                     binding.image4.setImageURI(fileUri)
+                    if (images.contains(id4)) {
+                        images.remove(id4)
+                    }
                 }
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(
@@ -559,6 +621,14 @@ class AddProductFragment : Fragment() {
         productdata.categories?.forEach {
             binding.spinner.setSelection(0)
         }
+
+        //add all images id and delete id if image edited
+        if (MyApplication.productObj.images != null) {
+            for (image in MyApplication.productObj.images!!) {
+                images[image?.id.toString()] = ""
+            }
+        }
+
         binding.etProductName.setText(productdata.name)
         binding.etProductDescription.setText(productdata.description)
         binding.etSKU.setText(productdata.sku)
@@ -574,20 +644,24 @@ class AddProductFragment : Fragment() {
 
         if (productdata.images?.size!! > 0) {
             for (i in 0..productdata.images.size) {
-                if (i >= productdata.images.size){
+                if (i >= productdata.images.size) {
                     break
-                }
-                else if (i == 0) {
-                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image1)
-                }
-                else if (i == 1) {
-                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image2)
-                }
-                else if (i == 2) {
-                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image3)
-                }
-                else {
-                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl).into(binding.image4)
+                } else if (i == 0) {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl)
+                        .into(binding.image1)
+                    id1 = productdata.images[i]?.id.toString()
+                } else if (i == 1) {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl)
+                        .into(binding.image2)
+                    id2 = productdata.images[i]?.id.toString()
+                } else if (i == 2) {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl)
+                        .into(binding.image3)
+                    id3 = productdata.images[i]?.id.toString()
+                } else {
+                    Glide.with(requireContext()).load(productdata.images[i]?.mediumImageUrl)
+                        .into(binding.image4)
+                    id4 = productdata.images[i]?.id.toString()
                 }
             }
         }

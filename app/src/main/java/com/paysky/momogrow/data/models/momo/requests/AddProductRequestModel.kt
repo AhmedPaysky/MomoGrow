@@ -25,4 +25,5 @@ class AddProductRequestModel : Serializable {
     var show_on_marketplace: Int = 0
     lateinit var categories: ArrayList<Int>
     var attribute_family_id: Int = 0
+    var images: HashMap<String, String>? = null
 }

@@ -360,6 +360,7 @@ class OrderDetailsFragment : Fragment(), OnBottomSheetButtonClicked,
     private fun dispatchOrder() {
         val request = DispatchRequest()
         request.orderId = orderOBJ.id
+        request.pickupInstructions = viewModel.pickupInstructions.value
         request.shippingMethod = "yellowbird"
 
         viewModel.dispatchOrder(request).observe(viewLifecycleOwner, {

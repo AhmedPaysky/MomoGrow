@@ -405,14 +405,13 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
-                        android:scaleType="centerCrop"
                         android:background="@drawable/ic_add_product"
-                        />
+                        android:padding="@dimen/_5sdp"
+                        android:scaleType="centerCrop" />
 
                     <Space
                         android:layout_width="0dp"
@@ -420,13 +419,12 @@
                         android:layout_weight="1" />
 
                     <ImageView
-                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
                         android:background="@drawable/ic_add_product"
-                        />
+                        android:padding="@dimen/_5sdp" />
 
                     <Space
                         android:layout_width="0dp"
@@ -434,13 +432,12 @@
                         android:layout_weight="1" />
 
                     <ImageView
-                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
                         android:background="@drawable/ic_add_product"
-                        />
+                        android:padding="@dimen/_5sdp" />
 
                     <Space
                         android:layout_width="0dp"
@@ -448,13 +445,12 @@
                         android:layout_weight="1" />
 
                     <ImageView
-                        android:padding="@dimen/_5sdp"
                         android:id="@+id/image4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_16sdp"
                         android:background="@drawable/ic_add_product"
-                        />
+                        android:padding="@dimen/_5sdp" />
 
                     <Space
                         android:layout_width="0dp"

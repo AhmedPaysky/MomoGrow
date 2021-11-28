@@ -8,5 +8,8 @@ data class DispatchRequest(
     var shippingMethod: String? = null,
 
     @field:SerializedName("order_id")
-    var orderId: Int? = null
+    var orderId: Int? = null,
+
+    @field:SerializedName("pickup_instructions")
+    var pickupInstructions: String? = null
 )
